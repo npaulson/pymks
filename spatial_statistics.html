@@ -17,7 +17,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.3',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
@@ -39,7 +39,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
+  <body role="document">
 
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
@@ -53,7 +53,7 @@
         </button>
         <a class="navbar-brand" href="index.html"><img src="_static/pymks_logo.png">
           PyMKS</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.2.3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -110,19 +110,21 @@
 <h2>autocorrelate<a class="headerlink" href="#autocorrelate" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.stats.autocorrelate">
-<tt class="descclassname">pymks.stats.</tt><tt class="descname">autocorrelate</tt><big>(</big><em>X_</em>, <em>periodic_axes=[]</em>, <em>confidence_index=None</em>, <em>autocorrelations=None</em><big>)</big><a class="headerlink" href="#pymks.stats.autocorrelate" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.stats.</code><code class="descname">autocorrelate</code><span class="sig-paren">(</span><em>X</em>, <em>basis</em>, <em>periodic_axes=[]</em>, <em>n_jobs=1</em>, <em>confidence_index=None</em>, <em>autocorrelations=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.stats.autocorrelate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the autocorrelation from a microstructure function.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>X</strong> (<em>ND array</em>) &#8211; The discretized microstructure function, an
-<cite>(n_samples, n_x, ..., n_states)</cite> shaped array
-where <cite>n_samples</cite> is the number of samples, <cite>n_x</cite> is thes
-patial discretization, and n_states is the number of local states.</li>
+<li><strong>X</strong> (<em>ND array</em>) &#8211; The microstructure, an <cite>(n_samples, n_x, ...)</cite>
+shaped array where <cite>n_samples</cite> is the number of samples and
+<cite>n_x</cite> is the spatial discretization.</li>
+<li><strong>basis</strong> (<em>class</em>) &#8211; an instance of a bases class</li>
 <li><strong>periodic_axes</strong> (<em>list, optional</em>) &#8211; axes that are periodic. (0, 2) would
 indicate that axes x and z are periodic in a 3D microstrucure.</li>
+<li><strong>n_jobs</strong> (<em>int, optional</em>) &#8211; number of parallel jobs to run. only used if
+pyfftw is install.</li>
 <li><strong>confidence_index</strong> (<em>ND array, optional</em>) &#8211; array with same shape as X used
 to assign a confidence value for each data point.</li>
 <li><strong>autocorrelations</strong> (<em>list, optional</em>) &#8211; list of spatial autocorrelatiions to
@@ -132,7 +134,7 @@ all autocorrelations are computed.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Autocorrelations for microstructure function <cite>X_</cite>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Autocorrelations for a microstructure.</p>
 </td>
 </tr>
 </tbody>
@@ -144,8 +146,7 @@ all autocorrelations are computed.</li>
 <span class="gp">... </span>               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pymks.bases</span> <span class="kn">import</span> <span class="n">PrimitiveBasis</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="n">n_states</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_</span> <span class="o">=</span> <span class="n">prim_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_auto</span> <span class="o">=</span> <span class="n">autocorrelate</span><span class="p">(</span><span class="n">X_</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_auto</span> <span class="o">=</span> <span class="n">autocorrelate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">prim_basis</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
 <span class="gp">... </span>                  <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="mi">9</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
 <span class="gp">... </span>                  <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]])</span>
@@ -159,19 +160,21 @@ all autocorrelations are computed.</li>
 <h2>crosscorrelate<a class="headerlink" href="#crosscorrelate" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.stats.crosscorrelate">
-<tt class="descclassname">pymks.stats.</tt><tt class="descname">crosscorrelate</tt><big>(</big><em>X_</em>, <em>periodic_axes=None</em>, <em>confidence_index=None</em>, <em>crosscorrelations=None</em><big>)</big><a class="headerlink" href="#pymks.stats.crosscorrelate" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.stats.</code><code class="descname">crosscorrelate</code><span class="sig-paren">(</span><em>X</em>, <em>basis</em>, <em>periodic_axes=None</em>, <em>n_jobs=1</em>, <em>confidence_index=None</em>, <em>crosscorrelations=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.stats.crosscorrelate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the crosscorrelations from a microstructure function.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>X</strong> (<em>ND array</em>) &#8211; The discretized microstructure function, an
-<cite>(n_samples, n_x, ..., n_states)</cite> shaped array
-where <cite>n_samples</cite> is the number of samples, <cite>n_x</cite> is thes
-patial discretization, and n_states is the number of local states.</li>
+<li><strong>X</strong> (<em>ND array</em>) &#8211; The microstructure, an <cite>(n_samples, n_x, ...)</cite>
+shaped array where <cite>n_samples</cite> is the number of samples and
+<cite>n_x</cite> is the spatial discretization.s.</li>
+<li><strong>basis</strong> (<em>class</em>) &#8211; an instance of a bases class</li>
 <li><strong>periodic_axes</strong> (<em>list, optional</em>) &#8211; axes that are periodic. (0, 2) would
 indicate that axes x and z are periodic in a 3D microstrucure.</li>
+<li><strong>n_jobs</strong> (<em>int, optional</em>) &#8211; number of parallel jobs to run. only used if
+pyfftw is install.</li>
 <li><strong>confidence_index</strong> (<em>ND array, optional</em>) &#8211; array with same shape as X used
 to assign a confidence value for each data point.</li>
 <li><strong>crosscorrelations</strong> (<em>list, optional</em>) &#8211; list of cross-correlatiions to
@@ -181,7 +184,7 @@ If no list is passed, all cross-correlations are computed.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Crosscorelations for microstructure function <cite>X_</cite>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Crosscorelations for a microstructure.</p>
 </td>
 </tr>
 </tbody>
@@ -194,8 +197,7 @@ If no list is passed, all cross-correlations are computed.</li>
 <span class="gp">... </span>               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pymks.bases</span> <span class="kn">import</span> <span class="n">PrimitiveBasis</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="n">n_states</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_</span> <span class="o">=</span> <span class="n">prim_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_cross</span> <span class="o">=</span> <span class="n">crosscorrelate</span><span class="p">(</span><span class="n">X_</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_cross</span> <span class="o">=</span> <span class="n">crosscorrelate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">prim_basis</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[[</span><span class="mi">1</span><span class="o">/</span><span class="mf">3.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mf">3.</span><span class="p">]],</span>
 <span class="gp">... </span>                    <span class="p">[[</span><span class="mi">1</span><span class="o">/</span><span class="mf">3.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mf">3.</span><span class="p">]],</span>
 <span class="gp">... </span>                    <span class="p">[[</span><span class="mi">1</span><span class="o">/</span><span class="mf">3.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mf">3.</span><span class="p">]]]])</span>
@@ -205,22 +207,22 @@ If no list is passed, all cross-correlations are computed.</li>
 <p>Test for 3 states</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">n_states</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="n">n_states</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_</span> <span class="o">=</span> <span class="n">prim_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span><span class="p">(</span><span class="n">crosscorrelate</span><span class="p">(</span><span class="n">X_</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span><span class="p">(</span><span class="n">crosscorrelate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">prim_basis</span><span class="p">,</span>
+<span class="gp">... </span>       <span class="n">periodic_axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Test for 4 states</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">n_states</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="n">n_states</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_</span> <span class="o">=</span> <span class="n">prim_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span><span class="p">(</span><span class="n">crosscorrelate</span><span class="p">(</span><span class="n">X_</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span><span class="p">(</span><span class="n">crosscorrelate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">prim_basis</span><span class="p">,</span>
+<span class="gp">... </span>       <span class="n">periodic_axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Test for 5 states</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">n_states</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="n">n_states</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_</span> <span class="o">=</span> <span class="n">prim_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span><span class="p">(</span><span class="n">crosscorrelate</span><span class="p">(</span><span class="n">X_</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span><span class="p">(</span><span class="n">crosscorrelate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">prim_basis</span><span class="p">,</span>
+<span class="gp">... </span>       <span class="n">periodic_axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -230,7 +232,7 @@ If no list is passed, all cross-correlations are computed.</li>
 <h2>correlate<a class="headerlink" href="#correlate" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.stats.correlate">
-<tt class="descclassname">pymks.stats.</tt><tt class="descname">correlate</tt><big>(</big><em>X_</em>, <em>periodic_axes=None</em>, <em>confidence_index=None</em>, <em>correlations=None</em><big>)</big><a class="headerlink" href="#pymks.stats.correlate" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.stats.</code><code class="descname">correlate</code><span class="sig-paren">(</span><em>X</em>, <em>basis</em>, <em>periodic_axes=None</em>, <em>n_jobs=1</em>, <em>confidence_index=None</em>, <em>correlations=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.stats.correlate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the autocorrelations and crosscorrelations from a microstructure
 function.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -238,12 +240,14 @@ function.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>X</strong> (<em>ND array</em>) &#8211; The discretized microstructure function, an
-<cite>(n_samples, n_x, ..., n_states)</cite> shaped array
-where <cite>n_samples</cite> is the number of samples, <cite>n_x</cite> is thes
-patial discretization, and n_states is the number of local states.</li>
+<li><strong>X</strong> (<em>ND array</em>) &#8211; The microstructure, an <cite>(n_samples, n_x, ...)</cite>
+shaped array where <cite>n_samples</cite> is the number of samples and
+<cite>n_x</cite> is the spatial discretization.</li>
+<li><strong>basis</strong> (<em>class</em>) &#8211; an instance of a bases class</li>
 <li><strong>periodic_axes</strong> (<em>list, optional</em>) &#8211; axes that are periodic. (0, 2) would
 indicate that axes x and z are periodic in a 3D microstrucure.</li>
+<li><strong>n_jobs</strong> (<em>int, optional</em>) &#8211; number of parallel jobs to run. only used if
+pyfftw is install.</li>
 <li><strong>confidence_index</strong> (<em>ND array, optional</em>) &#8211; array with same shape as X used
 to assign a confidence value for each data point.</li>
 <li><strong>correlations</strong> (<em>list, optional</em>) &#8211; list of  spatial correlatiions to
@@ -254,8 +258,7 @@ spatial correlations are computed.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Autocorrelations and crosscorrelations for microstructure funciton
-<cite>X_</cite>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Autocorrelations and crosscorrelations for a microstructure.</p>
 </td>
 </tr>
 </tbody>
@@ -266,8 +269,7 @@ spatial correlations are computed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_</span> <span class="o">=</span> <span class="n">prim_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_corr</span> <span class="o">=</span> <span class="n">correlate</span><span class="p">(</span><span class="n">X_</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_corr</span> <span class="o">=</span> <span class="n">correlate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">prim_basis</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
 <span class="gp">... </span>                     <span class="p">[</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">3.</span><span class="p">,</span> <span class="mi">2</span> <span class="o">/</span> <span class="mf">3.</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
 <span class="gp">... </span>                     <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]])</span>
@@ -291,7 +293,7 @@ spatial correlations are computed.</li>
       
     </p>
     <p>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.3.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
     </p>
   </div>
 </footer>

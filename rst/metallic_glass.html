@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Bulk Metallic Glass Metal Matrix Composites &mdash; PyMKS</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/cosmo/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pymks.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="../_static/pymks_logo.ico"/>
+    <link rel="top" title="PyMKS" href="../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html"><img src="../_static/pymks_logo.png">
+          PyMKS</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="INSTALLATION.html">Installation</a></li>
+                <li><a href="../EXAMPLES.html">Examples</a></li>
+                <li><a href="../API.html">API</a></li>
+                <li><a href="https://github.com/materialsinnovation/pymks/">Github</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">More <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../THEORY.html">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="derivation.html">Derivation of MKS Localization Equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tech_overview.html">Technical Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CREDITS.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CITATION.html">Citing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="REQUIREMENTS.html">Requirements</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="bulk-metallic-glass-metal-matrix-composites">
+<h1>Bulk Metallic Glass Metal Matrix Composites<a class="headerlink" href="#bulk-metallic-glass-metal-matrix-composites" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This example uses a data set from directionally aligned bulk metallic
+glass metal matrix compite. These materials have low ductility and good
+fatigue strength for more information about the dataset see <a class="reference external" href="https://dx.doi.org/10.1073/pnas.0809000106">this
+paper</a>.</p>
+<p>The BMG-MMC in this data set is directionally solidified BMG-MMC which
+through the use of electromagnets the crystalline phases are aligned
+within the amorphous matrix. In this example we will be applying commons
+tools used throughout PyMKS in order to classify the micostructures and
+hopefully observe degrees of anisotropy throughout the microstructures.</p>
+<div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+%load_ext autoreload
+%autoreload 2
+
+import numpy as np
+import matplotlib.pyplot as plt
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload
+</pre></div>
+</div>
+</div>
+<div class="section" id="load-in-the-data">
+<h2>Load in the Data<a class="headerlink" href="#load-in-the-data" title="Permalink to this headline">¶</a></h2>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks_share</span> <span class="kn">import</span> <span class="n">DataManager</span>
+<span class="n">manager</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">(</span><span class="s">&#39;pymks.me.gatech.edu&#39;</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s">&#39;metallic glass&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="lets-look-at-the-microstructure">
+<h2>Lets look at the Microstructure<a class="headerlink" href="#lets-look-at-the-microstructure" title="Permalink to this headline">¶</a></h2>
+<p>Below we can see one of the microstructures. We can easily discern the
+phases of the</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_microstructures</span>
+
+
+<span class="k">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X</span><span class="p">[::</span><span class="mi">54</span> <span class="o">/</span> <span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mi">54</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">640</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/metallic_glass_5_1.png" src="../_images/metallic_glass_5_1.png" />
+<p>Now let&#8217;s crop the images to remove the metadata and scale bar at the
+bottom so that they don&#8217;t affect our 2-point statistics calculations.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">X_crop</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">150</span><span class="p">:</span><span class="mi">400</span><span class="p">,</span> <span class="mi">150</span><span class="p">:</span><span class="mi">400</span><span class="p">]</span>
+<span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X_crop</span><span class="p">[::</span><span class="mi">54</span> <span class="o">/</span> <span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/metallic_glass_7_0.png" src="../_images/metallic_glass_7_0.png" />
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="kn">import</span> <span class="n">threshold_otsu</span><span class="p">,</span> <span class="n">rank</span>
+
+
+<span class="n">ostu_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">threshold_otsu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X_crop</span><span class="p">])</span>
+<span class="n">X_seg</span> <span class="o">=</span> <span class="n">X</span> <span class="o">&gt;</span> <span class="n">ostu_values</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X_seg</span><span class="p">[::</span> <span class="mi">54</span> <span class="o">/</span> <span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/metallic_glass_9_0.png" src="../_images/metallic_glass_9_0.png" />
+<div class="section" id="data-reductive-techniques">
+<h3>Data Reductive Techniques<a class="headerlink" href="#data-reductive-techniques" title="Permalink to this headline">¶</a></h3>
+<p>We still have a huge data set! We could either compare each and every
+2-pt statistics to each other or we could use data reduction techniques
+in a way to look at the data sets as a whole.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">MKSStructureAnalysis</span>
+<span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">PrimitiveBasis</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">KernelPCA</span>
+
+<span class="n">reducer</span> <span class="o">=</span> <span class="n">KernelPCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s">&#39;rbf&#39;</span><span class="p">)</span>
+<span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">analyzer</span> <span class="o">=</span> <span class="n">MKSStructureAnalysis</span><span class="p">(</span><span class="n">prim_basis</span><span class="p">,</span> <span class="n">correlations</span><span class="o">=</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)],</span>
+                                <span class="n">dimension_reducer</span><span class="o">=</span><span class="n">reducer</span><span class="p">)</span>
+<span class="n">analyzer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_seg</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_components_scatter</span>
+
+
+<span class="n">draw_components_scatter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">reduced_fit_data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="mi">3</span><span class="p">),</span>
+                        <span class="p">[</span><span class="s">&#39;group A&#39;</span><span class="p">,</span> <span class="s">&#39;group B&#39;</span><span class="p">,</span> <span class="s">&#39;group C&#39;</span><span class="p">],</span> <span class="n">legend_outside</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/metallic_glass_12_0.png" src="../_images/metallic_glass_12_0.png" />
+<p>It looks like there is an outliner in our dataset. Let&#8217;s look</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">27</span><span class="p">:</span><span class="mi">28</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/metallic_glass_14_0.png" src="../_images/metallic_glass_14_0.png" />
+<p>This images had a much larger magnification than the others...</p>
+</div>
+<div class="section" id="references">
+<h3>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<p>[1] Hofmann, Douglas C., et al. &#8220;Development of tough, low-density
+titanium-based bulk metallic glass matrix composites with tensile
+ductility.&#8221; Proceedings of the National Academy of Sciences 105.51
+(2008): 20136-20140.
+<a class="reference external" href="https://dx.doi.org/10.1073/pnas.0809000106">doi:10.1073/pnas.0809000106</a></p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

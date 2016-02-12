@@ -17,7 +17,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.3',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
@@ -39,7 +39,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
+  <body role="document">
 
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
@@ -53,7 +53,7 @@
         </button>
         <a class="navbar-brand" href="index.html"><img src="_static/pymks_logo.png">
           PyMKS</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.2.3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -110,7 +110,7 @@
 <h2>draw_gridscores<a class="headerlink" href="#draw-gridscores" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_gridscores">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_gridscores</tt><big>(</big><em>grid_scores</em>, <em>param</em>, <em>score_label=None</em>, <em>colors=None</em>, <em>data_labels=None</em>, <em>param_label=None</em>, <em>fontsize=20</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_gridscores" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_gridscores</code><span class="sig-paren">(</span><em>grid_scores</em>, <em>param</em>, <em>score_label=None</em>, <em>colors=None</em>, <em>data_labels=None</em>, <em>param_label=None</em>, <em>fontsize=20</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_gridscores" title="Permalink to this definition">¶</a></dt>
 <dd><p>Visualize the score values and standard deviations from grids
 scores result from GridSearchCV while varying 1 parameters.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -136,7 +136,7 @@ GridSearchCV</li>
 <h2>draw_gridscores_matrix<a class="headerlink" href="#draw-gridscores-matrix" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_gridscores_matrix">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_gridscores_matrix</tt><big>(</big><em>grid_scores</em>, <em>params</em>, <em>score_label=None</em>, <em>param_labels=None</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_gridscores_matrix" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_gridscores_matrix</code><span class="sig-paren">(</span><em>grid_scores</em>, <em>params</em>, <em>score_label=None</em>, <em>param_labels=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_gridscores_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Visualize the score value matrix and standard deviation matrix from grids
 scores result from GridSearchCV while varying two parameters.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -160,19 +160,15 @@ scores result from GridSearchCV while varying two parameters.</p>
 <h2>draw_components<a class="headerlink" href="#draw-components" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_components">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_components</tt><big>(</big><em>datasets</em>, <em>labels</em>, <em>title=None</em>, <em>component_labels=None</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_components" title="Permalink to this definition">¶</a></dt>
-<dd><p>Visualize low dimensional representations of microstructures.</p>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_components</code><span class="sig-paren">(</span><em>X_comp</em>, <em>fontsize=15</em>, <em>figsize=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_components" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize spatial correlations.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>datasets</strong> (<em>list, 2D arrays</em>) &#8211; low dimensional data with dimensions
-[n_samplles, n_componts]. The length of n_components must be 2 or
-3.</li>
-<li><strong>labels</strong> (<em>list, str</em>) &#8211; list of labes for each of each array datasets</li>
-<li><strong>title</strong> &#8211; main title for plot</li>
-<li><strong>component_labels</strong> &#8211; labels for components</li>
+<li><strong>X_corr</strong> (<em>ND array</em>) &#8211; correlations</li>
+<li><strong>correlations</strong> (<em>list, optional</em>) &#8211; correlation labels</li>
 </ul>
 </td>
 </tr>
@@ -185,7 +181,7 @@ scores result from GridSearchCV while varying two parameters.</p>
 <h2>draw_component_variance<a class="headerlink" href="#draw-component-variance" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_component_variance">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_component_variance</tt><big>(</big><em>variance</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_component_variance" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_component_variance</code><span class="sig-paren">(</span><em>variance</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_component_variance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Visualize the percent variance as a function of components.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -203,7 +199,7 @@ reduction technique.</td>
 <h2>draw_goodness_of_fit<a class="headerlink" href="#draw-goodness-of-fit" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_goodness_of_fit">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_goodness_of_fit</tt><big>(</big><em>fit_data</em>, <em>pred_data</em>, <em>labels</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_goodness_of_fit" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_goodness_of_fit</code><span class="sig-paren">(</span><em>fit_data</em>, <em>pred_data</em>, <em>labels</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_goodness_of_fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Goodness of fit plot for MKSHomogenizationModel.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -227,7 +223,7 @@ actual values.</li>
 <h2>draw_correlations<a class="headerlink" href="#draw-correlations" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_correlations">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_correlations</tt><big>(</big><em>X_corr</em>, <em>correlations=None</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_correlations" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_correlations</code><span class="sig-paren">(</span><em>X_corr</em>, <em>correlations=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_correlations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Visualize spatial correlations.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -248,7 +244,7 @@ actual values.</li>
 <h2>draw_autocorrelations<a class="headerlink" href="#draw-autocorrelations" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_autocorrelations">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_autocorrelations</tt><big>(</big><em>X_auto</em>, <em>autocorrelations=None</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_autocorrelations" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_autocorrelations</code><span class="sig-paren">(</span><em>X_auto</em>, <em>autocorrelations=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_autocorrelations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Visualize spatial autocorrelations.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -269,7 +265,7 @@ actual values.</li>
 <h2>draw_crosscorrelations<a class="headerlink" href="#draw-crosscorrelations" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_crosscorrelations">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_crosscorrelations</tt><big>(</big><em>X_cross</em>, <em>crosscorrelations=None</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_crosscorrelations" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_crosscorrelations</code><span class="sig-paren">(</span><em>X_cross</em>, <em>crosscorrelations=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_crosscorrelations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Visualize spatial crosscorrelations.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -290,7 +286,7 @@ actual values.</li>
 <h2>draw_learning_curves<a class="headerlink" href="#draw-learning-curves" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_learning_curves">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_learning_curves</tt><big>(</big><em>estimator</em>, <em>X</em>, <em>y</em>, <em>ylim=None</em>, <em>cv=None</em>, <em>n_jobs=1</em>, <em>scoring=None</em>, <em>train_sizes=array([ 0.1</em>, <em>0.325</em>, <em>0.55</em>, <em>0.775</em>, <em>1.   ])</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_learning_curves" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_learning_curves</code><span class="sig-paren">(</span><em>estimator</em>, <em>X</em>, <em>y</em>, <em>ylim=None</em>, <em>cv=None</em>, <em>n_jobs=1</em>, <em>scoring=None</em>, <em>train_sizes=array([ 0.1</em>, <em>0.325</em>, <em>0.55</em>, <em>0.775</em>, <em>1.   ])</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_learning_curves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Code taken from scikit-learn examples for version 0.15.</p>
 <p>Generate a simple plot of the test and traning learning curve.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -337,7 +333,7 @@ cross-validation curve.</li>
 <h2>draw_coeff<a class="headerlink" href="#draw-coeff" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_coeff">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_coeff</tt><big>(</big><em>coeff</em>, <em>fontsize=15</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_coeff" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_coeff</code><span class="sig-paren">(</span><em>coeff</em>, <em>fontsize=15</em>, <em>figsize=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_coeff" title="Permalink to this definition">¶</a></dt>
 <dd><p>Visualize influence coefficients.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -359,14 +355,14 @@ n_states)</li>
 <h2>draw_microstructures<a class="headerlink" href="#draw-microstructures" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_microstructures">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_microstructures</tt><big>(</big><em>*microstructures</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_microstructures" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_microstructures</code><span class="sig-paren">(</span><em>*microstructures</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_microstructures" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw microstructures</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>microstructures</strong> (<em>3D array</em>) &#8211; numpy array with dimensions (n_samples, x,
-y)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>microstructures</strong> (<em>3D array</em>) &#8211; numpy array with dimensions
+(n_samples, x, y)</td>
 </tr>
 </tbody>
 </table>
@@ -377,7 +373,7 @@ y)</td>
 <h2>draw_microstructure_strain<a class="headerlink" href="#draw-microstructure-strain" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_microstructure_strain">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_microstructure_strain</tt><big>(</big><em>microstructure</em>, <em>strain</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_microstructure_strain" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_microstructure_strain</code><span class="sig-paren">(</span><em>microstructure</em>, <em>strain</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_microstructure_strain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw microstructure and its associated strain</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -398,7 +394,7 @@ y)</td>
 <h2>draw_strains<a class="headerlink" href="#draw-strains" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_strains">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_strains</tt><big>(</big><em>strains</em>, <em>labels=None</em>, <em>fontsize=15</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_strains" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_strains</code><span class="sig-paren">(</span><em>strains</em>, <em>labels=None</em>, <em>fontsize=15</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_strains" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw strain fields</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -420,7 +416,7 @@ y)</td>
 <h2>draw_strains_compare<a class="headerlink" href="#draw-strains-compare" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_strains_compare">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_strains_compare</tt><big>(</big><em>strain_FEM</em>, <em>strain_MKS</em>, <em>fontsize=20</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_strains_compare" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_strains_compare</code><span class="sig-paren">(</span><em>strain_FEM</em>, <em>strain_MKS</em>, <em>fontsize=20</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_strains_compare" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw comparison of strain fields.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -443,7 +439,7 @@ element</li>
 <h2>draw_concentrations<a class="headerlink" href="#draw-concentrations" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_concentrations">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_concentrations</tt><big>(</big><em>concentrations</em>, <em>labels=None</em>, <em>fontsize=15</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_concentrations" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_concentrations</code><span class="sig-paren">(</span><em>concentrations</em>, <em>labels=None</em>, <em>fontsize=15</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_concentrations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw comparison fields</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -465,7 +461,7 @@ element</li>
 <h2>draw_concentrations_compare<a class="headerlink" href="#draw-concentrations-compare" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_concentrations_compare">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_concentrations_compare</tt><big>(</big><em>concentrations</em>, <em>labels</em>, <em>fontsize=15</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_concentrations_compare" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_concentrations_compare</code><span class="sig-paren">(</span><em>concentrations</em>, <em>labels</em>, <em>fontsize=15</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_concentrations_compare" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw comparesion of concentrations.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -488,7 +484,7 @@ element</li>
 <h2>draw_differences<a class="headerlink" href="#draw-differences" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymks.tools.draw_differences">
-<tt class="descclassname">pymks.tools.</tt><tt class="descname">draw_differences</tt><big>(</big><em>differences</em>, <em>labels=None</em>, <em>fontsize=15</em><big>)</big><a class="headerlink" href="#pymks.tools.draw_differences" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymks.tools.</code><code class="descname">draw_differences</code><span class="sig-paren">(</span><em>differences</em>, <em>labels=None</em>, <em>fontsize=15</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.tools.draw_differences" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw differences in predicted response fields.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -521,7 +517,7 @@ dimesions (x, y).</li>
       
     </p>
     <p>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.3.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
     </p>
   </div>
 </footer>

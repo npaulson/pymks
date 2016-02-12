@@ -4,48 +4,48 @@ Technical Overview
 
 This page provides very high level technical information about
 microstructure discretization, 2-point statistics, MKS Localization and
-MKS Homogenization. For more detailed information see the `MINED
-research group's website <http://mined.gatech.edu/>`__
+MKS Homogenization. For more detailed information, see the `MINED
+research group's website <http://mined.gatech.edu/>`__.
 
 Microstructure Discretization
 -----------------------------
 
-The first step in all of the MKS work-flows is to discretize the
-microstructures. To do this we create a probabilistic description of the
-microstructure by introducing the continuous local state variable
-:math:`h`, the local state space :math:`H` and the microstructure
-function :math:`m(h, x)`. The local state space :math:`H` can be thought
-of as all of the thermodynamic state variables that are needed to
-uniquely define the material structure at a given location. The local
-state variable :math:`h` is one instance of the local state space, or
-one configuration of state variables. The microstructure function
-:math:`m(h, x)` is a probability density function of finding a a local
-state :math:`h` at location :math:`x`. For instance let :math:`\mu(x)`
-be a microstructure that we plan to discretize, then :math:`\mu` is the
-expectation of the microstructure function.
+The first step in all of MKS workflows is to discretize microstructures.
+To do this, we create a probabilistic description of a microstructure by
+introducing the continuous local state variable :math:`h`, the local
+state space :math:`H` and the microstructure function :math:`m(h, x)`.
+The local state space :math:`H` can be thought of as all of the
+thermodynamic state variables that are needed to uniquely define the
+material structure at a given location. The local state variable
+:math:`h` is one instance of the local state space, or one configuration
+of state variables. The microstructure function :math:`m(h, x)` is a
+probability density function of finding a a local state :math:`h` at
+location :math:`x`. For instance, let :math:`\mu(x)` be a microstructure
+that we plan to discretize, then :math:`\mu` is the expectation of the
+microstructure function.
 
 .. math::  \mu(x) = \int_H h m(h, x) dh 
 
-Now we will discretize the microstructure in space by averaging over
+Now, we will discretize the microstructure in space by averaging over
 small cubic domains in the microstructure function. The local state can
-be discretized using two methods one is to bin the microstructure using
-the primitive basis :math:`\Lambda`
+be discretized, using two methods: one is to bin the microstructure,
+using the primitive basis :math:`\Lambda`
 
 .. math::   \frac{1}{\Delta x} \int_{H} \int_{s} \Lambda(h - l) m(h, x) dx dh = m[l, s] 
 
-the other is to using a spectral representation using some orthogonal
+the other is to use a spectral representation using some orthogonal
 basis function :math:`\xi`
 
 .. math::  \frac{1}{\Delta x}  \int_{s} m(h, x) dx dt = \sum_{l=0}^{L-1} m[l, s] \xi_l (h) 
 
-In the notation above all of the round brackets are used continuous
-variables and the square variables are the discrete variables. The
-variables :math:`s` and :math:`S` represent a discrete position and the
-total volume, while :math:`l` and :math:`L` represent the discrete
-versions of :math:`h` and :math:`H`. In PyMKS the Legendre polynomials
-are currently the only orthgonal basis functions available.
+In the notation above, all of the round brackets variables are
+continuous variables and the square brackets variables are the discrete
+variables. The variables :math:`s` and :math:`S` represent a discrete
+position and the total volume, while :math:`l` and :math:`L` represent
+the discrete versions of :math:`h` and :math:`H`. In PyMKS the Legendre
+polynomials are currently the only orthgonal basis functions available.
 
-Either of these two discretization methods used to discretize the
+Either of these two discretization methods are used to discretize the
 microstructure.
 
 2-Point Statistics
@@ -57,13 +57,13 @@ n-Point Spatial Correlations
 1-Point Spatial Correlations (or 1-point statistics)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-n-point spatial correlations provide a way rigorously quantify material
-structure using statistics. As an introduction n-point spatial
-correlations, let's first discuss 1-point statistics. 1-point statistics
-are the probability that a specified local state will be found in any
-randomly selected spatial bin in a microstructure [1][2][3]. 1-point
-statistics compute the volume fractions of the local states in the
-microstructure. 1-point statistics are computed as
+N-point spatial correlations provide a way to rigorously quantify
+material structure, using statistics. As an introduction to n-point
+spatial correlations, let's first discuss 1-point statistics. 1-point
+statistics are the probability that a specified local state will be
+found in any randomly selected spatial bin in a microstructure
+[1][2][3]. 1-point statistics compute the volume fractions of the local
+states in the microstructure. 1-point statistics are computed as
 
 .. math::  f[l] = \frac{1}{S} \sum_s m[s,l] 
 
@@ -75,7 +75,7 @@ number of spatial bins in the microstructure and :math:`s` refers to a
 specific spatial bin.
 
 While 1-point statistics provide information on the relative amounts of
-the different local states, it does not provide any information about
+the different local states, they do not provide any information about
 how those local states are spatially arranged in the microstructure.
 Therefore, 1-point statistics are a limited set of metrics to describe
 the structure of materials.
@@ -93,21 +93,21 @@ vector placed randomly in the microstructure and having one end of the
 vector be on one specified local state and the other end on another
 specified local state. This vector could have any length or orientation
 that the discrete microstructure allows. The equation for 2-point
-statistics can found below.
+statistics can be found below.
 
 .. math::  f[r \vert l, l'] = \frac{1}{S} \sum_s m[s, l] m[s + r, l'] 
 
-In this equation $ f[r l, l']$ is the conditional probability of finding
-the local states :math:`l` and :math:`l'` at a distance and orientation
-away from each other defined by the vector :math:`r`. All other
-variables are the same as those in the 1-point statistics equation. In
-the case that we have an eigen microstructure function (it only contains
-values of 0 or 1) and we are using an indicator basis, the the
-:math:`r=0` vector will recover the 1-point statistics.
+In this equation :math:`f[r \vert l, l']` is the conditional probability
+of finding the local states :math:`l` and :math:`l'` at a distance and
+orientation away from each other defined by the vector :math:`r`. All
+other variables are the same as those in the 1-point statistics
+equation. In the case that we have an eigen microstructure function (it
+only contains values of 0 or 1) and we are using an indicator basis, the
+the :math:`r=0` vector will recover the 1-point statistics.
 
 When the 2 local states are the same :math:`l = l'`, it is referred to
-as a autocorrelation. If the 2 local states are not the same it is
-referred to as a cross-correlation.
+as a *autocorrelation*. If the 2 local states are not the same, it is
+referred to as a *cross-correlation*.
 
 Higher Order Spatial Statistics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -116,31 +116,31 @@ Higher order spatial statistics are similar to 2-point statistics, in
 that they can be thought of in terms of conditional probabilities of
 finding specified local states separated by a prescribed set of vectors.
 3-point statistics are the probability of finding three specified local
-states at the ends of a triangle (defined by 2 vectors) placed randomly
+states at the ends of a triangle (defined by 2 vectors), placed randomly
 in the material structure. 4-point statistics describes the probability
-of finding 4 local states at 4 locations (defined using 3 vectors) and
+of finding 4 local states at 4 locations (defined, using 3 vectors) and
 so on.
 
 While higher order statistics are a better metric to quantify the
 material structure, the 2-point statistics can be computed much faster
 than higher order spatial statistics, and still provide information
-about how the local states are distributed. For this reason, only
-2-point statistics are implemented into PyMKS.
+about how the local states are distributed. For this reason, currently
+only 2-point statistics are implemented in PyMKS.
 
 MKS Homogenization
 ------------------
 
-Homogenization can be used to determine effective or homogenized
+*Homogenization* can be used to determine effective or homogenized
 properties a material, and provides a way to multiscale from the bottom
-up. Below is some technical information on the MKS Homogenization work
-flow.
+up. Below is some technical information on the MKS Homogenization
+workflow.
 
 2-Point Statistics
 ~~~~~~~~~~~~~~~~~~
 
 The first step in MKS homogenization is to compute the 2-point
 statistics for each of the microstructures in the calibration dataset.
-For more information about 2-point statistics see the section above.
+For more information about 2-point statistics, see the section above.
 
 Dimensionality Reduction
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -148,14 +148,14 @@ Dimensionality Reduction
 Once we have computed the 2-point statistics for every microstructure in
 our calibration dataset, we need to determine which of these
 microstructure features are most important and need to be pass to the
-higher length scale. We can do this using dimensionality reduction
+higher length scale. We can do this, using dimensionality reduction
 techniques from machine learning.
 
 `PCA <http://en.wikipedia.org/wiki/Principal_component_analysis>`__ is
-the most common the dimensionality reduction technique used in the MKS
-Homogenization work flow, and provides an efficient way to find a small
+the most common dimensionality reduction technique used in the MKS
+Homogenization workflow. PCA provides an efficient way to find a small
 number of microstructure descriptors that capture most of the variance
-in the microstructures.
+in microstructures.
 
 Regression Model
 ~~~~~~~~~~~~~~~~
@@ -166,7 +166,7 @@ space.
 
 Multivariate `Polynomial
 Regression <http://en.wikipedia.org/wiki/Polynomial_regression>`__ has
-been the most common regression technique used to connect the low
+been the most common regression technique, used to connect the low
 dimensional microstructure descriptors to an effective property.
 
 An effective property for a new microstructure is predicted by
@@ -176,38 +176,39 @@ using the regression technique.
 MKS Localization
 ----------------
 
-Localization can be used to determine how an applied boundary condition
-is locally distributed within a microstructure, and provides method to
-multiscale from the top down. Below is some technical information on the
-MKS Localization work flow.
+*Localization* can be used to determine how an applied boundary
+condition is locally distributed within a microstructure, and provides
+method to multiscale from the top down. Below is some technical
+information on the MKS Localization workflow.
 
 Influence Coefficients
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Once the state space is discretized, the relationship between the
 response field :math:`p` and microstructure function :math:`m` can be
-written as,
+written as
 
 .. math::  p\left[s\right] = \sum_{r=0}^{S-1} \sum_{l=0}^{L-1} \alpha\left[l, r\right] m \left[l, s - r\right] + ...
 
-where the :math:`\alpha` are known as the influence coefficients and
+where :math:`\alpha` are known as the influence coefficients and
 describe the relationship between :math:`p` and :math:`m`. The
 localization requires periodic boundary conditions.
 
 Convolution and FFTs
 ~~~~~~~~~~~~~~~~~~~~
 
-The first order influence coefficients in the MKS Localization equation
-can efficiency be found using DFTs and linear regression. The time
-complexity of the convolution is real space is :math:`O(LMN^2)` while
-the same results found using FFTs is :math:`O(LMNlogN)` where :math:`L`
-is the number of local states and :math:`M` is the number of samples.
+The first-order influence coefficients in the MKS Localization equation
+can be efficiently found, using DFTs and linear regression. The time
+complexity of the convolution in real space is :math:`O(LMN^2)`, while
+the same results found, using FFTs, is :math:`O(LMNlogN)`, where
+:math:`L` is the number of local states and :math:`M` is the number of
+samples.
 
-The convolution,
+The convolution
 
 .. math:: \sum_{r=0}^{S-1} \sum_{l=0}^{L-1} \alpha[l, r] m[l, s - r] 
 
-can be deconvolved in Fourier space using the `circular convolution
+can be deconvolved in Fourier space, using the `circular convolution
 theorem <http://en.wikipedia.org/wiki/Discrete_Fourier_transform#Circular_convolution_theorem_and_cross-correlation_theorem>`__.
 
 If we write
@@ -224,5 +225,5 @@ find the :math:`\beta` terms.
 More Information about MKS
 --------------------------
 
-More information about MKS work-flows can be found on `MINED research
+More information about MKS workflows can be found on `MINED research
 group's webite <http://mined.gatech.edu>`__

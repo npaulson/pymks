@@ -1,0 +1,390 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Linear Elasticity in 3D for Polycrystalline Microstructures &mdash; PyMKS</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/cosmo/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pymks.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="../_static/pymks_logo.ico"/>
+    <link rel="top" title="PyMKS" href="../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html"><img src="../_static/pymks_logo.png">
+          PyMKS</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="INSTALLATION.html">Installation</a></li>
+                <li><a href="../EXAMPLES.html">Examples</a></li>
+                <li><a href="../API.html">API</a></li>
+                <li><a href="https://github.com/materialsinnovation/pymks/">Github</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">More <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../THEORY.html">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="derivation.html">Derivation of MKS Localization Equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tech_overview.html">Technical Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CREDITS.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CITATION.html">Citing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="REQUIREMENTS.html">Requirements</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="linear-elasticity-in-3d-for-polycrystalline-microstructures">
+<h1>Linear Elasticity in 3D for Polycrystalline Microstructures<a class="headerlink" href="#linear-elasticity-in-3d-for-polycrystalline-microstructures" title="Permalink to this headline">¶</a></h1>
+<p>Authors: Noah Paulson, Andrew Medford, David Brough</p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This example demonstrates the use of MKS to predict strain fields in a
+polycrystalline sample. The Generalized Spherical Harmonic (GSH) basis
+is introduced and used for a material with hexagonal crystal symmetry.
+The effect of different levels of truncation in the GSH basis functions
+are examined, as well as the effect of selecting an incorrect crystal
+symmetry.</p>
+</div>
+<div class="section" id="modeling-with-mks">
+<h2>Modeling with MKS<a class="headerlink" href="#modeling-with-mks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="obtaining-data-for-mks-calibration-and-validation">
+<h3>Obtaining Data for MKS Calibration and Validation<a class="headerlink" href="#obtaining-data-for-mks-calibration-and-validation" title="Permalink to this headline">¶</a></h3>
+<div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+%load_ext autoreload
+%autoreload 2
+
+import numpy as np
+import matplotlib.pyplot as plt
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload
+</pre></div>
+</div>
+<p>To start off we need to obtain data from somewhere. In order to make
+things easy the pymks_share package is used to import data.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks_share</span> <span class="kn">import</span> <span class="n">DataManager</span>
+
+
+<span class="n">manager</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">(</span><span class="s">&#39;pymks.me.gatech.edu&#39;</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span>  <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s">&#39;random hexagonal orientations&#39;</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The X variable contains a set of 3 Bunge Euler angles at each spatial
+point, corresponding to the crystal orientation. The y variable is the
+&#8216;11&#8217; component of the strain tensor as obtained by a finite element
+simulation (<span class="math">\(\epsilon_{xx}\)</span>). We can visualize this by plotting a
+slice of a 3-D microstructure (<span class="math">\(\phi_1\)</span> angle only) and its
+corresponding strain response.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_microstructure_strain</span>
+
+
+<span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">draw_microstructure_strain</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/localization_elasticity_polycrystal_hex_3D_5_0.png" src="../_images/localization_elasticity_polycrystal_hex_3D_5_0.png" />
+<p>This may not mean much, but trust us that the <span class="math">\(\epsilon_{xx}\)</span>
+field is rather expensive to calculate. In principle we could visualize
+this in 3 dimensions using a package like mayavi, but for this tutorial
+we will just look at a single slice down through the center.</p>
+<p>In order to ensure that our models are valid, we need to split the data
+into &#8220;calibration&#8221; and &#8220;validation&#8221; sets. The idea here is that we train
+the model on a subset of N_cal datasets, then test the model on the
+rest. This is a crude form of &#8220;cross validation&#8221;, and will give us
+confidence that we have not over-fit the model.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">N_cal</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">X_cal</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">N_cal</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+<span class="n">X_val</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">N_cal</span><span class="p">:,</span> <span class="o">...</span><span class="p">]</span>
+<span class="n">y_cal</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">N_cal</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+<span class="n">y_val</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">N_cal</span><span class="p">:,</span> <span class="o">...</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">X_cal</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">X_val</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can see that we have 40 calibration sets, and 10 validation sets.
+Ideally we would have a lot more data to validate the model, but at
+least the 10 should give us an idea of how transferable the model is.</p>
+<p>Next we need to set up the MKS &#8220;localization model&#8221; which will be used
+to compute all the parameters we need for the machine to &#8220;learn&#8221; how the
+input microstructure field is related to the output strain field. In
+order to capture the orientation dependence we are going to use a basis
+set of &#8220;generalized spherical harmonics&#8221;. A quick Google search of
+&#8220;generalized spherical harmonics&#8221; will tell you that these are pretty
+trippy functions (nearly all the results are from technical journals!).</p>
+<p>In the GSH basis n_states refers to the set of basis functions we want
+to work with. In this example we want to use the first 5 basis
+functions, so we assign a list containing indices 0-5 to n_states (we
+could alternately pass the integer 5 to n_states and PyMKS would
+automatically know to use the first 5 basis functions!). If we only
+wanted the 5th basis function we would simply pass n_states a list with
+only one entry: n_states=[5].</p>
+<p>We also need to specify the symmetry we want (and the symmetric domain)
+of our basis function. PyMKS makes this very easy; we can simply give
+domain a string specifying the desired crystal symmetry. For example,
+passing &#8216;hexagonal&#8217; specifies a hexagonal crystal symmetry, while
+passing &#8216;cubic&#8217; specifies cubic symmetry. If we pass &#8220;triclinic&#8221;, or
+don&#8217;t define the domain at all the non-symmetrized version of the GSH
+basis is used.</p>
+</div>
+<div class="section" id="calibrating-first-order-influence-coefficients">
+<h3>Calibrating First Order Influence Coefficients<a class="headerlink" href="#calibrating-first-order-influence-coefficients" title="Permalink to this headline">¶</a></h3>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">MKSLocalizationModel</span>
+<span class="kn">from</span> <span class="nn">pymks.bases</span> <span class="kn">import</span> <span class="n">GSHBasis</span>
+
+
+<span class="n">gsh_hex_basis</span> <span class="o">=</span> <span class="n">GSHBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="n">domain</span><span class="o">=</span><span class="s">&quot;hexagonal&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we have selected the basis functions, perhaps we want to know more
+about what we&#8217;ve selected. Let&#8217;s ask for the l, m and n indices of the
+GSH basis functions we&#8217;ve selected (Note that this is an advanced
+feature and may only be useful for the most seasoned materials
+scientists!).</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">gsh_hex_basis</span><span class="o">.</span><span class="n">basis_indices</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>[[ 0  0  1]
+ [ 2 -2  1]
+ [ 2 -1  1]
+ [ 2  0  1]
+ [ 2  1  1]
+ [ 2  2  1]]
+</pre></div>
+</div>
+<p>Now all of the complexity of the GSH basis set will be taken care of by
+pyMKS from here on out. We just need to fit the model:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">model</span> <span class="o">=</span> <span class="n">MKSLocalizationModel</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">gsh_hex_basis</span><span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_cal</span><span class="p">,</span> <span class="n">y_cal</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and then we can look at the &#8220;influence coefficients&#8221; which capture the
+connection between the input and output fields. Notice that there are 6
+(complex valued) influence coefficients, because we had 6 &#8220;states&#8221; in
+the basis set. In other words, there are 2 fields of influence
+coefficients for each basis set. Again, we are only looking at a slice
+through the center in order to avoid the complexities of visualizing 3D
+data.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_coeff</span>
+
+
+<span class="n">coef_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">coef_</span>
+<span class="n">draw_coeff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">coef_</span><span class="p">[:,</span><span class="n">center</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+<img alt="../_images/localization_elasticity_polycrystal_hex_3D_15_0.png" src="../_images/localization_elasticity_polycrystal_hex_3D_15_0.png" />
+<p>we also want to plot the imaginary components of the influence
+coefficients, you can&#8217;t forget about these when using the GSH basis!</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">draw_coeff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">coef_</span><span class="p">[:,</span><span class="n">center</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+<img alt="../_images/localization_elasticity_polycrystal_hex_3D_17_0.png" src="../_images/localization_elasticity_polycrystal_hex_3D_17_0.png" />
+<p>We can see that the coefficients for some basis sets have significant
+values, while others are mostly zero. This means that in principle we
+could probably describe the system with fewer basis states. We also
+notice that when there are non-zero components, they are typically
+centered near zero. This is intuitive, since it tells us that the
+elastic response of the material is local, as we would expect (and as
+can be seen in the other elasticity tutorials).</p>
+</div>
+</div>
+<div class="section" id="prediction-of-strain-fields-for-validation-microstructures">
+<h2>Prediction of Strain Fields for Validation Microstructures<a class="headerlink" href="#prediction-of-strain-fields-for-validation-microstructures" title="Permalink to this headline">¶</a></h2>
+<p>Now we want to use these coefficients to predict the response of the
+validation set, and ensure that the results are in line with the outputs
+of the full simulation.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">y_predict</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>First let&#8217;s simply compare slices of the <span class="math">\(\epsilon_{xx}\)</span> strain
+fields for one of our validation microstructures</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_strains_compare</span>
+
+
+<span class="n">draw_strains_compare</span><span class="p">(</span><span class="n">y_val</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">],</span> <span class="n">y_predict</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/localization_elasticity_polycrystal_hex_3D_21_0.png" src="../_images/localization_elasticity_polycrystal_hex_3D_21_0.png" />
+<p>So it looks like the MKS is working pretty well in this case, but it is
+worth seeing if we can do even better.</p>
+<div class="section" id="improving-the-mks-results">
+<h3>Improving the MKS Results<a class="headerlink" href="#improving-the-mks-results" title="Permalink to this headline">¶</a></h3>
+<p>The next thing to try is to include even more basis functions:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">gsh_hex_basis</span> <span class="o">=</span> <span class="n">GSHBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="n">domain</span><span class="o">=</span><span class="s">&#39;hexagonal&#39;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">MKSLocalizationModel</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">gsh_hex_basis</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_cal</span><span class="p">,</span> <span class="n">y_cal</span><span class="p">)</span>
+<span class="n">y_predict</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span>
+<span class="n">draw_strains_compare</span><span class="p">(</span><span class="n">y_val</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">],</span> <span class="n">y_predict</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/localization_elasticity_polycrystal_hex_3D_23_0.png" src="../_images/localization_elasticity_polycrystal_hex_3D_23_0.png" />
+<p>Clearly now the results are very good. You might ask if we have too few
+or too many basis functions? First, let&#8217;s look at the influence
+coefficients and what is going on.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_coeff</span>
+
+
+<span class="n">coeff</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">coef_</span>
+<span class="n">draw_coeff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">coeff</span><span class="p">[:,</span><span class="n">center</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+<img alt="../_images/localization_elasticity_polycrystal_hex_3D_25_0.png" src="../_images/localization_elasticity_polycrystal_hex_3D_25_0.png" />
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">draw_coeff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">coeff</span><span class="p">[:,</span><span class="n">center</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+<img alt="../_images/localization_elasticity_polycrystal_hex_3D_26_0.png" src="../_images/localization_elasticity_polycrystal_hex_3D_26_0.png" />
+<p>If we look carefully at the influence coefficients we notice that they
+appear to be identically zero for the 15th basis function and beyond. If
+we wanted to be thorough we would want to check the influence
+coefficients for even more basis functions, but for the purposes of this
+example we can be satisfied that we only need the first 15.</p>
+<p>Let&#8217;s redo the study once more with only the first 15 basis functions
+and hexagonal symmetry.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">gsh_hex_basis</span> <span class="o">=</span> <span class="n">GSHBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="n">domain</span><span class="o">=</span><span class="s">&#39;hexagonal&#39;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">MKSLocalizationModel</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">gsh_hex_basis</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_cal</span><span class="p">,</span> <span class="n">y_cal</span><span class="p">)</span>
+<span class="n">y_predict</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span>
+<span class="n">draw_strains_compare</span><span class="p">(</span><span class="n">y_val</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">],</span> <span class="n">y_predict</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/localization_elasticity_polycrystal_hex_3D_28_0.png" src="../_images/localization_elasticity_polycrystal_hex_3D_28_0.png" />
+<p>As we expected the results look great, probably even better than the
+previous iteration.</p>
+</div>
+<div class="section" id="selection-of-the-wrong-crystal-symmetry">
+<h3>Selection of the Wrong Crystal Symmetry!<a class="headerlink" href="#selection-of-the-wrong-crystal-symmetry" title="Permalink to this headline">¶</a></h3>
+<p>Finally let&#8217;s take a look at what happens when we choose the wrong
+crystal symmetry.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">gsh_cube_basis</span> <span class="o">=</span> <span class="n">GSHBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="n">domain</span><span class="o">=</span><span class="s">&#39;cubic&#39;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">MKSLocalizationModel</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">gsh_cube_basis</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_cal</span><span class="p">,</span> <span class="n">y_cal</span><span class="p">)</span>
+<span class="n">y_predict</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span>
+<span class="n">draw_strains_compare</span><span class="p">(</span><span class="n">y_val</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">],</span> <span class="n">y_predict</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/localization_elasticity_polycrystal_hex_3D_30_0.png" src="../_images/localization_elasticity_polycrystal_hex_3D_30_0.png" />
+<p>As you might expect, when the wrong gsh basis functions are used for our
+problem the results are pretty bad!</p>
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>[1] Binci M., Fullwood D., Kalidindi S.R., <em>A new spectral framework for
+establishing localization relationships for elastic behav ior of
+composites and their calibration to finite-element models</em>. Acta
+Materialia, 2008. 56 (10): p. 2272-2282
+<a class="reference external" href="http://dx.doi.org/10.1016/j.actamat.2008.01.017">doi:10.1016/j.actamat.2008.01.017</a>.</p>
+<p>[2] Landi, G., S.R. Niezgoda, S.R. Kalidindi, <em>Multi-scale modeling of
+elastic response of three-dimensional voxel-based microstructure
+datasets using novel DFT-based knowledge systems</em>. Acta Materialia,
+2009. 58 (7): p. 2716-2725
+<a class="reference external" href="http://dx.doi.org/10.1016/j.actamat.2010.01.007">doi:10.1016/j.actamat.2010.01.007</a>.</p>
+<p>[3] Yabansu, Y.C., Patel, D.K., Kalidindi, S.R. &#8220;Calibrated localization
+relationships for elastic response of polycrystalline aggregates.&#8221; Acta
+Materialia 81 (2014): 151-160.
+<a class="reference external" href="http://dx.doi.org/10.1016/j.actamat.2014.08.022">doi:10.1016/j.actamat.2014.08.022</a>.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
