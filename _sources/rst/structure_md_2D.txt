@@ -67,6 +67,8 @@ from a Georgia Tech server.
 
 .. code:: python
 
+    import pymks
+    
     %matplotlib inline
     %load_ext autoreload
     %autoreload 2
@@ -212,7 +214,7 @@ parameters to see if PC1 (or any other principal component) relates.
     
     labels = ['Component 1', 'Component 2',
               'Component 3', 'Component 4', 'Component 5']
-    draw_evolution(np.array_split(results, 5), labels)
+    draw_evolution(np.array_split(results, 5), labels, legend_outside=True)
 
 
 

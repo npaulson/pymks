@@ -11,12 +11,11 @@ section <THEORY.html>`__.
 
 .. code:: python
 
+    import pymks
+    
     %matplotlib inline
     %load_ext autoreload
     %autoreload 2
-    
-    import numpy as np
-    import matplotlib.pyplot as plt
 
 
 Quantify Microstructures using 2-Point Statistics
@@ -27,10 +26,10 @@ Lets make two dual-phase microstructures with different morphologies.
 .. code:: python
 
     from pymks.datasets import make_microstructure
-    
+    import numpy as np
     
     X_1 = make_microstructure(n_samples=1, grain_size=(25, 25))
-    X_2 = make_microstructure(n_samples=1, grain_size=(15, 95))
+    X_2 = make_microstructure(n_samples=1, grain_size=(95, 15))
     
     X = np.concatenate((X_1, X_2))
 

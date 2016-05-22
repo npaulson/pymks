@@ -27,9 +27,18 @@ First we are going to import the image dataset.
 
 .. code:: python
 
+    import pymks
+    
     %matplotlib inline
     %load_ext autoreload
     %autoreload 2
+
+
+
+.. parsed-literal::
+
+    The autoreload extension is already loaded. To reload it, use:
+      %reload_ext autoreload
 
 
 .. code:: python
@@ -163,9 +172,9 @@ We will plot the 2-point statistics below.
 .. parsed-literal::
 
     Volume fraction of black phase
-    0.394543879546
+    0.394543892707
     Volume fraction of white phase
-    0.605456087097
+    0.605456107293
 
 
 
@@ -175,9 +184,9 @@ We will plot the 2-point statistics below.
 .. parsed-literal::
 
     Volume fraction of black phase
-    0.282115929406
+    0.282115938816
     Volume fraction of white phase
-    0.717884037238
+    0.717884061184
 
 
 
@@ -187,9 +196,9 @@ We will plot the 2-point statistics below.
 .. parsed-literal::
 
     Volume fraction of black phase
-    0.202374743859
+    0.20237475061
     Volume fraction of white phase
-    0.797625222784
+    0.79762524939
 
 
 
@@ -199,9 +208,9 @@ We will plot the 2-point statistics below.
 .. parsed-literal::
 
     Volume fraction of black phase
-    0.199789397016
+    0.19978940368
     Volume fraction of white phase
-    0.800210569628
+    0.80021059632
 
 
 
@@ -211,9 +220,9 @@ We will plot the 2-point statistics below.
 .. parsed-literal::
 
     Volume fraction of black phase
-    0.174321098153
+    0.174321103968
     Volume fraction of white phase
-    0.82567886849
+    0.825678896032
 
 
 The above plots indicate the states on which the 2-point statistics have
@@ -309,9 +318,9 @@ statistics. Our new images are going to be 300x300 pixels.
 .. parsed-literal::
 
     Volume fraction of black phase
-    0.396191999
+    0.396192
     Volume fraction of white phase
-    0.603807998476
+    0.603808
 
 
 
@@ -321,9 +330,9 @@ statistics. Our new images are going to be 300x300 pixels.
 .. parsed-literal::
 
     Volume fraction of black phase
-    0.287407999274
+    0.287408
     Volume fraction of white phase
-    0.712591998201
+    0.712592
 
 
 
@@ -333,9 +342,9 @@ statistics. Our new images are going to be 300x300 pixels.
 .. parsed-literal::
 
     Volume fraction of black phase
-    0.20191999949
+    0.20192
     Volume fraction of white phase
-    0.798079997985
+    0.79808
 
 
 
@@ -345,9 +354,9 @@ statistics. Our new images are going to be 300x300 pixels.
 .. parsed-literal::
 
     Volume fraction of black phase
-    0.207167999477
+    0.207168
     Volume fraction of white phase
-    0.792831997998
+    0.792832
 
 
 
@@ -357,9 +366,9 @@ statistics. Our new images are going to be 300x300 pixels.
 .. parsed-literal::
 
     Volume fraction of black phase
-    0.168799999574
+    0.1688
     Volume fraction of white phase
-    0.831199997901
+    0.8312
 
 
 We have computed the 2-point statistics for the cropped images. The

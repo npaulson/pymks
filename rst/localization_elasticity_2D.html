@@ -10,14 +10,14 @@
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/cosmo/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.3.6/cosmo/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pymks.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.3.0',
+        VERSION:     '0.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
     <link rel="shortcut icon" href="../_static/pymks_logo.ico"/>
     <link rel="top" title="PyMKS" href="../index.html" />
@@ -53,7 +53,7 @@
         </button>
         <a class="navbar-brand" href="../index.html"><img src="../_static/pymks_logo.png">
           PyMKS</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.3.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -102,7 +102,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 content">
       
   <div class="section" id="linear-elasticity-in-2d">
 <h1>Linear Elasticity in 2D<a class="headerlink" href="#linear-elasticity-in-2d" title="Permalink to this headline">¶</a></h1>
@@ -189,7 +189,9 @@ influence coefficients [2].</p>
 calibrate the first order influence coefficients for a two-phase
 microstructure. The <code class="docutils literal"><span class="pre">make_delta_microstructure</span></code> function uses SfePy to
 generate the data</p>
-<div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+<div class="code python highlight-python"><div class="highlight"><pre><span></span>import pymks
+
+%matplotlib inline
 %load_ext autoreload
 %autoreload 2
 
@@ -197,7 +199,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 </pre></div>
 </div>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">n</span> <span class="o">=</span> <span class="mi">21</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">21</span>
 
 <span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_microstructures</span>
 <span class="kn">from</span> <span class="nn">pymks.datasets</span> <span class="kn">import</span> <span class="n">make_delta_microstructures</span>
@@ -229,7 +231,7 @@ the <code class="docutils literal"><span class="pre">make_elasticFEstrain_delta<
 <code class="docutils literal"><span class="pre">make_elasticFEstrain_delta</span></code> does not take a number of samples
 argument as the number of samples to calibrate the MKS is fixed by the
 number of phases.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.datasets</span> <span class="kn">import</span> <span class="n">make_elastic_FE_strain_delta</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.datasets</span> <span class="kn">import</span> <span class="n">make_elastic_FE_strain_delta</span>
 <span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_microstructure_strain</span>
 
 <span class="n">elastic_modulus</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
@@ -244,7 +246,7 @@ number of phases.</p>
 </div>
 <p>Let&#8217;s take a look at one of the delta microstructures and the
 <span class="math">\(\varepsilon_{xx}\)</span> strain field.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">draw_microstructure_strain</span><span class="p">(</span><span class="n">X_delta</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y_delta</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">draw_microstructure_strain</span><span class="p">(</span><span class="n">X_delta</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y_delta</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 <img alt="../_images/localization_elasticity_2D_9_0.png" src="../_images/localization_elasticity_2D_9_0.png" />
@@ -257,7 +259,7 @@ can calibrate the influence coefficients by creating an instance of the
 an instance of MKSLocalizationModel with the number of states
 <code class="docutils literal"><span class="pre">n_states</span></code> equal to 2. Then, pass the delta microstructures and their
 strain fields to the <code class="docutils literal"><span class="pre">fit</span></code> method.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">MKSLocalizationModel</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">MKSLocalizationModel</span>
 <span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">PrimitiveBasis</span>
 
 <span class="n">p_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
@@ -266,12 +268,12 @@ strain fields to the <code class="docutils literal"><span class="pre">fit</span>
 </div>
 <p>Now, pass the delta microstructures and their strain fields into the
 <code class="docutils literal"><span class="pre">fit</span></code> method to calibrate the first-order influence coefficients.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_delta</span><span class="p">,</span> <span class="n">y_delta</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_delta</span><span class="p">,</span> <span class="n">y_delta</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>That&#8217;s it, the influence coefficient have be calibrated. Let&#8217;s take a
 look at them.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_coeff</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_coeff</span>
 
 <span class="n">draw_coeff</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
 </pre></div>
@@ -293,7 +295,7 @@ finite element simulation.</p>
 <p>The <code class="docutils literal"><span class="pre">make_elasticFEstrain_random</span></code> function from <code class="docutils literal"><span class="pre">pymks.datasets</span></code> is
 an easy way to generate a random microstructure and its strain field
 results from finite element analysis.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.datasets</span> <span class="kn">import</span> <span class="n">make_elastic_FE_strain_random</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.datasets</span> <span class="kn">import</span> <span class="n">make_elastic_FE_strain_random</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">99</span><span class="p">)</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">strain</span> <span class="o">=</span> <span class="n">make_elastic_FE_strain_random</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">elastic_modulus</span><span class="o">=</span><span class="n">elastic_modulus</span><span class="p">,</span>
@@ -308,21 +310,21 @@ reproduce the simulation with the same boundary conditions that they
 were calibrated with.</strong></p>
 <p>Now to get the strain field from the <code class="docutils literal"><span class="pre">MKSLocalizationModel</span></code> just pass
 the same microstructure to the <code class="docutils literal"><span class="pre">predict</span></code> method.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">strain_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">strain_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Finally let&#8217;s compare the results from finite element simulation and the
 MKS model.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_strains_compare</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_strains_compare</span>
 
 <span class="n">draw_strains_compare</span><span class="p">(</span><span class="n">strain</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">strain_pred</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 <img alt="../_images/localization_elasticity_2D_22_0.png" src="../_images/localization_elasticity_2D_22_0.png" />
 <p>Lastly, let&#8217;s look at the difference between the two strain fields.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_differences</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_differences</span>
 
-<span class="n">draw_differences</span><span class="p">([</span><span class="n">strain</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">strain_pred</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="s">&#39;Finite Element - MKS&#39;</span><span class="p">])</span>
+<span class="n">draw_differences</span><span class="p">([</span><span class="n">strain</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">strain_pred</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;Finite Element - MKS&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <img alt="../_images/localization_elasticity_2D_24_0.png" src="../_images/localization_elasticity_2D_24_0.png" />
@@ -337,7 +339,7 @@ microstructure can be used to predict the strain field on a larger
 microstructure though spectral interpolation [3], but accuracy of the
 MKS model drops slightly. To demonstrate how this is done, let&#8217;s
 generate a new larger random microstructure and its strain field.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">m</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">n</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">n</span>
 <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">size</span>
 
@@ -348,7 +350,7 @@ generate a new larger random microstructure and its strain field.</p>
 <span class="n">draw_microstructure_strain</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="n">strain</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mi">63</span><span class="p">,</span> <span class="mi">63</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">63</span><span class="p">,</span> <span class="mi">63</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/localization_elasticity_2D_27_1.png" src="../_images/localization_elasticity_2D_27_1.png" />
@@ -356,11 +358,11 @@ generate a new larger random microstructure and its strain field.</p>
 resized to match the shape of the new larger microstructure that we want
 to compute the strain field for. This can be done by passing the shape
 of the new larger microstructure into the <code class="docutils literal"><span class="pre">resize_coeff</span></code> method.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">model</span><span class="o">.</span><span class="n">resize_coeff</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">resize_coeff</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Let&#8217;s now take a look that ther resized influence coefficients.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">draw_coeff</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">draw_coeff</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/localization_elasticity_2D_31_0.png" src="../_images/localization_elasticity_2D_31_0.png" />
@@ -369,14 +371,14 @@ our original <span class="math">\(n\)</span> by <span class="math">\(n\)</span> 
 calibrated on, but they can now be used on the <span class="math">\(m\)</span> by <span class="math">\(m\)</span>
 microstructures. Just like before, just pass the microstructure as the
 argument of the <code class="docutils literal"><span class="pre">predict</span></code> method to get the strain field.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">strain_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">strain_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
 <span class="n">draw_strains_compare</span><span class="p">(</span><span class="n">strain</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">strain_pred</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 <img alt="../_images/localization_elasticity_2D_33_0.png" src="../_images/localization_elasticity_2D_33_0.png" />
 <p>Again, let&#8217;s look at the difference between the two strain fields.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">draw_differences</span><span class="p">([</span><span class="n">strain</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">strain_pred</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="s">&#39;Finite Element - MKS&#39;</span><span class="p">])</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">draw_differences</span><span class="p">([</span><span class="n">strain</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">strain_pred</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;Finite Element - MKS&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <img alt="../_images/localization_elasticity_2D_35_0.png" src="../_images/localization_elasticity_2D_35_0.png" />
@@ -421,7 +423,7 @@ simulations using discrete Fourier transforms. Acta Materialia 57 (2009)
       
     </p>
     <p>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
     </p>
   </div>
 </footer>

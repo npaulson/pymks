@@ -43,6 +43,8 @@ given by:
 
 .. code:: python
 
+    import pymks
+    
     %matplotlib inline
     %load_ext autoreload
     %autoreload 2
@@ -50,6 +52,13 @@ given by:
     import numpy as np
     import matplotlib.pyplot as plt
     import timeit as tm
+
+
+
+.. parsed-literal::
+
+    The autoreload extension is already loaded. To reload it, use:
+      %reload_ext autoreload
 
 
 Modeling with MKS
@@ -137,7 +146,7 @@ the ``make_elasticFEstrain_delta`` function.
 
 .. parsed-literal::
 
-    Elapsed Time 156.211350918 Seconds
+    Elapsed Time 118.738605976 Seconds
 
 
 Let's take a look at one of the delta microstructures and the
@@ -234,7 +243,7 @@ results from finite element analysis.
 
 .. parsed-literal::
 
-    Elapsed Time 78.8157169819 Seconds
+    Elapsed Time 53.8849179745 Seconds
 
 
 
@@ -258,7 +267,7 @@ the same microstructure to the ``predict`` method.
 
 .. parsed-literal::
 
-    Elapsed Time 0.33176612854 Seconds
+    Elapsed Time 0.00195503234863 Seconds
 
 
 Finally let's compare the results from finite element simulation and the
@@ -343,7 +352,7 @@ argument of the ``predict`` method to get the strain field.
 
 .. parsed-literal::
 
-    Elapsed Time 0.0531430244446 Seconds
+    Elapsed Time 0.00978684425354 Seconds
 
 
 

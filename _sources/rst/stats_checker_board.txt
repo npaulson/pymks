@@ -20,6 +20,8 @@ section <THEORY.html>`__.
 
 .. code:: python
 
+    import pymks
+    
     %matplotlib inline
     %load_ext autoreload
     %autoreload 2
@@ -133,8 +135,8 @@ Let's double check that both the phases have a volume fraction of 0.5.
 
 .. parsed-literal::
 
-    Volume fraction of black phase 0.500000006869
-    Volume fraction of white phase 0.500000006869
+    Volume fraction of black phase 0.5
+    Volume fraction of white phase 0.5
 
 
 We can compute the cross-correlation of the microstructure function,
@@ -179,7 +181,7 @@ Let's check that it is zero.
 
 .. parsed-literal::
 
-    Center value 3.74121776119e-17
+    Center value 3.74121770979e-17
 
 
 Compute Non-Periodic 2-Point Statistics

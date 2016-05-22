@@ -10,14 +10,14 @@
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/cosmo/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.3.6/cosmo/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pymks.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.3.0',
+        VERSION:     '0.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
     <link rel="shortcut icon" href="../_static/pymks_logo.ico"/>
     <link rel="top" title="PyMKS" href="../index.html" />
@@ -53,7 +53,7 @@
         </button>
         <a class="navbar-brand" href="../index.html"><img src="../_static/pymks_logo.png">
           PyMKS</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.3.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -102,7 +102,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 content">
       
   <div class="section" id="administata">
 <h1>Administata<a class="headerlink" href="#administata" title="Permalink to this headline">¶</a></h1>
@@ -133,7 +133,7 @@ test coverage</li>
 styling</a>.</li>
 </ul>
 <p>Steps to install</p>
-<div class="highlight-python"><div class="highlight"><pre>$ pip install sphinx
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ pip install sphinx
 $ pip install sphinx_bootstrap_theme
 $ pip install sphinxcontrib-napoleon
 $ cd doc/
@@ -154,22 +154,55 @@ $ make
 <div class="section" id="commit-messages">
 <h2>Commit Messages<a class="headerlink" href="#commit-messages" title="Permalink to this headline">¶</a></h2>
 <p>Run tests before comitting. Use the following template:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># Header, 50 characters or less</span>
-<span class="c">#</span>
-<span class="c"># Links to tickets, fixes etc</span>
-<span class="c">#</span>
-<span class="c"># Main Message</span>
-<span class="c">#</span>
-<span class="c"># List of other changes</span>
-<span class="c">#</span>
-<span class="c"># Answer the following questions:</span>
-<span class="c">#</span>
-<span class="c">#   * Why is this change necessary?</span>
-<span class="c">#</span>
-<span class="c">#   * How does it address the issue?</span>
-<span class="c">#</span>
-<span class="c">#   * What side effects does this change have?</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Header, 50 characters or less</span>
+<span class="c1">#</span>
+<span class="c1"># Links to tickets, fixes etc</span>
+<span class="c1">#</span>
+<span class="c1"># Main Message</span>
+<span class="c1">#</span>
+<span class="c1"># List of other changes</span>
+<span class="c1">#</span>
+<span class="c1"># Answer the following questions:</span>
+<span class="c1">#</span>
+<span class="c1">#   * Why is this change necessary?</span>
+<span class="c1">#</span>
+<span class="c1">#   * How does it address the issue?</span>
+<span class="c1">#</span>
+<span class="c1">#   * What side effects does this change have?</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="docker">
+<h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="Dockerfile">Dockerfile</a> is for Binder, but can be used locally.
+To install Docker go to <a class="reference external" href="https://docs.docker.com/engine/installation/">https://docs.docker.com/engine/installation/</a> and
+install for your OS. Start up the deamon.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ sudo service docker run
+</pre></div>
+</div>
+<p>To run this PyMKS instance first pull the instance from Dockerhub</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ docker pull docker.io/wd15/pymks
+</pre></div>
+</div>
+<p>and then run the instance with</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ docker run -i -p 8888:8888 -t wd15/pymks:latest
+</pre></div>
+</div>
+<p>and then launch the notebook server</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ ipython notebook --no-browser
+</pre></div>
+</div>
+<p>and view the notebooks in the browser <a class="reference external" href="http://localhost:8888">http://localhost:8888</a>.</p>
+<div class="section" id="build-the-docker-instance">
+<h3>Build the Docker instance<a class="headerlink" href="#build-the-docker-instance" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ docker build --no-cache -t wd15/pymks:latest .
+</pre></div>
+</div>
+<p>in the base PyMKS directory. To push the instance use</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ docker login
+$ docker push docker.io/wd15/pymks:latest
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -186,7 +219,7 @@ $ make
       
     </p>
     <p>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
     </p>
   </div>
 </footer>

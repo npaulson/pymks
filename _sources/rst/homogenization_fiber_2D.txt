@@ -26,6 +26,8 @@ pymks.
 
 .. code:: python
 
+    import pymks
+    
     %matplotlib inline
     %load_ext autoreload
     %autoreload 2
@@ -101,13 +103,13 @@ Creating the Model
 ------------------
 
 | Next we are going to initiate the model. The MKSHomogenizationModel
-takes in microstructures and runs two-point statistics on them to get a
-statistical representation of the microstructures. An expalnation of the
-use of two-point statistics can be found in the `Checkerboard
-Microstructure
-Example <http://materialsinnovation.github.io/pymks/rst/checker_board.html>`__.
-Then the model uses PCA and regression models to create a linkage
-between the calcualted properties and structures.
+  takes in microstructures and runs two-point statistics on them to get
+  a statistical representation of the microstructures. An expalnation of
+  the use of two-point statistics can be found in the `Checkerboard
+  Microstructure
+  Example <http://materialsinnovation.github.io/pymks/rst/checker_board.html>`__.
+  Then the model uses PCA and regression models to create a linkage
+  between the calcualted properties and structures.
 | Here we simply initiate the model.
 
 .. code:: python
@@ -161,9 +163,9 @@ Let's take a look at the results.
 
 .. parsed-literal::
 
-     Order of Polynomial 3
+    Order of Polynomial 3
     Number of Components 5
-    R-squared Value 0.894170873165
+    R-squared Value 0.863487103782
 
 
 .. code:: python

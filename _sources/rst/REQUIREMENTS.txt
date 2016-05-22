@@ -32,4 +32,3 @@ Packages Required to Run Tests and Examples
 -  sympy==0.7.6
 -  tables==3.1.1
 -  tornado==4.2
-

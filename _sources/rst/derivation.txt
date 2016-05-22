@@ -188,3 +188,4 @@ Sensitive Design for Performance Optimization.*
 [3] David T. Fullwood, Brent L.Adams, Surya Kalidindi. *A strong
 contrast homogenization formulation for multi-phase anisotropic
 materials.*
+

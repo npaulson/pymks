@@ -28,6 +28,8 @@ details.
 
 .. code:: python
 
+    import pymks
+    
     %matplotlib inline
     %load_ext autoreload
     %autoreload 2
@@ -178,13 +180,12 @@ overfit the data.
 .. parsed-literal::
 
     GridSearchCV(cv=5, error_score='raise',
-           estimator=MKSLocalizationModel(basis=<pymks.bases.primitive.PrimitiveBasis object at 0x7f183c3dd950>,
+           estimator=MKSLocalizationModel(basis=<pymks.bases.primitive.PrimitiveBasis object at 0x7f2809547990>,
                lstsq_rcond=2.2204460492503131e-12, n_jobs=None,
                n_states=array([0, 1])),
-           fit_params={'size': (41, 41)}, iid=True, loss_func=None, n_jobs=1,
+           fit_params={'size': (41, 41)}, iid=True, n_jobs=1,
            param_grid={'n_states': array([ 2,  3,  4,  5,  6,  7,  8,  9, 10])},
-           pre_dispatch='2*n_jobs', refit=True, score_func=None, scoring=None,
-           verbose=0)
+           pre_dispatch='2*n_jobs', refit=True, scoring=None, verbose=0)
 
 
 
@@ -197,7 +198,7 @@ overfit the data.
 
 .. parsed-literal::
 
-    MKSLocalizationModel(basis=<pymks.bases.primitive.PrimitiveBasis object at 0x7f183c46dc50>,
+    MKSLocalizationModel(basis=<pymks.bases.primitive.PrimitiveBasis object at 0x7f280cbca850>,
                lstsq_rcond=2.2204460492503131e-12, n_jobs=None, n_states=10)
     0.99999908222
 

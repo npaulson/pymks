@@ -10,14 +10,14 @@
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/cosmo/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.3.6/cosmo/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pymks.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.3.0',
+        VERSION:     '0.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
     <link rel="shortcut icon" href="../_static/pymks_logo.ico"/>
     <link rel="top" title="PyMKS" href="../index.html" />
@@ -53,7 +53,7 @@
         </button>
         <a class="navbar-brand" href="../index.html"><img src="../_static/pymks_logo.png">
           PyMKS</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.3.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -102,7 +102,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 content">
       
   <div class="section" id="phase-transition-in-molecular-dynamics-simulation">
 <h1>Phase Transition in Molecular Dynamics Simulation<a class="headerlink" href="#phase-transition-in-molecular-dynamics-simulation" title="Permalink to this headline">¶</a></h1>
@@ -160,7 +160,9 @@ applied to the full 3-D data as well.</p>
 <p>The below cells just loads the necessary extensions to python for
 plotting (MatPlotLib) and numerical analysis (NumPy). The data is loaded
 from a Georgia Tech server.</p>
-<div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+<div class="code python highlight-python"><div class="highlight"><pre><span></span>import pymks
+
+%matplotlib inline
 %load_ext autoreload
 %autoreload 2
 
@@ -168,27 +170,27 @@ import numpy as np
 import matplotlib.pyplot as plt
 </pre></div>
 </div>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks_share</span> <span class="kn">import</span> <span class="n">DataManager</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks_share</span> <span class="kn">import</span> <span class="n">DataManager</span>
 
 
-<span class="n">manager</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">(</span><span class="s">&#39;pymks.me.gatech.edu&#39;</span><span class="p">)</span>
+<span class="n">manager</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">(</span><span class="s1">&#39;pymks.me.gatech.edu&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">X</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s">&#39;Molecular Dynamics&#39;</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s1">&#39;Molecular Dynamics&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>As mentioned, there are 2332 snapshots at 15 femtosecond time intervals
 on a 70 x 70 pixel 2-D grid.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mi">2332</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">2332</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We can draw what the structures look like with draw_microstructures.
 From left to right the structure is changing as the system goes through
 a phase transition. Do you notice a difference?</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_microstructures</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_microstructures</span>
 <span class="n">sample_size</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">X_examples</span> <span class="o">=</span> <span class="n">X</span><span class="p">[::</span><span class="n">sample_size</span><span class="p">]</span>
 <span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">X_examples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])[:]</span> <span class="o">*</span> <span class="n">sample_size</span> <span class="o">*</span> <span class="mi">15</span>
@@ -212,7 +214,7 @@ Hydrogen (1,1) and a cross-correlation from Hydrogen to Void-Space
 (1,0). Change the corelations and rerun to see how the PCA plots further
 down change. Especially, note the increase in variance of PC1 with the
 addition of the (0,0) correlation.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">MKSStructureAnalysis</span><span class="p">,</span> <span class="n">PrimitiveBasis</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">MKSStructureAnalysis</span><span class="p">,</span> <span class="n">PrimitiveBasis</span>
 <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">RandomizedPCA</span>
 
 
@@ -222,7 +224,7 @@ addition of the (0,0) correlation.</p>
 <span class="n">analysis</span><span class="o">.</span><span class="n">correlations</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
 </pre></div>
 </div>
 </div>
@@ -233,11 +235,11 @@ regression with <code class="docutils literal"><span class="pre">analysis.fit</s
 a subset of our data, <code class="docutils literal"><span class="pre">X_examples</span></code>. We graph the variance versus the
 number of components in our PCA model. By default the <code class="docutils literal"><span class="pre">PrimitiveBasis</span></code>
 uses a polynomial degree of one.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">analysis</span><span class="o">.</span><span class="n">n_components</span> <span class="o">=</span> <span class="mi">40</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">analysis</span><span class="o">.</span><span class="n">n_components</span> <span class="o">=</span> <span class="mi">40</span>
 <span class="n">analysis</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_examples</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_component_variance</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_component_variance</span>
 
 
 <span class="n">draw_component_variance</span><span class="p">(</span><span class="n">analysis</span><span class="o">.</span><span class="n">dimension_reducer</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
@@ -254,7 +256,7 @@ correlation beteen PC1 and PC2 and note that PC1 is correlated with
 time. This likely indicates the time of the phase transition in the
 simulation. We could next try plotting PC1 vs. various geometric order
 parameters to see if PC1 (or any other principal component) relates.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_components_scatter</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_components_scatter</span>
 <span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_evolution</span>
 
 
@@ -264,23 +266,23 @@ parameters to see if PC1 (or any other principal component) relates.</p>
 
 <span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">times_5</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">],</span> <span class="n">pcs_5</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Component 1&#39;</span><span class="p">,</span> <span class="s">&#39;Component 2&#39;</span><span class="p">,</span>
-          <span class="s">&#39;Component 3&#39;</span><span class="p">,</span> <span class="s">&#39;Component 4&#39;</span><span class="p">,</span> <span class="s">&#39;Component 5&#39;</span><span class="p">]</span>
-<span class="n">draw_evolution</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">labels</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Component 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Component 2&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;Component 3&#39;</span><span class="p">,</span> <span class="s1">&#39;Component 4&#39;</span><span class="p">,</span> <span class="s1">&#39;Component 5&#39;</span><span class="p">]</span>
+<span class="n">draw_evolution</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">labels</span><span class="p">,</span> <span class="n">legend_outside</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/structure_md_2D_20_0.png" src="../_images/structure_md_2D_20_0.png" />
 <p>Here we plot the first 3 principal components and note two general
 clusterings. This view captures roughly 95% of the variance in our data.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">draw_components_scatter</span><span class="p">([</span><span class="n">analysis</span><span class="o">.</span><span class="n">reduced_fit_data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]],</span>
-                        <span class="p">[</span><span class="s">&#39;X_example&#39;</span><span class="p">],</span> <span class="n">legend_outside</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">draw_components_scatter</span><span class="p">([</span><span class="n">analysis</span><span class="o">.</span><span class="n">reduced_fit_data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]],</span>
+                        <span class="p">[</span><span class="s1">&#39;X_example&#39;</span><span class="p">],</span> <span class="n">legend_outside</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/structure_md_2D_22_0.png" src="../_images/structure_md_2D_22_0.png" />
 <p>Let&#8217;s take a look at the two point statistics. We look at the images for
 principal components 1-4. Each image is the correlation for (1,1), or
 the Hydrogen probability.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_correlations</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_correlations</span>
 <span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_components</span>
 
 
@@ -318,7 +320,7 @@ dynamics datasets.&#8221; Nanotechnology 26.34 (2015): 344006.
       
     </p>
     <p>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
     </p>
   </div>
 </footer>

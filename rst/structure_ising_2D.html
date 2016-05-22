@@ -10,14 +10,14 @@
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/cosmo/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.3.6/cosmo/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pymks.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.3.0',
+        VERSION:     '0.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
     <link rel="shortcut icon" href="../_static/pymks_logo.ico"/>
     <link rel="top" title="PyMKS" href="../index.html" />
@@ -53,7 +53,7 @@
         </button>
         <a class="navbar-brand" href="../index.html"><img src="../_static/pymks_logo.png">
           PyMKS</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.3.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -102,7 +102,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 content">
       
   <div class="section" id="structure-evolution-of-ising-model">
 <h1>Structure Evolution of Ising Model<a class="headerlink" href="#structure-evolution-of-ising-model" title="Permalink to this headline">¶</a></h1>
@@ -113,20 +113,21 @@ for different simulations. Microstructures are assumed to be periodic.</p>
 <div class="section" id="data-loading">
 <h2>Data loading<a class="headerlink" href="#data-loading" title="Permalink to this headline">¶</a></h2>
 <p>First, we load the data:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks_share</span> <span class="kn">import</span> <span class="n">DataManager</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pymks</span>
+<span class="kn">from</span> <span class="nn">pymks_share</span> <span class="kn">import</span> <span class="n">DataManager</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 
-<span class="n">manager</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">(</span><span class="s">&#39;pymks.me.gatech.edu&#39;</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s">&#39;2 phase ising model&#39;</span><span class="p">)</span>
-<span class="n">Y</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s">&#39;Ising 30%&#39;</span><span class="p">)</span>
-<span class="n">Z</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s">&#39;ising 10%&#39;</span><span class="p">)</span>
-<span class="n">R1</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s">&#39;Ising 40%_Run#1&#39;</span><span class="p">)</span>
-<span class="n">R2</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s">&#39;Ising 40%_Run#3&#39;</span><span class="p">)</span>
+<span class="n">manager</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">(</span><span class="s1">&#39;pymks.me.gatech.edu&#39;</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s1">&#39;2 phase ising model&#39;</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s1">&#39;Ising 30%&#39;</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s1">&#39;ising 10%&#39;</span><span class="p">)</span>
+<span class="n">R1</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s1">&#39;Ising 40%_Run#1&#39;</span><span class="p">)</span>
+<span class="n">R2</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s1">&#39;Ising 40%_Run#3&#39;</span><span class="p">)</span>
 <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">R1</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">((</span><span class="mi">201</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="p">(</span><span class="mi">201</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">((</span><span class="mi">201</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="p">(</span><span class="mi">201</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">X</span></code> refers to 50% volume fraction and the rest of the data has its
@@ -134,7 +135,7 @@ volume fraction in its name.</p>
 <p>Let&#8217;s take a look how initial microstructures look like for three
 different volume fractions (50%, 30%, 10%) using
 <code class="docutils literal"><span class="pre">draw_microstructures</span></code>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+<div class="code python highlight-python"><div class="highlight"><pre><span></span>%matplotlib inline
 %load_ext autoreload
 %autoreload 2
 
@@ -149,7 +150,7 @@ draw_microstructures((X_con[::201]))
 <img alt="../_images/structure_ising_2D_3_0.png" src="../_images/structure_ising_2D_3_0.png" />
 <p>And the corresponding final microstructures after simulation (200
 Monte-Carlo steps) look like these:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">draw_microstructures</span><span class="p">((</span><span class="n">X_con</span><span class="p">[</span><span class="mi">200</span><span class="p">::</span><span class="mi">201</span><span class="p">]))</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">draw_microstructures</span><span class="p">((</span><span class="n">X_con</span><span class="p">[</span><span class="mi">200</span><span class="p">::</span><span class="mi">201</span><span class="p">]))</span>
 </pre></div>
 </div>
 <img alt="../_images/structure_ising_2D_5_0.png" src="../_images/structure_ising_2D_5_0.png" />
@@ -167,7 +168,7 @@ couple of microstructures using <code class="docutils literal"><span class="pre"
 <code class="docutils literal"><span class="pre">pymks.tools</span></code>. Here 10th step is plotted since initial is completely
 random microstructure and its statistics does not look exciting. So, we
 are going to take a look at 10th Monte-Carlo step output.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">PrimitiveBasis</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">PrimitiveBasis</span>
 <span class="kn">from</span> <span class="nn">pymks.stats</span> <span class="kn">import</span> <span class="n">correlate</span>
 <span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_autocorrelations</span>
 
@@ -178,33 +179,33 @@ are going to take a look at 10th Monte-Carlo step output.</p>
 <span class="n">X_auto</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mi">201</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">201</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">correlations</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;black&#39;</span><span class="p">,</span> <span class="s">&#39;black&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;white&#39;</span><span class="p">,</span> <span class="s">&#39;white&#39;</span><span class="p">)]</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">correlations</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">)]</span>
 <span class="n">draw_autocorrelations</span><span class="p">(</span><span class="n">X_auto</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">autocorrelations</span><span class="o">=</span><span class="n">correlations</span><span class="p">)</span>
 
 <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_auto</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
-<span class="k">print</span> <span class="s">&#39;Volume fraction of black phase&#39;</span><span class="p">,</span> <span class="n">X_auto</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="k">print</span> <span class="s">&#39;Volume fraction of white phase&#39;</span><span class="p">,</span> <span class="n">X_auto</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="k">print</span> <span class="s1">&#39;Volume fraction of black phase&#39;</span><span class="p">,</span> <span class="n">X_auto</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span> <span class="s1">&#39;Volume fraction of white phase&#39;</span><span class="p">,</span> <span class="n">X_auto</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
 <img alt="../_images/structure_ising_2D_9_0.png" src="../_images/structure_ising_2D_9_0.png" />
-<div class="highlight-python"><div class="highlight"><pre>Volume fraction of black phase 0.609899984593
-Volume fraction of white phase 0.390099990145
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase 0.6099
+Volume fraction of white phase 0.3901
 </pre></div>
 </div>
 <p>Let&#8217;s also plot 2-point statistics of the final microstructure for the
 same simulation. They do not look much interesting since it&#8217;s mostly has
 black state:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">draw_autocorrelations</span><span class="p">(</span><span class="n">X_auto</span><span class="p">[</span><span class="mi">200</span><span class="p">],</span> <span class="n">autocorrelations</span><span class="o">=</span><span class="n">correlations</span><span class="p">)</span>
-<span class="k">print</span> <span class="s">&#39;Volume fraction of black phase&#39;</span><span class="p">,</span> <span class="n">X_auto</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="k">print</span> <span class="s">&#39;Volume fraction of white phase&#39;</span><span class="p">,</span> <span class="n">X_auto</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">draw_autocorrelations</span><span class="p">(</span><span class="n">X_auto</span><span class="p">[</span><span class="mi">200</span><span class="p">],</span> <span class="n">autocorrelations</span><span class="o">=</span><span class="n">correlations</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Volume fraction of black phase&#39;</span><span class="p">,</span> <span class="n">X_auto</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span> <span class="s1">&#39;Volume fraction of white phase&#39;</span><span class="p">,</span> <span class="n">X_auto</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
 <img alt="../_images/structure_ising_2D_11_0.png" src="../_images/structure_ising_2D_11_0.png" />
-<div class="highlight-python"><div class="highlight"><pre>Volume fraction of black phase 0.954199975895
-Volume fraction of white phase 0.045799998843
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase 0.9542
+Volume fraction of white phase 0.0458
 </pre></div>
 </div>
 </div>
@@ -215,14 +216,14 @@ dimentionality reduction (PCA) right after. So we are not going to use
 whatever we have done in the previous section, it was just to show how
 2-point statistics look like for our data. So, total we have 5
 simulations and they already have been concatenated into X_con.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">MKSStructureAnalysis</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">MKSStructureAnalysis</span>
 
 <span class="n">analyzer</span> <span class="o">=</span> <span class="n">MKSStructureAnalysis</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">p_basis</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">XY_PCA</span><span class="o">=</span><span class="n">analyzer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_con</span><span class="p">)</span>
 <span class="n">XY_PCA</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mi">1005</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1005</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>R1 and R2 are two different simulation results with the same initial
@@ -231,26 +232,26 @@ Monte-Carlo simulations. The hope is to see that the same initial
 microstructure will take two different paths and will end up in quite
 the same spot. Let&#8217;s check it!</p>
 <p>So let&#8217;s take a look at PCA plot:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_components_scatter</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_components_scatter</span>
 
 
 <span class="n">draw_components_scatter</span><span class="p">([</span><span class="n">XY_PCA</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">201</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">XY_PCA</span><span class="p">[</span><span class="mi">201</span><span class="p">:</span><span class="mi">402</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">XY_PCA</span><span class="p">[</span><span class="mi">402</span><span class="p">:</span><span class="mi">603</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span>
                          <span class="n">XY_PCA</span><span class="p">[</span><span class="mi">603</span><span class="p">:</span><span class="mi">804</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">XY_PCA</span><span class="p">[</span><span class="mi">804</span><span class="p">:</span><span class="mi">1005</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]],</span>
-                        <span class="p">[</span><span class="s">&#39;ising 50%&#39;</span><span class="p">,</span> <span class="s">&#39;ising 30%&#39;</span><span class="p">,</span> <span class="s">&#39;ising 10%&#39;</span><span class="p">,</span>
-                         <span class="s">&#39;ising 40</span><span class="si">% r</span><span class="s">un#1&#39;</span><span class="p">,</span> <span class="s">&#39;ising 40</span><span class="si">% r</span><span class="s">un#2&#39;</span><span class="p">],</span>
+                        <span class="p">[</span><span class="s1">&#39;ising 50%&#39;</span><span class="p">,</span> <span class="s1">&#39;ising 30%&#39;</span><span class="p">,</span> <span class="s1">&#39;ising 10%&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;ising 40</span><span class="si">% r</span><span class="s1">un#1&#39;</span><span class="p">,</span> <span class="s1">&#39;ising 40</span><span class="si">% r</span><span class="s1">un#2&#39;</span><span class="p">],</span>
                         <span class="n">view_angles</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">legend_outside</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fig_size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 </pre></div>
 </div>
 <img alt="../_images/structure_ising_2D_15_0.png" src="../_images/structure_ising_2D_15_0.png" />
 <p>Looks cool but not clear! Now, let&#8217;s plot only initial and final
 structures.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">draw_components_scatter</span><span class="p">([</span><span class="n">XY_PCA</span><span class="p">[:</span><span class="mi">201</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">XY_PCA</span><span class="p">[</span><span class="mi">201</span><span class="p">:</span><span class="mi">402</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">draw_components_scatter</span><span class="p">([</span><span class="n">XY_PCA</span><span class="p">[:</span><span class="mi">201</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">XY_PCA</span><span class="p">[</span><span class="mi">201</span><span class="p">:</span><span class="mi">402</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span>
                          <span class="n">XY_PCA</span><span class="p">[</span><span class="mi">402</span><span class="p">:</span><span class="mi">603</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">XY_PCA</span><span class="p">[</span><span class="mi">603</span><span class="p">:</span><span class="mi">804</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span>
                          <span class="n">XY_PCA</span><span class="p">[</span><span class="mi">804</span><span class="p">:</span><span class="mi">1005</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]],</span>
-                        <span class="p">[</span><span class="s">&#39;ising 50%&#39;</span><span class="p">,</span> <span class="s">&#39;ising 30%&#39;</span><span class="p">,</span> <span class="s">&#39;ising 10%&#39;</span><span class="p">,</span>
-                         <span class="s">&#39;ising 40</span><span class="si">% r</span><span class="s">un#1&#39;</span><span class="p">,</span> <span class="s">&#39;ising 40</span><span class="si">% r</span><span class="s">un#2&#39;</span><span class="p">],</span>
+                        <span class="p">[</span><span class="s1">&#39;ising 50%&#39;</span><span class="p">,</span> <span class="s1">&#39;ising 30%&#39;</span><span class="p">,</span> <span class="s1">&#39;ising 10%&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;ising 40</span><span class="si">% r</span><span class="s1">un#1&#39;</span><span class="p">,</span> <span class="s1">&#39;ising 40</span><span class="si">% r</span><span class="s1">un#2&#39;</span><span class="p">],</span>
                         <span class="n">view_angles</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">legend_outside</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                        <span class="n">fig_size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s">&#39;Initial and Final microstructures&#39;</span><span class="p">)</span>
+                        <span class="n">fig_size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Initial and Final microstructures&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/structure_ising_2D_17_0.png" src="../_images/structure_ising_2D_17_0.png" />
@@ -276,7 +277,7 @@ although they take different paths.</p>
       
     </p>
     <p>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
     </p>
   </div>
 </footer>

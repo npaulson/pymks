@@ -10,14 +10,14 @@
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/cosmo/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.3.6/cosmo/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pymks.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.3.0',
+        VERSION:     '0.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
     <link rel="shortcut icon" href="../_static/pymks_logo.ico"/>
     <link rel="top" title="PyMKS" href="../index.html" />
@@ -53,7 +53,7 @@
         </button>
         <a class="navbar-brand" href="../index.html"><img src="../_static/pymks_logo.png">
           PyMKS</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.3.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -102,25 +102,49 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 content">
       
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="conda">
+<h2>Conda<a class="headerlink" href="#conda" title="Permalink to this headline">¶</a></h2>
+<p>Conda is the easiest way to install PyMKS. To install use</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ conda config --add channels pymks
+$ conda install pymks
+</pre></div>
+</div>
+</div>
+<div class="section" id="pip">
+<h2>Pip<a class="headerlink" href="#pip" title="Permalink to this headline">¶</a></h2>
 <p>The following steps outline the necessary requirements for a successful
 installation of PyMKS.</p>
 <p>Use pip,</p>
-<div class="highlight-python"><div class="highlight"><pre>$ pip install pymks
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ pip install pymks
 </pre></div>
 </div>
 <p>and then run the tests.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ python -c &quot;import pymks; pymks.test()&quot;
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ python -c &quot;import pymks; pymks.test()&quot;
 </pre></div>
+</div>
 </div>
 <div class="section" id="scipy-stack">
 <h2>Scipy Stack<a class="headerlink" href="#scipy-stack" title="Permalink to this headline">¶</a></h2>
-<p>The packages <a class="reference external" href="https://nose.readthedocs.org/en/latest/">Nosetests</a>,
-<a class="reference external" href="http://www.scipy.org/">Scipy</a>, <a class="reference external" href="http://www.scipy.org/">Numpy</a>,
-and <a class="reference external" href="http://scikit-learn.org">Scikit-learn</a> are all required.</p>
+<p>Both <a class="reference external" href="http://www.scipy.org/">Scipy</a> and
+<a class="reference external" href="http://www.scipy.org/">Numpy</a> as well as
+<a class="reference external" href="http://scikit-learn.org">Scikit-learn</a> are required.</p>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>The package <a class="reference external" href="https://pytest.org">Pytest</a> is required for testing
+only. Use</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ py.test
+</pre></div>
+</div>
+<p>in the base directory or</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ python -c &quot;import pymks; pymks.test()&quot;
+</pre></div>
+</div>
+<p>to run all the tests.</p>
 </div>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
@@ -133,11 +157,11 @@ IPython and Matplotlib are both required.</p>
 tests and examples require <a class="reference external" href="http://sfepy.org">SfePy</a> to generate the
 sample data so it is a good idea to install it.</p>
 <p>To install <a class="reference external" href="http://sfepy.org">SfePy</a>, first clone with</p>
-<div class="highlight-python"><div class="highlight"><pre>$ git clone git://github.com/sfepy/sfepy.git
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ git clone git://github.com/sfepy/sfepy.git
 </pre></div>
 </div>
 <p>and then install with</p>
-<div class="highlight-python"><div class="highlight"><pre>$ cd sfepy
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ cd sfepy
 $ python setup.py install
 </pre></div>
 </div>
@@ -155,7 +179,7 @@ MKL</a>,
 <a class="reference external" href="http://hgomersall.github.io/pyFFTW/">PyFFTW</a> should improve the
 performance of PyMKS.</p>
 <p>To install <a class="reference external" href="http://hgomersall.github.io/pyFFTW/">PyFFTW</a> use pip</p>
-<div class="highlight-python"><div class="highlight"><pre>$ pip install pyfftw
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ pip install pyfftw
 </pre></div>
 </div>
 <p>See the <a class="reference external" href="https://github.com/hgomersall/pyFFTW#installation">PyFFTW installation
@@ -211,7 +235,7 @@ current release of PyMKS.</p>
       
     </p>
     <p>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
     </p>
   </div>
 </footer>

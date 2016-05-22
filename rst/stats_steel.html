@@ -10,14 +10,14 @@
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/cosmo/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.3.6/cosmo/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pymks.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.3.0',
+        VERSION:     '0.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
     <link rel="shortcut icon" href="../_static/pymks_logo.ico"/>
     <link rel="top" title="PyMKS" href="../index.html" />
@@ -53,7 +53,7 @@
         </button>
         <a class="navbar-brand" href="../index.html"><img src="../_static/pymks_logo.png">
           PyMKS</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.3.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -102,7 +102,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 content">
       
   <div class="section" id="low-carbon-steel-optical-micrographs">
 <h1>Low Carbon Steel Optical Micrographs<a class="headerlink" href="#low-carbon-steel-optical-micrographs" title="Permalink to this headline">¶</a></h1>
@@ -124,21 +124,27 @@ microstructure, which otherwise would not be visible.</p>
 <div class="section" id="load-data">
 <h2>Load Data<a class="headerlink" href="#load-data" title="Permalink to this headline">¶</a></h2>
 <p>First we are going to import the image dataset.</p>
-<div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+<div class="code python highlight-python"><div class="highlight"><pre><span></span>import pymks
+
+%matplotlib inline
 %load_ext autoreload
 %autoreload 2
 </pre></div>
 </div>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks_share</span> <span class="kn">import</span> <span class="n">DataManager</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span>The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks_share</span> <span class="kn">import</span> <span class="n">DataManager</span>
 
 
-<span class="n">manager</span> <span class="o">=</span> <span class="n">DataManager</span> <span class="p">(</span><span class="s">&#39;pymks.me.gatech.edu&#39;</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s">&#39;Low-Carbon Steel Optical Micrographs&#39;</span><span class="p">)</span>
+<span class="n">manager</span> <span class="o">=</span> <span class="n">DataManager</span> <span class="p">(</span><span class="s1">&#39;pymks.me.gatech.edu&#39;</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s1">&#39;Low-Carbon Steel Optical Micrographs&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Now, we will display the images using the PyMKS <code class="docutils literal"><span class="pre">draw_microstructure</span></code>
 tool.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">skimage.io</span> <span class="kn">as</span> <span class="nn">io</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skimage.io</span> <span class="kn">as</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_microstructures</span>
@@ -161,14 +167,14 @@ white, since we know that there are only two different particles in the
 microstructure. We do this by thresholding the image using Otsu&#8217;s
 method. By thresholding, each pixel in the image will become either
 black or white, giving us only 2 local states.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="kn">import</span> <span class="n">threshold_otsu</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="kn">import</span> <span class="n">threshold_otsu</span>
 
 
 <span class="n">X_thresh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">threshold_otsu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X</span><span class="p">])</span>
 <span class="n">X_binary</span> <span class="o">=</span> <span class="n">X</span> <span class="o">&gt;</span> <span class="n">X_thresh</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">,:,:])</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">,:,:])</span>
 <span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X_binary</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">,:,:])</span>
 </pre></div>
 </div>
@@ -187,17 +193,17 @@ the image, better seen in the 500x image (bottom right).</p>
 <p>Now we are going to compute correlations using PyMKS <code class="docutils literal"><span class="pre">correlate</span></code> tool,
 which computes auto- and cross-correlations for all phases in the
 microstructure. We have 2 phases in our microstructure <code class="docutils literal"><span class="pre">n_states=2</span></code>.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.stats</span> <span class="kn">import</span> <span class="n">correlate</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.stats</span> <span class="kn">import</span> <span class="n">correlate</span>
 <span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">PrimitiveBasis</span>
 
 
 <span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">X_corr</span> <span class="o">=</span> <span class="n">correlate</span><span class="p">(</span><span class="n">X_binary</span><span class="p">,</span> <span class="n">prim_basis</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s">&quot;Shape of X_corr&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Shape of X_corr&quot;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">X_corr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre>Shape of X_corr
+<div class="highlight-python"><div class="highlight"><pre><span></span>Shape of X_corr
 (5, 520, 694, 3)
 </pre></div>
 </div>
@@ -206,52 +212,52 @@ each of our 5 microstructures. Note that the array of each correlation
 plot is the same as the original image. For each image we obtain 3
 correlation plots.</p>
 <p>We will plot the 2-point statistics below.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_correlations</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_correlations</span>
 
 
 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X_corr</span><span class="p">:</span>
     <span class="n">draw_correlations</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">correlations</span><span class="o">=</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>
     <span class="n">x_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_corr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">y_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_corr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Volume fraction of black phase&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Volume fraction of black phase&#39;</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">x_center</span><span class="p">,</span> <span class="n">y_center</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Volume fraction of white phase&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Volume fraction of white phase&#39;</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">x_center</span><span class="p">,</span> <span class="n">y_center</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 <img alt="../_images/stats_steel_14_0.png" src="../_images/stats_steel_14_0.png" />
-<div class="highlight-python"><div class="highlight"><pre>Volume fraction of black phase
-0.394543879546
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.394543892707
 Volume fraction of white phase
-0.605456087097
+0.605456107293
 </pre></div>
 </div>
 <img alt="../_images/stats_steel_14_2.png" src="../_images/stats_steel_14_2.png" />
-<div class="highlight-python"><div class="highlight"><pre>Volume fraction of black phase
-0.282115929406
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.282115938816
 Volume fraction of white phase
-0.717884037238
+0.717884061184
 </pre></div>
 </div>
 <img alt="../_images/stats_steel_14_4.png" src="../_images/stats_steel_14_4.png" />
-<div class="highlight-python"><div class="highlight"><pre>Volume fraction of black phase
-0.202374743859
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.20237475061
 Volume fraction of white phase
-0.797625222784
+0.79762524939
 </pre></div>
 </div>
 <img alt="../_images/stats_steel_14_6.png" src="../_images/stats_steel_14_6.png" />
-<div class="highlight-python"><div class="highlight"><pre>Volume fraction of black phase
-0.199789397016
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.19978940368
 Volume fraction of white phase
-0.800210569628
+0.80021059632
 </pre></div>
 </div>
 <img alt="../_images/stats_steel_14_8.png" src="../_images/stats_steel_14_8.png" />
-<div class="highlight-python"><div class="highlight"><pre>Volume fraction of black phase
-0.174321098153
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.174321103968
 Volume fraction of white phase
-0.82567886849
+0.825678896032
 </pre></div>
 </div>
 <p>The above plots indicate the states on which the 2-point statistics have
@@ -286,70 +292,70 @@ the lower magnification images.</p>
 <p>Now we are going to crop the image to the first 300 pixels in horizontal
 and vertical directions and repeat the process of computing the 2-point
 statistics. Our new images are going to be 300x300 pixels.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">X_crop</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">250</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">250</span><span class="p">]</span>
-<span class="k">print</span><span class="p">(</span><span class="s">&#39;Shape of X&#39;</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">X_crop</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">250</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">250</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Shape of X&#39;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">X_crop</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X_crop</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre>Shape of X
+<div class="highlight-python"><div class="highlight"><pre><span></span>Shape of X
 (5, 250, 250)
 </pre></div>
 </div>
 <img alt="../_images/stats_steel_17_1.png" src="../_images/stats_steel_17_1.png" />
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">X_thresh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">threshold_otsu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X_crop</span><span class="p">])</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">X_thresh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">threshold_otsu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X_crop</span><span class="p">])</span>
 <span class="n">X_binary_crop</span> <span class="o">=</span> <span class="n">X_crop</span> <span class="o">&gt;</span> <span class="n">X_thresh</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
 
 <span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X_binary_crop</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/stats_steel_18_0.png" src="../_images/stats_steel_18_0.png" />
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">X_corr_crop</span> <span class="o">=</span> <span class="n">correlate</span><span class="p">(</span><span class="n">X_binary_crop</span><span class="p">,</span> <span class="n">prim_basis</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 
 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X_corr_crop</span><span class="p">:</span>
     <span class="n">draw_correlations</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">correlations</span><span class="o">=</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>
     <span class="n">x_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_corr_crop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">y_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_corr_crop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Volume fraction of black phase&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Volume fraction of black phase&#39;</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">x_center</span><span class="p">,</span> <span class="n">y_center</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Volume fraction of white phase&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Volume fraction of white phase&#39;</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">x_center</span><span class="p">,</span> <span class="n">y_center</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 <img alt="../_images/stats_steel_19_0.png" src="../_images/stats_steel_19_0.png" />
-<div class="highlight-python"><div class="highlight"><pre>Volume fraction of black phase
-0.396191999
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.396192
 Volume fraction of white phase
-0.603807998476
+0.603808
 </pre></div>
 </div>
 <img alt="../_images/stats_steel_19_2.png" src="../_images/stats_steel_19_2.png" />
-<div class="highlight-python"><div class="highlight"><pre>Volume fraction of black phase
-0.287407999274
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.287408
 Volume fraction of white phase
-0.712591998201
+0.712592
 </pre></div>
 </div>
 <img alt="../_images/stats_steel_19_4.png" src="../_images/stats_steel_19_4.png" />
-<div class="highlight-python"><div class="highlight"><pre>Volume fraction of black phase
-0.20191999949
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.20192
 Volume fraction of white phase
-0.798079997985
+0.79808
 </pre></div>
 </div>
 <img alt="../_images/stats_steel_19_6.png" src="../_images/stats_steel_19_6.png" />
-<div class="highlight-python"><div class="highlight"><pre>Volume fraction of black phase
-0.207167999477
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.207168
 Volume fraction of white phase
-0.792831997998
+0.792832
 </pre></div>
 </div>
 <img alt="../_images/stats_steel_19_8.png" src="../_images/stats_steel_19_8.png" />
-<div class="highlight-python"><div class="highlight"><pre>Volume fraction of black phase
-0.168799999574
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.1688
 Volume fraction of white phase
-0.831199997901
+0.8312
 </pre></div>
 </div>
 <p>We have computed the 2-point statistics for the cropped images. The
@@ -390,7 +396,7 @@ with you can use <code class="docutils literal"><span class="pre">MKSHomogenizat
       
     </p>
     <p>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
     </p>
   </div>
 </footer>

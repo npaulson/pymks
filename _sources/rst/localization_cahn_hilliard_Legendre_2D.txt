@@ -38,6 +38,8 @@ section <THEORY.html>`__.
 
 .. code:: python
 
+    import pymks
+    
     %matplotlib inline
     %load_ext autoreload
     %autoreload 2
@@ -163,7 +165,7 @@ states. More terms don't improve the R-squared value.
 
 .. parsed-literal::
 
-    MKSLocalizationModel(basis=<pymks.bases.legendre.LegendreBasis object at 0x7f3ea6664090>,
+    MKSLocalizationModel(basis=<pymks.bases.legendre.LegendreBasis object at 0x7f900e2dcd50>,
                lstsq_rcond=2.2204460492503131e-12, n_jobs=None, n_states=4)
     1.0
 
@@ -326,8 +328,8 @@ and the simulation.
 
 .. parsed-literal::
 
-    Primative mse = 5.28643237759e-23
-    Legendre mse = 7.11271905397e-30
+    Primative mse = 5.28727678594e-23
+    Legendre mse = 4.3461487962e-28
 
 
 The ``LegendreBasis`` basis clearly outperforms the ``PrimitiveBasis``
@@ -432,8 +434,8 @@ the difference between the simulation and the MKS models.
 
 .. parsed-literal::
 
-    Primative mse = 4.43146361392e-23
-    Legendre mse = 3.97762730375e-29
+    Primative mse = 4.43216831378e-23
+    Legendre mse = 4.66632322173e-28
 
 
 With the resized influence coefficients, the ``LegendreBasis``

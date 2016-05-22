@@ -14,6 +14,7 @@ First, we load the data:
 
 .. code:: python
 
+    import pymks
     from pymks_share import DataManager
     import numpy as np
     
@@ -131,8 +132,8 @@ are going to take a look at 10th Monte-Carlo step output.
 
 .. parsed-literal::
 
-    Volume fraction of black phase 0.609899984593
-    Volume fraction of white phase 0.390099990145
+    Volume fraction of black phase 0.6099
+    Volume fraction of white phase 0.3901
 
 
 Let's also plot 2-point statistics of the final microstructure for the
@@ -153,8 +154,8 @@ black state:
 
 .. parsed-literal::
 
-    Volume fraction of black phase 0.954199975895
-    Volume fraction of white phase 0.045799998843
+    Volume fraction of black phase 0.9542
+    Volume fraction of white phase 0.0458
 
 
 Reduced-order representations (PCA)

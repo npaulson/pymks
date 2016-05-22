@@ -47,12 +47,21 @@ strain of :math:`\bar{\varepsilon}_{xx}`.
 
 .. code:: python
 
+    import pymks
+    
     %matplotlib inline
     %load_ext autoreload
     %autoreload 2
     
     import numpy as np
     import matplotlib.pyplot as plt
+
+
+
+.. parsed-literal::
+
+    The autoreload extension is already loaded. To reload it, use:
+      %reload_ext autoreload
 
 
 Data Generation
@@ -143,7 +152,7 @@ above.
 
 .. parsed-literal::
 
-    Stress Values [ 0.25577371  0.24376877  0.2610072   0.25344437  0.24913381  0.2492148 ]
+    Stress Values [ 0.2557737   0.24376877  0.26100719  0.25344437  0.2491338   0.2492148 ]
 
 
 Now that we have a dataset to work with, we can look at how to use the
@@ -154,15 +163,15 @@ MKSHomogenizationModel Work Flow
 --------------------------------
 
 | The default instance of the ``MKSHomogenizationModel`` takes in a
-dataset and - calculates the 2-point statistics
-|  - performs `dimensionality
-reduction <http://en.wikipedia.org/wiki/Dimensionality_reduction>`__
-using `Prinicple Component
-Analysis <https://en.wikipedia.org/wiki/Principal_component_analysis>`__
-(PCA)
-|  - and fits a `polynomial regression
-model <http://en.wikipedia.org/wiki/Polynomial_regression>`__ model to
-the low-dimensional representation.
+  dataset and - calculates the 2-point statistics
+| - performs `dimensionality
+  reduction <http://en.wikipedia.org/wiki/Dimensionality_reduction>`__
+  using `Prinicple Component
+  Analysis <https://en.wikipedia.org/wiki/Principal_component_analysis>`__
+  (PCA)
+| - and fits a `polynomial regression
+  model <http://en.wikipedia.org/wiki/Polynomial_regression>`__ model to
+  the low-dimensional representation.
 
 This work flow has been shown to accurately predict effective properties
 in several examples [2][3], and requires that we specify the number of
@@ -350,7 +359,7 @@ data ``X_test`` to see which model performs the best.
 
     Order of Polynomial 2
     Number of Components 11
-    R-squared Value 0.999808062591
+    R-squared Value 0.999811740003
 
 
 For the parameter range that we searched, we have found that a model
@@ -432,7 +441,8 @@ used to fit the model using ``draw_components_scatter`` from
     
     draw_components_scatter([model.reduced_fit_data[:, :2], 
                              model.reduced_predict_data[:, :2]],
-                            ['Training Data', 'Test Data'])
+                            ['Training Data', 'Test Data'],
+                           legend_outside=True)
 
 
 
@@ -453,7 +463,7 @@ data.
 
 .. parsed-literal::
 
-    R-squared 0.999731315593
+    R-squared 0.999729255543
 
 
 Looks pretty good. Let's print out one actual and predicted stress value
@@ -468,8 +478,8 @@ for each of the 6 microstructure types to see how they compare.
 
 .. parsed-literal::
 
-    Actual Stress    [ 0.2494416   0.25038939  0.23247306  0.25266295  0.23964323  0.24461285]
-    Predicted Stress [ 0.2494777   0.25035744  0.23256064  0.25261754  0.23954181  0.24463568]
+    Actual Stress    [ 0.2494416   0.25038939  0.23247306  0.25266294  0.23964323  0.24461284]
+    Predicted Stress [ 0.24951764  0.25038749  0.23256182  0.25265799  0.23955828  0.24464928]
 
 
 Lastly, we can also evaluate our prediction by looking at a
@@ -516,3 +526,4 @@ Learning Techniques for Correlating Properties to Composition and
 Manufacturing Processes of Steels." 2 World Congress on Integrated
 Computational Materials Engineering. John Wiley & Sons, Inc.
 `doi:10.1002/9781118767061.ch25 <http://dx.doi.org/10.1002/9781118767061.ch25>`__
+

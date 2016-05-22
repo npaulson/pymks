@@ -10,14 +10,14 @@
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/cosmo/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.3.6/cosmo/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pymks.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.3.0',
+        VERSION:     '0.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
     <link rel="shortcut icon" href="../_static/pymks_logo.ico"/>
     <link rel="top" title="PyMKS" href="../index.html" />
@@ -53,7 +53,7 @@
         </button>
         <a class="navbar-brand" href="../index.html"><img src="../_static/pymks_logo.png">
           PyMKS</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.3.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -102,7 +102,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 content">
       
   <div class="section" id="checkerboard-microstructure">
 <h1>Checkerboard Microstructure<a class="headerlink" href="#checkerboard-microstructure" title="Permalink to this headline">¶</a></h1>
@@ -119,7 +119,9 @@ discussion of how the spatial correlations capture the main features
 seen in the original microstructure. If you would like more technical
 details about 2-point statistics please see the <a class="reference external" href="THEORY.html">theory
 section</a>.</p>
-<div class="code python highlight-python"><div class="highlight"><pre>%matplotlib inline
+<div class="code python highlight-python"><div class="highlight"><pre><span></span>import pymks
+
+%matplotlib inline
 %load_ext autoreload
 %autoreload 2
 
@@ -136,13 +138,13 @@ physical system, it provides solutions that give some intuitive
 understanding of 2-point statistics.</p>
 <p>We can create a checkerboard microstructure using
 <code class="docutils literal"><span class="pre">make_checkerboard_microstructure</span></code> function from <code class="docutils literal"><span class="pre">pymks.datasets</span></code>.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.datasets</span> <span class="kn">import</span> <span class="n">make_checkerboard_microstructure</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.datasets</span> <span class="kn">import</span> <span class="n">make_checkerboard_microstructure</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">make_checkerboard_microstructure</span><span class="p">(</span><span class="n">square_size</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span> <span class="n">n_squares</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Now let&#8217;s take a look at how the microstructure looks.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_microstructures</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_microstructures</span>
 
 <span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
@@ -150,7 +152,7 @@ understanding of 2-point statistics.</p>
 </pre></div>
 </div>
 <img alt="../_images/stats_checker_board_5_0.png" src="../_images/stats_checker_board_5_0.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">168</span><span class="p">,</span> <span class="mi">168</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">168</span><span class="p">,</span> <span class="mi">168</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -167,7 +169,7 @@ periodic.</p>
 generate the microstructure function <code class="docutils literal"><span class="pre">X_</span></code> from the microstructure
 <code class="docutils literal"><span class="pre">X</span></code>. Because we only have values of 0 or 1 in our microstructure we
 will using the <code class="docutils literal"><span class="pre">PrimitiveBasis</span></code> with <code class="docutils literal"><span class="pre">n_states</span></code> equal to 2.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.stats</span> <span class="kn">import</span> <span class="n">autocorrelate</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.stats</span> <span class="kn">import</span> <span class="n">autocorrelate</span>
 <span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">PrimitiveBasis</span>
 
 <span class="n">p_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -177,9 +179,9 @@ will using the <code class="docutils literal"><span class="pre">PrimitiveBasis</
 <p>We have now computed the autocorrelations.</p>
 <p>Let&#8217;s take a look at them using <code class="docutils literal"><span class="pre">draw_autocorrelations</span></code> from
 <code class="docutils literal"><span class="pre">pymks.tools</span></code>.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_autocorrelations</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_autocorrelations</span>
 
-<span class="n">correlations</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;black&#39;</span><span class="p">,</span> <span class="s">&#39;black&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;white&#39;</span><span class="p">,</span> <span class="s">&#39;white&#39;</span><span class="p">)]</span>
+<span class="n">correlations</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">)]</span>
 <span class="n">draw_autocorrelations</span><span class="p">(</span><span class="n">X_auto</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">autocorrelations</span><span class="o">=</span><span class="n">correlations</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -194,27 +196,27 @@ example.</p>
 and the we have eigen microstructure functions (values are either 0 or
 1), the (0, 0) vector equals the volume fraction.</p>
 <p>Let&#8217;s double check that both the phases have a volume fraction of 0.5.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_auto</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-<span class="k">print</span> <span class="s">&#39;Volume fraction of black phase&#39;</span><span class="p">,</span> <span class="n">X_auto</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="k">print</span> <span class="s">&#39;Volume fraction of white phase&#39;</span><span class="p">,</span> <span class="n">X_auto</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_auto</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="k">print</span> <span class="s1">&#39;Volume fraction of black phase&#39;</span><span class="p">,</span> <span class="n">X_auto</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span> <span class="s1">&#39;Volume fraction of white phase&#39;</span><span class="p">,</span> <span class="n">X_auto</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre>Volume fraction of black phase 0.500000006869
-Volume fraction of white phase 0.500000006869
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase 0.5
+Volume fraction of white phase 0.5
 </pre></div>
 </div>
 <p>We can compute the cross-correlation of the microstructure function,
 using the <code class="docutils literal"><span class="pre">crosscorrelate</span></code> function from <code class="docutils literal"><span class="pre">pymks.stats</span></code></p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.stats</span> <span class="kn">import</span> <span class="n">crosscorrelate</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.stats</span> <span class="kn">import</span> <span class="n">crosscorrelate</span>
 
 <span class="n">X_cross</span> <span class="o">=</span> <span class="n">crosscorrelate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">p_basis</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Let&#8217;s take a look at the cross correlation using
 <code class="docutils literal"><span class="pre">draw_crosscorrelations</span></code> from <code class="docutils literal"><span class="pre">pymks.tools</span></code>.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_crosscorrelations</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_crosscorrelations</span>
 
-<span class="n">correlations</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;black&#39;</span><span class="p">,</span> <span class="s">&#39;white&#39;</span><span class="p">)]</span>
+<span class="n">correlations</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">)]</span>
 <span class="n">draw_crosscorrelations</span><span class="p">(</span><span class="n">X_cross</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">crosscorrelations</span><span class="o">=</span><span class="n">correlations</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -225,10 +227,10 @@ reflects the probablity of 2 phases having the same location. In our
 microstructure, this probability is zero, as we have not allowed the two
 phases (colored black and white) to co-exist in the same spatial voxel.</p>
 <p>Let&#8217;s check that it is zero.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&#39;Center value&#39;</span><span class="p">,</span> <span class="n">X_cross</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span> <span class="s1">&#39;Center value&#39;</span><span class="p">,</span> <span class="n">X_cross</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre>Center value 3.74121776119e-17
+<div class="highlight-python"><div class="highlight"><pre><span></span>Center value 3.74121770979e-17
 </pre></div>
 </div>
 </div>
@@ -241,7 +243,7 @@ from <code class="docutils literal"><span class="pre">pymks.stats</span></code>.
 autocorrelations and crosscorrelations at the same time. We will compute
 the non-periodic statistics by omitting the keyword argument
 <code class="docutils literal"><span class="pre">periodic_axes</span></code>.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.stats</span> <span class="kn">import</span> <span class="n">correlate</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.stats</span> <span class="kn">import</span> <span class="n">correlate</span>
 
 <span class="n">X_corr</span> <span class="o">=</span> <span class="n">correlate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">p_basis</span><span class="p">)</span>
 </pre></div>
@@ -249,9 +251,9 @@ the non-periodic statistics by omitting the keyword argument
 <p>All or some of the correlations can be viewed, using the
 <code class="docutils literal"><span class="pre">draw_correlations</span></code> function from <code class="docutils literal"><span class="pre">pymks.tools</span></code>. In this example we
 will look at all of them.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_correlations</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_correlations</span>
 
-<span class="n">correlations</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;black&#39;</span><span class="p">,</span> <span class="s">&#39;black&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;white&#39;</span><span class="p">,</span> <span class="s">&#39;white&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;black&#39;</span><span class="p">,</span> <span class="s">&#39;white&#39;</span><span class="p">)]</span>
+<span class="n">correlations</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">)]</span>
 <span class="n">draw_correlations</span><span class="p">(</span><span class="n">X_corr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">correlations</span><span class="o">=</span><span class="n">correlations</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -259,11 +261,11 @@ will look at all of them.</p>
 <p>Notice that the maximum values for the autocorrelations are higher than
 0.5. We can still show that the centers or the (0, 0) vectors are still
 equal to the volume fractions.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&#39;Volume fraction of black phase&#39;</span><span class="p">,</span> <span class="n">X_corr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="k">print</span> <span class="s">&#39;Volume fraction of white phase&#39;</span><span class="p">,</span> <span class="n">X_corr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span> <span class="s1">&#39;Volume fraction of black phase&#39;</span><span class="p">,</span> <span class="n">X_corr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span> <span class="s1">&#39;Volume fraction of white phase&#39;</span><span class="p">,</span> <span class="n">X_corr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre>Volume fraction of black phase 0.5
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase 0.5
 Volume fraction of white phase 0.5
 </pre></div>
 </div>
@@ -301,7 +303,7 @@ NY, 2009.</p>
       
     </p>
     <p>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
     </p>
   </div>
 </footer>

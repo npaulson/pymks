@@ -10,6 +10,8 @@ filter.
 
 .. code:: python
 
+    if __import__('pyfftw'):
+        import pyfftw
     %matplotlib inline
     %load_ext autoreload
     %autoreload 2
@@ -96,7 +98,7 @@ with the original for a few values
 .. parsed-literal::
 
     [-0.41059557  0.20004566  0.61200171  0.5878077 ]
-    [-0.41059556  0.20004566  0.6120017   0.58780769]
+    [-0.41059557  0.20004566  0.61200171  0.5878077 ]
 
 
 With a slight linear manipulation of the coefficients, they agree
