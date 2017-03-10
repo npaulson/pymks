@@ -6,4 +6,3 @@ Authors
 -  `Surya Kalidindi <http://www.me.gatech.edu/faculty/kalidindi>`__
 -  `Tony Fast <http://tonyfast.com/>`__
 -  Andrew Reid
-

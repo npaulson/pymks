@@ -11,14 +11,14 @@
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootswatch-3.2.0/cosmo/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootswatch-3.3.6/cosmo/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pymks.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.3',
+        VERSION:     '0.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,10 +27,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
     <link rel="shortcut icon" href="_static/pymks_logo.ico"/>
     <link rel="top" title="PyMKS" href="index.html" />
@@ -40,7 +40,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
+  <body role="document">
 
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
@@ -54,7 +54,7 @@
         </button>
         <a class="navbar-brand" href="index.html"><img src="_static/pymks_logo.png">
           PyMKS</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.2.3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -103,7 +103,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 content">
       
 
 <h1 id="index">Index</h1>
@@ -115,6 +115,8 @@
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -146,6 +148,10 @@
   <dt><a href="MKSmodels.html#MKSLocalizationModel.basis">(MKSLocalizationModel attribute)</a>
   </dt>
 
+        
+  <dt><a href="MKSmodels.html#MKSStructureAnalysis.basis">(MKSStructureAnalysis attribute)</a>
+  </dt>
+
       </dl></dd>
   </dl></td>
 </tr></table>
@@ -158,17 +164,23 @@
   </dt>
 
       
-  <dt><a href="MKSmodels.html#MKSLocalizationModel.coef">coef (MKSLocalizationModel attribute)</a>
+  <dt><a href="bases.html#pymks.bases.GSHBasis.check">check() (pymks.bases.GSHBasis method)</a>
   </dt>
 
       
-  <dt><a href="MKSmodels.html#pymks.mks_localization_model.MKSLocalizationModel.coeff">coeff (pymks.mks_localization_model.MKSLocalizationModel attribute)</a>
+  <dt><a href="MKSmodels.html#MKSHomogenizationModel.coef_">coef_ (MKSHomogenizationModel attribute)</a>
   </dt>
 
-      
-  <dt><a href="bases.html#pymks.bases.ContinuousIndicatorBasis">ContinuousIndicatorBasis (in module pymks.bases)</a>
+      <dd><dl>
+        
+  <dt><a href="MKSmodels.html#MKSLocalizationModel.coef_">(MKSLocalizationModel attribute)</a>
   </dt>
 
+        
+  <dt><a href="MKSmodels.html#pymks.mks_localization_model.MKSLocalizationModel.coef_">(pymks.mks_localization_model.MKSLocalizationModel attribute)</a>
+  </dt>
+
+      </dl></dd>
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
@@ -179,6 +191,12 @@
   <dt><a href="MKSmodels.html#MKSHomogenizationModel.correlations">correlations (MKSHomogenizationModel attribute)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="MKSmodels.html#MKSStructureAnalysis.correlations">(MKSStructureAnalysis attribute)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="spatial_statistics.html#pymks.stats.crosscorrelate">crosscorrelate() (in module pymks.stats)</a>
   </dt>
@@ -197,14 +215,30 @@
   <dt><a href="MKSmodels.html#MKSHomogenizationModel.dimension_reducer">dimension_reducer (MKSHomogenizationModel attribute)</a>
   </dt>
 
-      
-  <dt><a href="bases.html#pymks.bases.DiscreteIndicatorBasis">DiscreteIndicatorBasis (in module pymks.bases)</a>
+      <dd><dl>
+        
+  <dt><a href="MKSmodels.html#MKSStructureAnalysis.dimension_reducer">(MKSStructureAnalysis attribute)</a>
   </dt>
 
+      </dl></dd>
       
-  <dt><a href="bases.html#pymks.bases.LegendreBasis.discretize">discretize() (pymks.bases.LegendreBasis method)</a>
+  <dt><a href="bases.html#pymks.bases.FourierBasis.discretize">discretize() (pymks.bases.FourierBasis method)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="bases.html#pymks.bases.GSHBasis.discretize">(pymks.bases.GSHBasis method)</a>
+  </dt>
+
+        
+  <dt><a href="bases.html#pymks.bases.LegendreBasis.discretize">(pymks.bases.LegendreBasis method)</a>
+  </dt>
+
+        
+  <dt><a href="bases.html#pymks.bases.PrimitiveBasis.discretize">(pymks.bases.PrimitiveBasis method)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="tools.html#pymks.tools.draw_autocorrelations">draw_autocorrelations() (in module pymks.tools)</a>
   </dt>
@@ -300,7 +334,41 @@
   <dt><a href="MKSmodels.html#pymks.mks_localization_model.MKSLocalizationModel.fit">(pymks.mks_localization_model.MKSLocalizationModel method)</a>
   </dt>
 
+        
+  <dt><a href="MKSmodels.html#pymks.mks_structure_analysis.MKSStructureAnalysis.fit">(pymks.mks_structure_analysis.MKSStructureAnalysis method)</a>
+  </dt>
+
       </dl></dd>
+      
+  <dt><a href="MKSmodels.html#pymks.mks_structure_analysis.MKSStructureAnalysis.fit_transform">fit_transform() (pymks.mks_structure_analysis.MKSStructureAnalysis method)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="bases.html#pymks.bases.FourierBasis">FourierBasis (class in pymks.bases)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="bases.html#pymks.bases.GSHBasis">GSHBasis (class in pymks.bases)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="MKSmodels.html#MKSHomogenizationModel.intercept_">intercept_ (MKSHomogenizationModel attribute)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -355,6 +423,10 @@
   <dt><a href="MKSmodels.html#pymks.mks_localization_model.MKSLocalizationModel">MKSLocalizationModel (class in pymks.mks_localization_model)</a>
   </dt>
 
+      
+  <dt><a href="MKSmodels.html#pymks.mks_structure_analysis.MKSStructureAnalysis">MKSStructureAnalysis (class in pymks.mks_structure_analysis)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -365,6 +437,12 @@
   <dt><a href="MKSmodels.html#MKSHomogenizationModel.n_components">n_components (MKSHomogenizationModel attribute)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="MKSmodels.html#MKSStructureAnalysis.n_components">(MKSStructureAnalysis attribute)</a>
+  </dt>
+
+      </dl></dd>
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
@@ -378,6 +456,16 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="MKSmodels.html#MKSHomogenizationModel.periodic_axes">periodic_axes (MKSHomogenizationModel attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="MKSmodels.html#MKSStructureAnalysis.periodic_axes">(MKSStructureAnalysis attribute)</a>
+  </dt>
+
+      </dl></dd>
+      
   <dt><a href="MKSmodels.html#pymks.mks_homogenization_model.MKSHomogenizationModel.predict">predict() (pymks.mks_homogenization_model.MKSHomogenizationModel method)</a>
   </dt>
 
@@ -389,6 +477,10 @@
       </dl></dd>
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="bases.html#pymks.bases.PrimitiveBasis">PrimitiveBasis (class in pymks.bases)</a>
+  </dt>
+
       
   <dt><a href="MKSmodels.html#MKSHomogenizationModel.property_linker">property_linker (MKSHomogenizationModel attribute)</a>
   </dt>
@@ -403,8 +495,18 @@
   <dt><a href="MKSmodels.html#MKSHomogenizationModel.reduced_fit_data">reduced_fit_data (MKSHomogenizationModel attribute)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="MKSmodels.html#MKSStructureAnalysis.reduced_fit_data">(MKSStructureAnalysis attribute)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="MKSmodels.html#MKSHomogenizationModel.reduced_predict_data">reduced_predict_data (MKSHomogenizationModel attribute)</a>
+  </dt>
+
+      
+  <dt><a href="MKSmodels.html#MKSStructureAnalysis.reduced_transformed_data">reduced_transformed_data (MKSStructureAnalysis attribute)</a>
   </dt>
 
   </dl></td>
@@ -443,6 +545,16 @@
   <dt><a href="testing.html#pymks.test">test() (in module pymks)</a>
   </dt>
 
+      
+  <dt><a href="MKSmodels.html#pymks.mks_structure_analysis.MKSStructureAnalysis.transform">transform() (pymks.mks_structure_analysis.MKSStructureAnalysis method)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="MKSmodels.html#MKSStructureAnalysis.transformed_correlations">transformed_correlations (MKSStructureAnalysis attribute)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -459,7 +571,7 @@
       
     </p>
     <p>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
     </p>
   </div>
 </footer>

@@ -9,7 +9,7 @@ equation can be derivated from other partial differential equations.
 Definitions
 ~~~~~~~~~~~
 
-Let :math:`C(x)` be the local stiffness tensor for a two phase material
+Let :math:`C(x)` be the local stiffness tensor for a two-phase material
 with stiffness tensors :math:`C_A` and :math:`C_B`. The stiffness tensor
 at location :math:`x` can be represented at a perturbation from a
 reference stiffness tensor.
@@ -25,14 +25,14 @@ where :math:`\bar{\varepsilon}` is the average strain and
 :math:`\varepsilon '(x)` is the local strain perturbation from
 :math:`\bar{\varepsilon}`.
 
-The constitutive equation is therefore.
+The constitutive equation is therefore
 
 .. math:: \sigma_{ij}(x) = \big(C^R_{ijlk} + C'_{ijlk}(x) \big ) \big (\bar{\varepsilon}_{lk} + \varepsilon'_{lk}(x) \big )
 
 Equilibrium Condition
 ~~~~~~~~~~~~~~~~~~~~~
 
-The equilibrium condition is defined below.
+The equilibrium condition is defined below:
 
 .. math:: \sigma_{ij,j}(x) = \Big [\big(C^R_{ijlk} + C'_{ijlk}(x) \big ) \big (\bar{\varepsilon}_{lk} + \varepsilon'_{lk}(x) \big )\Big ]_{,j} = 0
 
@@ -42,7 +42,7 @@ Let
 
 .. math:: F_i(x) = C'_{ijlk,j}(x)\bar{\varepsilon}_{lk} + \Big [C'_{ijlk}(x) \varepsilon'_{lk}(x)\Big ]_{,j} 
 
-Using the definitation of :math:`F(x)` above, the equilibrium equation
+Using the definition of :math:`F(x)` above, the equilibrium equation
 above can be rearranged in the form of an inhomogenous differential
 equation.
 
@@ -52,13 +52,13 @@ Strain, Displacement, and Green's Functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By using the relationship between strain and displacement, the
-equilibrium equation can be rewritten as follows.
+equilibrium equation can be rewritten as follows:
 
 .. math::  \varepsilon_{kl}(x) = \frac{\big (u_{k,l}(x) + u_{l,k}(x) \big)}{2} 
 
 .. math:: C^R_{ijkl} \frac{\big (u'_{k,lj}(x) + u'_{l,kj}(x) \big)}{2} + F_i(x) = 0
 
-The solution to the displacements can be found using green's functions.
+The solution to the displacements can be found using Green's functions:
 
 .. math:: C^R_{ijkl} G_{km,lj}(r) + \delta_{im}\delta(x-r) = 0
 
@@ -68,7 +68,7 @@ and
 
 .. math:: u'_l(x) = \int_V  G_{il}(r) F_i (x - r)dr = \int_V G_{ik}(r) \Big [C'_{ijlk}(x-r)\bar{\varepsilon}_{lk} + \big [C'_{ijlk}(x-r)\varepsilon'_{lk}(x-r)\big ]\Big ]_{,j}dr
 
-therefore the strain can also be found interns of green's functions.
+Therefore, the strain can also be found in terms of Green's functions:
 
 .. math:: \varepsilon'_{kl}(x) = \int_V \frac{\big (G_{ik,l}(r) + G_{il,k}(r) \big)}{2}  F_i (x-r)dr = \int_V \frac{\big (G_{ik,l}(r) + G_{il,k}(r) \big)}{2} \Big [C'_{ijlk}(x-r)\bar{\varepsilon}_{lk} + \big [C'_{ijlk}(x-r)\varepsilon'_{lk}(x-r)\big ]\Big ]_{,j}dr
 
@@ -79,7 +79,7 @@ Integration by Parts
 ~~~~~~~~~~~~~~~~~~~~
 
 The equation above can be recast with all of the derivatives on the
-green's functions by integrating by parts.
+Green's functions by integrating by parts.
 
 .. math::
 
@@ -93,11 +93,11 @@ green's functions by integrating by parts.
 Principal Value Singularity
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In the equation above, the surface term tending to zero is a principal
-value integral because of the singularity in the green's functions at
+In the equation above, the surface term, tending to zero, is a principal
+value integral, because of the singularity in the Green's functions at
 :math:`r = 0`. As a result, the integrand is not differentiable.
-Torquato shows that by excluding a sphere at the origin and using
-integration by parts and the divergence theorem we can arrive at the
+Torquato shows that, by excluding a sphere at the origin and using
+integration by parts and the divergence theorem, we can arrive at the
 following equation [1].
 
 .. math:: \varepsilon'_{kl}(x) = I_{ikjl} - E_{ikjl} + \int_V \Phi_{ikjl}(r) \Big [C'_{ijlk}(x-r)\bar{\varepsilon}_{lk} + \big [C'_{ijlk}(x-r)\varepsilon'_{lk}(x-r)\big ]\Big ]dr 
@@ -106,7 +106,7 @@ where
 
 .. math:: \Phi_{ikjl}(r) = - \frac{\big (G_{ik,lj}(r) + G_{il,kj}(r) \big)}{2} 
 
-is the green's function terms, and
+is the Green's function terms, and
 
 .. math:: I_{ikjl}^{\infty} = \lim_{r \rightarrow \infty} \int_S\frac{\big (G_{ik,l}(r) + G_{il,k}(r)\big)}{2} \Big [C'_{ijlk}(x-r)\bar{\varepsilon}_{lk} + \big [C'_{ijlk}(x-r)\varepsilon'_{lk}(x-r)\big ]\Big ]n_l dS 
 
@@ -115,11 +115,11 @@ is the green's function terms, and
 are the contribution from the surface integrals at :math:`\infty` and
 from the singularity.
 
-Finally let
+Finally, let
 
 .. math:: \Gamma_{iklj}(r) = I_{ikjl}^{\infty}\delta(r)-E_{ikjl}\delta(r) + \Phi_{ikjl}(r)
 
-the strain can then be written in the following form.
+The strain can then be written in the following form:
 
 .. math:: \varepsilon'_{kl}(x) = \int_V \Gamma_{ikjl}(r) \Big [C'_{ijlk}(x-r)\bar{\varepsilon}_{lk} + \big [C'_{ijlk}(x-r)\varepsilon'_{lk}(x-r)\big ]\Big ]dr 
 
@@ -128,8 +128,8 @@ Weak Contrast Expansion
 
 .. math:: \varepsilon'(x) =\int_V \Gamma(r) C'(x-r) [ \bar{\varepsilon} + \varepsilon'(x-r)]dr 
 
-By recursively inserting :math:`\varepsilon'(x)` into the LHS of the
-equation, we get the following series.
+By recursively inserting :math:`\varepsilon'(x)` into the RHS of the
+equation, we get the following series:
 
 .. math::
 
@@ -150,14 +150,14 @@ Let
 
 .. math::  C'(x-r) = \int_H h m(h, x-r) dh
 
-where :math:`m(h, r)` is the microstructure function which is a
+where :math:`m(h, r)` is the microstructure function, which is a
 probablity density that spans both the local state space :math:`h` and
 real space :math:`x`. The expectation of local state variable for the
 microstructure function is the integral over the local state space
-:math:`H` and discribes the expected local state :math:`h` which is
+:math:`H` and describes the expected local state :math:`h` which is
 equal to :math:`C'(r)`.
 
-Also let
+Also, let
 
 .. math:: \alpha(h, r) = \Gamma(r) h \bar{\varepsilon} 
 
@@ -165,14 +165,14 @@ Also let
 
 .. math::  etc... 
 
-where again :math:`h` is the local state variable.
+where, again, :math:`h` is the local state variable.
 
-Plugging these definitations into the Weak Contrast Expansion recasts
-the series in the following form.
+Plugging these definitions into the Weak Contrast Expansion recasts the
+series in the following form:
 
 .. math:: \varepsilon '(x) =\int_V \int_H \alpha(h, r) m(h, x-r) dr dh + \int_V \int_V \int_H \int_H\alpha_(h, h', r, r') m(h, x-r) m(h', x-r') dr'dr dh dh'+ ...
 
-The discrete version of this equation is the MKS localization.
+The discrete version of this equation is the MKS localization:
 
 .. math:: \varepsilon'[s] = \sum_{l=0}^{L-1} \sum_{r=0}^{S-1} \alpha[l, r] m[l, s-r] +\sum_{l=0}^{L-1} \sum_{l'=0}^{L-1} \sum_{r=0}^{S-1} \sum_{r'=0}^{S-1} \alpha[l, l', r, r'] m[l, s-r] m_[l', s-r'] + ... 
 
@@ -188,3 +188,4 @@ Sensitive Design for Performance Optimization.*
 [3] David T. Fullwood, Brent L.Adams, Surya Kalidindi. *A strong
 contrast homogenization formulation for multi-phase anisotropic
 materials.*
+

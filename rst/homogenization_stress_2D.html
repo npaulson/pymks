@@ -1,0 +1,522 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Effective Stiffness of Composite Material &mdash; PyMKS</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.3.6/cosmo/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pymks.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.3.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="../_static/pymks_logo.ico"/>
+    <link rel="top" title="PyMKS" href="../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html"><img src="../_static/pymks_logo.png">
+          PyMKS</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="INSTALLATION.html">Installation</a></li>
+                <li><a href="../EXAMPLES.html">Examples</a></li>
+                <li><a href="../API.html">API</a></li>
+                <li><a href="https://github.com/materialsinnovation/pymks/">Github</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">More <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../THEORY.html">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="derivation.html">Derivation of MKS Localization Equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tech_overview.html">Technical Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CREDITS.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CITATION.html">Citing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="REQUIREMENTS.html">Requirements</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="effective-stiffness-of-composite-material">
+<h1>Effective Stiffness of Composite Material<a class="headerlink" href="#effective-stiffness-of-composite-material" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This example uses the <code class="docutils literal"><span class="pre">MKSHomogenizationModel</span></code> to create a
+homogenization linkage for the effective stiffness. This example starts
+with a brief background of the homogenization theory on the components
+of the effective elastic stiffness tensor for a composite material. Then
+the example generates random microstructures and their average stress
+values that will be used to show how to calibrate and use our model. We
+will also show how to use tools from
+<a class="reference external" href="http://scikit-learn.org/stable/">sklearn</a> to optimize fit parameters
+for the <code class="docutils literal"><span class="pre">MKSHomogenizationModel</span></code>. Lastly, the data is used to evaluate
+the <code class="docutils literal"><span class="pre">MKSHomogenizationModel</span></code> for effective stiffness values for a new
+set of microstructures.</p>
+</div>
+<div class="section" id="linear-elasticity-and-effective-elastic-modulus">
+<h2>Linear Elasticity and Effective Elastic Modulus<a class="headerlink" href="#linear-elasticity-and-effective-elastic-modulus" title="Permalink to this headline">¶</a></h2>
+<p>For this example we are looking to create a homogenization linkage that
+predicts the effective isotropic stiffness components for two-phase
+microstructures. The specific stiffness component we are looking to
+predict in this example is <span class="math">\(C_{xxxx}\)</span> which is easily accessed by
+applying an uniaxial macroscal strain tensor (the only non-zero
+component is <span class="math">\(\varepsilon_{xx}\)</span>).</p>
+<div class="math">
+\[u(L, y) = u(0, y) + L\bar{\varepsilon}_{xx}\]</div>
+<div class="math">
+\[u(0, L) = u(0, 0) = 0\]</div>
+<div class="math">
+\[u(x, 0) = u(x, L)\]</div>
+<p>More details about these boundary conditions can be found in [1]. Using
+these boundary conditions, <span class="math">\(C_{xxxx}\)</span> can be estimated calculating
+the ratio of the averaged stress over the applied averaged strain.</p>
+<div class="math">
+\[C_{xxxx}^* \cong  \bar{\sigma}_{xx} / \bar{\varepsilon}_{xx}\]</div>
+<p>In this example, <span class="math">\(C_{xxxx}\)</span> for 6 different types of
+microstructures will be estimated, using the <code class="docutils literal"><span class="pre">MKSHomogenizationModel</span></code>
+from <code class="docutils literal"><span class="pre">pymks</span></code>, and provides a method to compute
+<span class="math">\(\bar{\sigma}_{xx}\)</span> for a new microstructure with an applied
+strain of <span class="math">\(\bar{\varepsilon}_{xx}\)</span>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span>import pymks
+
+%matplotlib inline
+%load_ext autoreload
+%autoreload 2
+
+import numpy as np
+import matplotlib.pyplot as plt
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-generation">
+<h2>Data Generation<a class="headerlink" href="#data-generation" title="Permalink to this headline">¶</a></h2>
+<p>A set of periodic microstructures and their volume averaged elastic
+stress values <span class="math">\(\bar{\sigma}_{xx}\)</span> can be generated by importing
+the <code class="docutils literal"><span class="pre">make_elastic_stress_random</span></code> function from <code class="docutils literal"><span class="pre">pymks.datasets</span></code>.
+This function has several arguments. <code class="docutils literal"><span class="pre">n_samples</span></code> is the number of
+samples that will be generated, <code class="docutils literal"><span class="pre">size</span></code> specifies the dimensions of the
+microstructures, <code class="docutils literal"><span class="pre">grain_size</span></code> controls the effective microstructure
+feature size, <code class="docutils literal"><span class="pre">elastic_modulus</span></code> and <code class="docutils literal"><span class="pre">poissons_ratio</span></code> are used to
+indicate the material property for each of the phases, <code class="docutils literal"><span class="pre">macro_strain</span></code>
+is the value of the applied uniaxial strain, and the <code class="docutils literal"><span class="pre">seed</span></code> can be
+used to change the the random number generator seed.</p>
+<p>Let&#8217;s go ahead and create 6 different types of microstructures each with
+200 samples with dimensions 21 x 21. Each of the 6 samples will have a
+different microstructure feature size. The function will return and the
+microstructures and their associated volume averaged stress values.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.datasets</span> <span class="kn">import</span> <span class="n">make_elastic_stress_random</span>
+
+
+<span class="n">sample_size</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">grain_size</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">sample_size</span><span class="p">]</span> <span class="o">*</span> <span class="mi">6</span>
+<span class="n">elastic_modulus</span> <span class="o">=</span> <span class="p">(</span><span class="mi">310</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">poissons_ratio</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.28</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+<span class="n">macro_strain</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_elastic_stress_random</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">grain_size</span><span class="o">=</span><span class="n">grain_size</span><span class="p">,</span>
+                                      <span class="n">elastic_modulus</span><span class="o">=</span><span class="n">elastic_modulus</span><span class="p">,</span> <span class="n">poissons_ratio</span><span class="o">=</span><span class="n">poissons_ratio</span><span class="p">,</span>
+                                      <span class="n">macro_strain</span><span class="o">=</span><span class="n">macro_strain</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The array <code class="docutils literal"><span class="pre">X</span></code> contains the microstructure information and has the
+dimensions of <code class="docutils literal"><span class="pre">(n_samples,</span> <span class="pre">Nx,</span> <span class="pre">Ny)</span></code>. The array <code class="docutils literal"><span class="pre">y</span></code> contains the
+average stress value for each of the microstructures and has dimensions
+of <code class="docutils literal"><span class="pre">(n_samples,)</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1200</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">1200</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p>Lets take a look at the 6 types the microstructures to get an idea of
+what they look like. We can do this by importing
+<code class="docutils literal"><span class="pre">draw_microstructures</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_microstructures</span>
+
+
+<span class="n">X_examples</span> <span class="o">=</span> <span class="n">X</span><span class="p">[::</span><span class="n">sample_size</span><span class="p">]</span>
+<span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X_examples</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/homogenization_stress_2D_8_0.png" src="../_images/homogenization_stress_2D_8_0.png" />
+<p>In this dataset 4 of the 6 microstructure types have grains that are
+elongated in either the x or y directions. The remaining 2 types of
+samples have equiaxed grains with different average sizes.</p>
+<p>Let&#8217;s look at the stress values for each of the microstructures shown
+above.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Stress Values&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">y</span><span class="p">[::</span><span class="mi">200</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Stress Values [ 0.2557737   0.24376877  0.26100719  0.25344437  0.2491338   0.2492148 ]
+</pre></div>
+</div>
+<p>Now that we have a dataset to work with, we can look at how to use the
+<code class="docutils literal"><span class="pre">MKSHomogenizationModel</span></code>to predict stress values for new
+microstructures.</p>
+</div>
+<div class="section" id="mkshomogenizationmodel-work-flow">
+<h2>MKSHomogenizationModel Work Flow<a class="headerlink" href="#mkshomogenizationmodel-work-flow" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line">The default instance of the <code class="docutils literal"><span class="pre">MKSHomogenizationModel</span></code> takes in a
+dataset and - calculates the 2-point statistics</div>
+<div class="line">- performs <a class="reference external" href="http://en.wikipedia.org/wiki/Dimensionality_reduction">dimensionality
+reduction</a>
+using <a class="reference external" href="https://en.wikipedia.org/wiki/Principal_component_analysis">Prinicple Component
+Analysis</a>
+(PCA)</div>
+<div class="line">- and fits a <a class="reference external" href="http://en.wikipedia.org/wiki/Polynomial_regression">polynomial regression
+model</a> model to
+the low-dimensional representation.</div>
+</div>
+<p>This work flow has been shown to accurately predict effective properties
+in several examples [2][3], and requires that we specify the number of
+components used in dimensionality reduction and the order of the
+polynomial we will be using for the polynomial regression. In this
+example we will show how we can use tools from
+<a class="reference external" href="http://scikit-learn.org/stable/">sklearn</a> to try and optimize our
+selection for these two parameters.</p>
+</div>
+<div class="section" id="modeling-with-mkshomogenizationmodel">
+<h2>Modeling with MKSHomogenizationModel<a class="headerlink" href="#modeling-with-mkshomogenizationmodel" title="Permalink to this headline">¶</a></h2>
+<p>In order to make an instance of the <code class="docutils literal"><span class="pre">MKSHomogenizationModel</span></code>, we need
+to pass an instance of a basis (used to compute the 2-point statistics).
+For this particular example, there are only 2 discrete phases, so we
+will use the <code class="docutils literal"><span class="pre">PrimitiveBasis</span></code> from <code class="docutils literal"><span class="pre">pymks</span></code>. We only have two phases
+denoted by 0 and 1, therefore we have two local states and our domain is
+0 to 1.</p>
+<p>Let&#8217;s make an instance of the <code class="docutils literal"><span class="pre">MKSHomgenizationModel</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">MKSHomogenizationModel</span>
+<span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">PrimitiveBasis</span>
+
+
+<span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">MKSHomogenizationModel</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">prim_basis</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                               <span class="n">correlations</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>Let&#8217;s take a look at the default values for the number of components and
+the order of the polynomial.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Default Number of Components&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">n_components</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Default Polynomail Order&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Default Number of Components 5
+Default Polynomail Order 1
+</pre></div>
+</div>
+<p>These default parameters may not be the best model for a given problem;
+we will now show one method that can be used to optimize them.</p>
+</div>
+<div class="section" id="optimizing-the-number-of-components-and-polynomial-order">
+<h2>Optimizing the Number of Components and Polynomial Order<a class="headerlink" href="#optimizing-the-number-of-components-and-polynomial-order" title="Permalink to this headline">¶</a></h2>
+<p>To start with, we can look at how the variance changes as a function of
+the number of components. In general for SVD as well as PCA, the amount
+of variance captured in each component decreases as the component number
+increases. This means that as the number of components used in the
+dimensionality reduction increases, the percentage of the variance will
+asymptotically approach 100%. Let&#8217;s see if this is true for our dataset.</p>
+<p>In order to do this we will change the number of components to 40 and
+then fit the data we have using the <code class="docutils literal"><span class="pre">fit</span></code> function. This function
+performs the dimensionality reduction and also fits the regression
+model. Because our microstructures are periodic, we need to use the
+<code class="docutils literal"><span class="pre">periodic_axes</span></code> argument when we <code class="docutils literal"><span class="pre">fit</span></code> the data.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">n_components</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now look at how the cumlative variance changes as a function of the
+number of components using <code class="docutils literal"><span class="pre">draw_component_variance</span></code> from
+<code class="docutils literal"><span class="pre">pymks.tools</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_component_variance</span>
+
+
+<span class="n">draw_component_variance</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">dimension_reducer</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/homogenization_stress_2D_21_0.png" src="../_images/homogenization_stress_2D_21_0.png" />
+<p>Roughly 93 percent of the variance is captured with the first 5
+components. This means our model may only need a few components to
+predict the average stress.</p>
+<p>Next we need to optimize the number of components and the polynomial
+order. To do this we are going to split the data into test and training
+sets. This can be done using the
+<a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.train_test_split.html">train_test_spilt</a>
+function from <code class="docutils literal"><span class="pre">sklearn</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+
+<span class="n">flat_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],)</span> <span class="o">+</span> <span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">,)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">flat_shape</span><span class="p">),</span> <span class="n">y</span><span class="p">,</span>
+                                                    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">960</span><span class="p">,</span> <span class="mi">441</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">240</span><span class="p">,</span> <span class="mi">441</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We will use cross validation with the testing data to fit a number of
+models, each with a different number of components and a different
+polynomial order. Then we will use the testing data to verify the best
+model. This can be done using
+<a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.grid_search.GridSearchCV.html">GridSeachCV</a>
+from sklearn.</p>
+<p>We will pass a dictionary <code class="docutils literal"><span class="pre">params_to_tune</span></code> with the range of
+polynomial order <code class="docutils literal"><span class="pre">degree</span></code> and components <code class="docutils literal"><span class="pre">n_components</span></code> we want to
+try. A dictionary <code class="docutils literal"><span class="pre">fit_params</span></code> can be used to pass the
+<code class="docutils literal"><span class="pre">periodic_axes</span></code> variable to calculate periodic 2-point statistics. The
+argument <code class="docutils literal"><span class="pre">cv</span></code> can be used to specify the number of folds used in cross
+validation and <code class="docutils literal"><span class="pre">n_jobs</span></code> can be used to specify the number of jobs that
+are ran in parallel.</p>
+<p>Let&#8217;s vary <code class="docutils literal"><span class="pre">n_components</span></code> from 1 to 11 and <code class="docutils literal"><span class="pre">degree</span></code> from 1 to 3.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.grid_search</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
+
+
+<span class="n">params_to_tune</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;degree&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;n_components&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">12</span><span class="p">)}</span>
+<span class="n">fit_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">}</span>
+<span class="n">gs</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">params_to_tune</span><span class="p">,</span> <span class="n">fit_params</span><span class="o">=</span><span class="n">fit_params</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The default <code class="docutils literal"><span class="pre">score</span></code> method for the <code class="docutils literal"><span class="pre">MKSHomogenizationModel</span></code> is the
+<a class="reference external" href="http://en.wikipedia.org/wiki/Coefficient_of_determination">R-squared</a>
+value. Let&#8217;s look at the how the mean R-squared values and their
+standard deviations change, as we varied the number of <code class="docutils literal"><span class="pre">n_components</span></code>
+and <code class="docutils literal"><span class="pre">degree</span></code>, using <code class="docutils literal"><span class="pre">draw_gridscores_matrix</span></code> from <code class="docutils literal"><span class="pre">pymks.tools</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_gridscores_matrix</span>
+
+
+<span class="n">draw_gridscores_matrix</span><span class="p">(</span><span class="n">gs</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;n_components&#39;</span><span class="p">,</span> <span class="s1">&#39;degree&#39;</span><span class="p">],</span> <span class="n">score_label</span><span class="o">=</span><span class="s1">&#39;R-Squared&#39;</span><span class="p">,</span>
+                       <span class="n">param_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Number of Components&#39;</span><span class="p">,</span> <span class="s1">&#39;Order of Polynomial&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/homogenization_stress_2D_27_0.png" src="../_images/homogenization_stress_2D_27_0.png" />
+<p>It looks like we get a poor fit, when only the first and second
+component are used, and when we increase the polynomial order and the
+components together. The models have a high standard deviation and poor
+R-squared values for both of these cases.</p>
+<p>There seems to be several potential models that use 4 to 11 components,
+but it&#8217;s difficult to see which model is the best. Let&#8217;s use our test
+data <code class="docutils literal"><span class="pre">X_test</span></code> to see which model performs the best.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Order of Polynomial&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">gs</span><span class="o">.</span><span class="n">best_estimator_</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Number of Components&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">gs</span><span class="o">.</span><span class="n">best_estimator_</span><span class="o">.</span><span class="n">n_components</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;R-squared Value&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">gs</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Order of Polynomial 2
+Number of Components 11
+R-squared Value 0.999811740003
+</pre></div>
+</div>
+<p>For the parameter range that we searched, we have found that a model
+with 2nd order polynomial and 11 components had the best R-squared
+value. Let&#8217;s look at the same values, using <code class="docutils literal"><span class="pre">draw_grid_scores</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_gridscores</span>
+
+
+<span class="n">gs_deg_1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gs</span><span class="o">.</span><span class="n">grid_scores_</span> \
+            <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;degree&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">gs_deg_2</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gs</span><span class="o">.</span><span class="n">grid_scores_</span> \
+            <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;degree&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">gs_deg_3</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gs</span><span class="o">.</span><span class="n">grid_scores_</span> \
+            <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;degree&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+
+<span class="n">draw_gridscores</span><span class="p">([</span><span class="n">gs_deg_1</span><span class="p">,</span>  <span class="n">gs_deg_2</span><span class="p">,</span> <span class="n">gs_deg_3</span><span class="p">],</span> <span class="s1">&#39;n_components&#39;</span><span class="p">,</span>
+                <span class="n">data_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;1st Order&#39;</span><span class="p">,</span> <span class="s1">&#39;2nd Order&#39;</span><span class="p">,</span> <span class="s1">&#39;3rd Order&#39;</span><span class="p">],</span>
+                <span class="n">param_label</span><span class="o">=</span><span class="s1">&#39;Number of Components&#39;</span><span class="p">,</span> <span class="n">score_label</span><span class="o">=</span><span class="s1">&#39;R-Squared&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/homogenization_stress_2D_31_0.png" src="../_images/homogenization_stress_2D_31_0.png" />
+<p>As we said, a model with a 2rd order polynomial and 11 components will
+give us the best result. Let&#8217;s use the best model from our grid scores.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_estimator_</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="prediction-using-mkshomogenizationmodel">
+<h2>Prediction using MKSHomogenizationModel<a class="headerlink" href="#prediction-using-mkshomogenizationmodel" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have selected values for <code class="docutils literal"><span class="pre">n_components</span></code> and <code class="docutils literal"><span class="pre">degree</span></code>,
+lets fit the model with the data. Again, because our microstructures are
+periodic, we need to use the <code class="docutils literal"><span class="pre">periodic_axes</span></code> argument.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let&#8217;s generate some more data that can be used to try and validate our
+model&#8217;s prediction accuracy. We are going to generate 20 samples of all
+six different types of microstructures using the same
+<code class="docutils literal"><span class="pre">make_elastic_stress_random</span></code> function.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">test_sample_size</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">test_sample_size</span><span class="p">]</span> <span class="o">*</span> <span class="mi">6</span>
+<span class="n">X_new</span><span class="p">,</span> <span class="n">y_new</span> <span class="o">=</span> <span class="n">make_elastic_stress_random</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">grain_size</span><span class="o">=</span><span class="n">grain_size</span><span class="p">,</span>
+                                          <span class="n">elastic_modulus</span><span class="o">=</span><span class="n">elastic_modulus</span><span class="p">,</span> <span class="n">poissons_ratio</span><span class="o">=</span><span class="n">poissons_ratio</span><span class="p">,</span>
+                                          <span class="n">macro_strain</span><span class="o">=</span><span class="n">macro_strain</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now let&#8217;s predict the stress values for the new microstructures.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">y_predict</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_new</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can look to see, if the low-dimensional representation of the new
+data is similar to the low-dimensional representation of the data we
+used to fit the model using <code class="docutils literal"><span class="pre">draw_components_scatter</span></code> from
+<code class="docutils literal"><span class="pre">pymks.tools</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_components_scatter</span>
+
+
+<span class="n">draw_components_scatter</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">reduced_fit_data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span>
+                         <span class="n">model</span><span class="o">.</span><span class="n">reduced_predict_data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]],</span>
+                        <span class="p">[</span><span class="s1">&#39;Training Data&#39;</span><span class="p">,</span> <span class="s1">&#39;Test Data&#39;</span><span class="p">],</span>
+                       <span class="n">legend_outside</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/homogenization_stress_2D_41_0.png" src="../_images/homogenization_stress_2D_41_0.png" />
+<p>The predicted data seems to be reasonably similar to the data we used to
+fit the model with. Now let&#8217;s look at the score value for the predicted
+data.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;R-squared&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_new</span><span class="p">,</span> <span class="n">y_new</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>R-squared 0.999729255543
+</pre></div>
+</div>
+<p>Looks pretty good. Let&#8217;s print out one actual and predicted stress value
+for each of the 6 microstructure types to see how they compare.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Actual Stress   &#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">y_new</span><span class="p">[::</span><span class="mi">20</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Predicted Stress&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">y_predict</span><span class="p">[::</span><span class="mi">20</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Actual Stress    [ 0.2494416   0.25038939  0.23247306  0.25266294  0.23964323  0.24461284]
+Predicted Stress [ 0.24951764  0.25038749  0.23256182  0.25265799  0.23955828  0.24464928]
+</pre></div>
+</div>
+<p>Lastly, we can also evaluate our prediction by looking at a
+goodness-of-fit plot. We can do this by importing
+<code class="docutils literal"><span class="pre">draw_goodness_of_fit</span></code> from <code class="docutils literal"><span class="pre">pymks.tools</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_goodness_of_fit</span>
+
+
+<span class="n">fit_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)])</span>
+<span class="n">pred_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">y_new</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">])</span>
+<span class="n">draw_goodness_of_fit</span><span class="p">(</span><span class="n">fit_data</span><span class="p">,</span> <span class="n">pred_data</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Training Data&#39;</span><span class="p">,</span> <span class="s1">&#39;Test Data&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/homogenization_stress_2D_47_0.png" src="../_images/homogenization_stress_2D_47_0.png" />
+<p>We can see that the <code class="docutils literal"><span class="pre">MKSHomogenizationModel</span></code> has created a
+homogenization linkage for the effective stiffness for the 6 different
+microstructures and has predicted the average stress values for our new
+microstructures reasonably well.</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>[1] Landi, G., S.R. Niezgoda, S.R. Kalidindi, Multi-scale modeling of
+elastic response of three-dimensional voxel-based microstructure
+datasets using novel DFT-based knowledge systems. Acta Materialia, 2009.
+58 (7): p. 2716-2725
+<a class="reference external" href="http://dx.doi.org/10.1016/j.actamat.2010.01.007">doi:10.1016/j.actamat.2010.01.007</a>.</p>
+<p>[2] Çeçen, A., et al. &#8220;A data-driven approach to establishing
+microstructure–property relationships in porous transport layers of
+polymer electrolyte fuel cells.&#8221; Journal of Power Sources 245 (2014):
+144-153.
+<a class="reference external" href="http://dx.doi.org/10.1016/j.jpowsour.2013.06.100">doi:10.1016/j.jpowsour.2013.06.100</a></p>
+<p>[3] Deshpande, P. D., et al. &#8220;Application of Statistical and Machine
+Learning Techniques for Correlating Properties to Composition and
+Manufacturing Processes of Steels.&#8221; 2 World Congress on Integrated
+Computational Materials Engineering. John Wiley &amp; Sons, Inc.
+<a class="reference external" href="http://dx.doi.org/10.1002/9781118767061.ch25">doi:10.1002/9781118767061.ch25</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

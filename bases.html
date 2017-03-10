@@ -10,14 +10,14 @@
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootswatch-3.2.0/cosmo/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootswatch-3.3.6/cosmo/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pymks.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.3',
+        VERSION:     '0.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,10 +26,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
     <link rel="shortcut icon" href="_static/pymks_logo.ico"/>
     <link rel="top" title="PyMKS" href="index.html" />
@@ -39,7 +39,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
+  <body role="document">
 
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
@@ -53,7 +53,7 @@
         </button>
         <a class="navbar-brand" href="index.html"><img src="_static/pymks_logo.png">
           PyMKS</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.2.3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -102,25 +102,139 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 content">
       
   <div class="section" id="microstructure-bases">
 <h1>Microstructure Bases<a class="headerlink" href="#microstructure-bases" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="discreteindicatorbasis">
-<h2>DiscreteIndicatorBasis<a class="headerlink" href="#discreteindicatorbasis" title="Permalink to this headline">¶</a></h2>
-<dl class="attribute">
-<dt id="pymks.bases.DiscreteIndicatorBasis">
-<tt class="descclassname">pymks.bases.</tt><tt class="descname">DiscreteIndicatorBasis</tt><a class="headerlink" href="#pymks.bases.DiscreteIndicatorBasis" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">PrimitiveBasis</span></tt></p>
+<div class="section" id="primitivebasis">
+<h2>PrimitiveBasis<a class="headerlink" href="#primitivebasis" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pymks.bases.PrimitiveBasis">
+<em class="property">class </em><code class="descclassname">pymks.bases.</code><code class="descname">PrimitiveBasis</code><span class="sig-paren">(</span><em>n_states=2</em>, <em>domain=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.bases.PrimitiveBasis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discretize the microstructure function into <cite>n_states</cite> local states such
+that:</p>
+<div class="math">
+\[\frac{1}{\Delta x} \int_{H} \int_{s} \Lambda(h - l)
+m(h, x) dx dh = m[l, s]\]</div>
+<p>where <span class="math">\(\Lambda\)</span> is the primitive basis (also called hat basis)
+function</p>
+<div class="math">
+\[\Lambda (h - l) = max \Bigg (1-\Bigg |\frac{h(L - 1)}{H} -
+\frac{Hl}{L-1} \Bigg|, 0\Bigg)\]</div>
+<p>A microstructure function discretized with this basis is subject to the
+following constraint</p>
+<div class="math">
+\[\sum_{l=0}^L m[l, s] = 1\]</div>
+<p>which is equivalent of saying that every location is filled with some
+configuration of local states.</p>
+<p>Here is an example with 3 discrete local states in a microstructure.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span> <span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The when a microstructure is discretized, the different local states are
+mapped into local state space, which results in an array of shape
+<cite>(n_samples, n_x, n_y, n_states)</cite>, where <cite>n_states=3</cite> in this case.
+For example, if a cell has a label of 2, its local state will be
+<cite>[0, 0, 1]</cite>. The local state can only have values of 0 or 1.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_prim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                     <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                     <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>
+<span class="gp">... </span>                    <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                     <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                     <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+<span class="gp">... </span>                    <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                     <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                     <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">X_prim</span><span class="p">,</span> <span class="n">prim_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>Check that the basis works when all the states are present in the
+microstructure.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_prim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                   <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">X_prim</span><span class="p">,</span> <span class="n">prim_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>In previous two microstructures had values that fell on the peak of the
+primitive (or hat) basis functions. If a local state value falls between
+two peaks of the primitive basis functions the value will be shared by both
+basis functions. To ensure that all local states fall between the peaks
+of two basis functions, we need to specify the local state domain. For
+example, if a cell has a value of 0.4, and the basis has n_states=2 and
+the domain=[0, 1] then the local state is (0.6, 0.4) (the local state
+must sum to 1).</p>
+<p>Here are a few examples where the local states fall between the picks of
+local states. The first specifies the local state space domain between
+<cite>[0, 1]</cite>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">n_states</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_states</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Xtest</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X_</span> <span class="o">*</span> <span class="n">H</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span><span class="bp">None</span><span class="p">,</span><span class="bp">None</span><span class="p">,:],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Xtest</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here is an example where the local state space domain is between <cite>[-1, 1]</cite>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">n_states</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_test</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">X_</span><span class="p">,</span> <span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the local state values in the microstructure are outside of the domain
+they can no longer be represented by two primitive basis functions and
+violates constraint above.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">n_states</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prim_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">RuntimeError</span>: <span class="n">X must be within the specified domain</span>
+</pre></div>
+</div>
+<p>Instantiate a <cite>Basis</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>n_states</strong> (<em>int, list</em>) &#8211; The number of local states, or an array of
+local states to be used.</li>
+<li><strong>domain</strong> (<em>list, optional</em>) &#8211; indicate the range of expected values for
+the microstructure, default is [0, n_states - 1].</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pymks.bases.PrimitiveBasis.discretize">
+<code class="descname">discretize</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.bases.PrimitiveBasis.discretize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discretize <cite>X</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> (<em>ND array</em>) &#8211; The microstructure, an <cite>(n_samples, n_x, ...)</cite>
+shaped array where <cite>n_samples</cite> is the number of samples and
+<cite>n_x</cite> is thes patial discretization.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Float valued field of local states between 0 and 1.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-</div>
-<div class="section" id="continuousindicatorbasis">
-<h2>ContinuousIndicatorBasis<a class="headerlink" href="#continuousindicatorbasis" title="Permalink to this headline">¶</a></h2>
-<dl class="attribute">
-<dt id="pymks.bases.ContinuousIndicatorBasis">
-<tt class="descclassname">pymks.bases.</tt><tt class="descname">ContinuousIndicatorBasis</tt><a class="headerlink" href="#pymks.bases.ContinuousIndicatorBasis" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">PrimitiveBasis</span></tt></p>
 </dd></dl>
 
 </div>
@@ -128,11 +242,11 @@
 <h2>LegendreBasis<a class="headerlink" href="#legendrebasis" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pymks.bases.LegendreBasis">
-<em class="property">class </em><tt class="descclassname">pymks.bases.</tt><tt class="descname">LegendreBasis</tt><big>(</big><em>n_states=2</em>, <em>domain=None</em><big>)</big><a class="headerlink" href="#pymks.bases.LegendreBasis" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymks.bases.</code><code class="descname">LegendreBasis</code><span class="sig-paren">(</span><em>n_states=2</em>, <em>domain=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.bases.LegendreBasis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Discretize a continuous field into <cite>deg</cite> local states using a
 Legendre polynomial basis such that,</p>
 <div class="math">
-\[\frac{1}{\Delta} \int_s m(h, x) dx =
+\[\frac{1}{\Delta x} \int_s m(h, x) dx =
 \sum_0^{L-1} m[l, s] P_l(h)\]</div>
 <p>where the <span class="math">\(P_l\)</span> are Legendre polynomials and the local state space
 <span class="math">\(H\)</span> is mapped into the orthogonal domain of the Legendre polynomials</p>
@@ -140,7 +254,7 @@ Legendre polynomial basis such that,</p>
 \[-1 \le  H \le 1\]</div>
 <p>The mapping of <span class="math">\(H\)</span> into the domain is done automatically in PyMKS by
 using the <cite>domain</cite> key work argument.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">n_states</span> <span class="o">=</span> <span class="mi">3</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">n_states</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
 <span class="gp">... </span>              <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">P</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -154,8 +268,8 @@ using the <cite>domain</cite> key work argument.</p>
 </div>
 <p>If the microstructure local state values fall outside of the specified
 domain they will no longer be mapped into the orthogonal domain of the
-legendre polynomais.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">n_states</span> <span class="o">=</span> <span class="mi">2</span>
+legendre polynomials.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">n_states</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">leg_basis</span> <span class="o">=</span> <span class="n">LegendreBasis</span><span class="p">(</span><span class="n">n_states</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">leg_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -170,7 +284,8 @@ legendre polynomais.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>n_states</strong> (<em>int</em>) &#8211; The number of local states</li>
+<li><strong>n_states</strong> (<em>int, list</em>) &#8211; The number of local states, or an array of
+local states to be used.</li>
 <li><strong>domain</strong> (<em>list, optional</em>) &#8211; indicate the range of expected values for
 the microstructure, default is [0, n_states - 1].</li>
 </ul>
@@ -180,7 +295,7 @@ the microstructure, default is [0, n_states - 1].</li>
 </table>
 <dl class="method">
 <dt id="pymks.bases.LegendreBasis.discretize">
-<tt class="descname">discretize</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#pymks.bases.LegendreBasis.discretize" title="Permalink to this definition">¶</a></dt>
+<code class="descname">discretize</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.bases.LegendreBasis.discretize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Discretize <cite>X</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -194,7 +309,7 @@ shaped array where <cite>n_samples</cite> is the number of samples and
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
 <span class="gp">... </span>              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">leg_basis</span> <span class="o">=</span> <span class="n">LegendreBasis</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -202,6 +317,197 @@ shaped array where <cite>n_samples</cite> is the number of samples and
 <span class="gp">... </span>   <span class="n">tmp</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2.</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)[:,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">polys</span>
 <span class="gp">... </span>   <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">rollaxis</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">leg_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">p</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="fourierbasis">
+<h2>FourierBasis<a class="headerlink" href="#fourierbasis" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pymks.bases.FourierBasis">
+<em class="property">class </em><code class="descclassname">pymks.bases.</code><code class="descname">FourierBasis</code><span class="sig-paren">(</span><em>n_states=5</em>, <em>domain=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.bases.FourierBasis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discretize a continuous field into <cite>deg</cite> local states using complex
+exponentials such that,</p>
+<div class="math">
+\[\frac{1}{\Delta x} \int_s m(h, x) dx =
+\sum_{- L / 2}^{L / 2} m[l, s] exp(l*h*I)\]</div>
+<p>and the local state space <span class="math">\(H\)</span> is mapped into the orthogonal domain</p>
+<div class="math">
+\[0 \le  H \le 2 \pi\]</div>
+<p>The mapping of <span class="math">\(H\)</span> into the domain is done automatically in PyMKS by
+using the <cite>domain</cite> key work argument.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">n_states</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(([[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>                       <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">1j</span><span class="p">),</span>
+<span class="gp">... </span>                        <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">1j</span><span class="p">)]],</span>
+<span class="gp">... </span>                      <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">1j</span><span class="p">),</span>
+<span class="gp">... </span>                        <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">1j</span><span class="p">)],</span>
+<span class="gp">... </span>                        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">basis</span> <span class="o">=</span> <span class="n">FourierBasis</span><span class="p">(</span><span class="n">n_states</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">X_result</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>If the microstructure local state values fall outside of the period of
+the specified domain, the values will be mapped back into the domain.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">n_states</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">four_basis</span> <span class="o">=</span> <span class="n">FourierBasis</span><span class="p">(</span><span class="n">n_states</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>                      <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">X_result</span><span class="p">,</span> <span class="n">four_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Instantiate a <cite>FourierBasis</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>n_states</strong> (<em>int, list</em>) &#8211; The number of local states, or list of local
+states to be used.</li>
+<li><strong>domain</strong> (<em>list, optional</em>) &#8211; indicate the range of expected values for
+the microstructure, default is [0, 2pi].</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pymks.bases.FourierBasis.discretize">
+<code class="descname">discretize</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.bases.FourierBasis.discretize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discretize <cite>X</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> (<em>ND array</em>) &#8211; The microstructure, an <cite>(n_samples, n_x, ...)</cite>
+shaped array where <cite>n_samples</cite> is the number of samples and
+<cite>n_x</cite> is the spatial discretization.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Float valued field of Fourier series coefficients in the following
+order 0, 1, ,-1, 2, -2, with shaped <cite>(n_samples, n_x, ...,
+n_states)</cite>.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">1.</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f_basis</span> <span class="o">=</span> <span class="n">FourierBasis</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>                      <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1j</span><span class="p">,</span> <span class="o">-</span><span class="mi">1j</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>                      <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>                      <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1j</span><span class="p">,</span> <span class="mi">1j</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>                      <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">X_result</span><span class="p">,</span> <span class="n">f_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="gshbasis">
+<h2>GSHBasis<a class="headerlink" href="#gshbasis" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pymks.bases.GSHBasis">
+<em class="property">class </em><code class="descclassname">pymks.bases.</code><code class="descname">GSHBasis</code><span class="sig-paren">(</span><em>n_states=15</em>, <em>domain=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.bases.GSHBasis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discretize a continuous field made up three Euler angles (in radians) used
+to represent crystal orientation into continuous local states using the
+Generalized Spherical Harmonic (GSH) basis. This basis uses the following
+equation to discretize the orientation field.</p>
+<div class="math">
+\[\frac{1}{\Delta x} \int_s m(g, x) dx =
+\sum_{l, m, n} m[l, \tilde{m}, n, s] T_l^{\tilde{m}n}(g)\]</div>
+<p>where the <span class="math">\(T_l^{\tilde{m}n}\)</span> are GSH basis functions and the
+local state space <span class="math">\(H\)</span> is mapped into the orthogonal, periodic
+domain of the GSH functions</p>
+<p>The mapping of <span class="math">\(H\)</span> into some desired periodic domain is done
+automatically in PyMKS by using the <cite>domain</cite> key work argument to
+select the desired crystal symmetry.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mf">6.5</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gsh_basis</span> <span class="o">=</span> <span class="n">GSHBasis</span><span class="p">(</span><span class="n">n_states</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;hexagonal&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">test_gsh</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">phi</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">t915</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mf">0.15e2</span> <span class="o">/</span> <span class="mf">0.2e1</span> <span class="o">*</span> <span class="n">t915</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">0.5e1</span> <span class="o">/</span> <span class="mf">0.2e1</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">gsh_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span> <span class="n">test_gsh</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>If you select an invalid crystal symmetry PyMKS will give an error</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gsh_basis</span> <span class="o">=</span> <span class="n">GSHBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;squishy&#39;</span><span class="p">)</span>
+<span class="gp">... </span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">RuntimeError</span>: <span class="n">invalid crystal symmetry</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gsh_basis</span> <span class="o">=</span> <span class="n">GSHBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;hex&#39;</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">RuntimeError</span>: <span class="n">invalid crystal symmetry</span>
+</pre></div>
+</div>
+<p>Instantiate a <cite>Basis</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>n_states</strong> (<em>int, array</em>) &#8211; An array of local states to be used. states
+requested. If an integer is provided, all local states up
+to that number will be used.</li>
+<li><strong>domain</strong> (<em>list, optional</em>) &#8211; indicate the desired crystal symmetry for
+the GSH. Valid choices for symmetry are &#8220;hexagonal&#8221;, &#8220;cubic&#8221; or
+&#8220;triclinic&#8221; if no symmetry is desired (not specifying any
+symmetry has the same effect)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pymks.bases.GSHBasis.check">
+<code class="descname">check</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.bases.GSHBasis.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Warns the user if Euler angles apear to be defined in degrees
+instead of radians</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymks.bases.GSHBasis.discretize">
+<code class="descname">discretize</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pymks.bases.GSHBasis.discretize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discretize <cite>X</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> (<em>ND array</em>) &#8211; The microstructure, an <cite>(n_samples, n_x, ..., 3)</cite>
+shaped array where <cite>n_samples</cite> is the number of samples,
+<cite>n_x</cite> is the spatial discretization and the last dimension
+contains the Bunge Euler angles in radians.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Float valued field of of Generalized Spherical Harmonics
+coefficients.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mf">6.5</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gsh_basis</span> <span class="o">=</span> <span class="n">GSHBasis</span><span class="p">(</span><span class="n">n_states</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">q</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">phi1</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">phi</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">phi2</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">x_GSH</span> <span class="o">=</span> <span class="p">((</span><span class="mf">0.3e1</span> <span class="o">/</span> <span class="mf">0.2e1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.1e1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span> <span class="o">*</span>
+<span class="gp">... </span>             <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="mi">1j</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">phi1</span> <span class="o">+</span> <span class="n">phi2</span><span class="p">)))</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">x_GSH</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">gsh_basis</span><span class="o">.</span><span class="n">discretize</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span> <span class="n">q</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -223,7 +529,7 @@ shaped array where <cite>n_samples</cite> is the number of samples and
       
     </p>
     <p>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
     </p>
   </div>
 </footer>

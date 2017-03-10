@@ -1,0 +1,328 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Phase Transition in Molecular Dynamics Simulation &mdash; PyMKS</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.3.6/cosmo/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pymks.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.3.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="../_static/pymks_logo.ico"/>
+    <link rel="top" title="PyMKS" href="../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html"><img src="../_static/pymks_logo.png">
+          PyMKS</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="INSTALLATION.html">Installation</a></li>
+                <li><a href="../EXAMPLES.html">Examples</a></li>
+                <li><a href="../API.html">API</a></li>
+                <li><a href="https://github.com/materialsinnovation/pymks/">Github</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">More <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../THEORY.html">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="derivation.html">Derivation of MKS Localization Equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tech_overview.html">Technical Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CREDITS.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CITATION.html">Citing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="REQUIREMENTS.html">Requirements</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="phase-transition-in-molecular-dynamics-simulation">
+<h1>Phase Transition in Molecular Dynamics Simulation<a class="headerlink" href="#phase-transition-in-molecular-dynamics-simulation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="authors">
+<h2>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://www.linkedin.com/in/alexander-lohse-7b2a0468">Alexander M.
+Lohse</a>, Georgia
+Tech, MSE</p>
+<p><a class="reference external" href="https://www.linkedin.com/in/rossverploegh">Ross J. Verploegh</a>,
+Georgia Tech, ChBE</p>
+</div>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Classical molecular mechanics (MM) is a powerful tool in materials
+engineering. Some examples where molecular dynamics (MD) has been
+applied include large simulations of protein folding for drug design,
+diffusion of gas molecules through organic/inorganic nanoporous
+materials, and phase separation of polymers. Sometimes, however,
+analyzing the trajectory data (e.g. atom types and atomic coordinates)
+with respect to some 1-D observable, such as geometric distances or
+density, does not capture all the important information. The tools
+within PyMKS allow for analysis of MD trajectory data in an unbiased
+way.</p>
+<p>This example uses <code class="docutils literal"><span class="pre">MKSStructureAnalysis</span></code> to look at loading-induced
+thermodynamic transition of a metal organic framework (ZIF-8) from low
+to high loading configurations. This example is particularly interesting
+because it is not clear what 1-D or 2-D reaction coordinate could be
+used to describe this transition.</p>
+</div>
+<div class="section" id="molecular-dynamics-simulation-of-a-thermodynamic-phase-transition">
+<h2>Molecular Dynamics Simulation of a Thermodynamic Phase Transition<a class="headerlink" href="#molecular-dynamics-simulation-of-a-thermodynamic-phase-transition" title="Permalink to this headline">¶</a></h2>
+<p>A molecular dynamics simulation was performed using <a class="reference external" href="http://lammps.sandia.gov/">LAMMPS Molecular
+Dynamics Simulator</a>. The flexible ZIF-8
+framework and nitrogen gas molecules were described using the force
+fields described in <a class="reference external" href="https://dx.doi.org/10.1021/ja401129h">this
+manuscript</a> [1]. For those
+familiar with the details of MD simulations, this simulation was
+performed in the NVT-ensemble with a 1.0 femtosecond timestep. The
+simulation was run for a total of 35 picoseconds with snapshots taken
+every 15 femtoseconds (total snapshots in trajectory: 2332).</p>
+</div>
+<div class="section" id="data-generation-mapping-md-data-to-a-grid">
+<h2>Data Generation: Mapping MD Data to a Grid<a class="headerlink" href="#data-generation-mapping-md-data-to-a-grid" title="Permalink to this headline">¶</a></h2>
+<p>For use within PyMKS, atomic data needs to be mapped to a 2-D or 3-D
+grid such that 2-point statistics can be calculated.</p>
+<p>For our example, only the hydrogen coordinates from the ZIF-8 framework
+are mapped to a fixed 70x70x70 voxel 3-D grid, with a resolution of 0.5
+A. For ZIF-8, there are hydrogens in two types of chemical environments:
+methyl-group hydrogens and those on the imidazole ring. Each grid space
+is either assigned a 0 (void space=no hydrogen), a 1 (filled by a methyl
+hydrogen), or a 2 (filled by an imidazole hydrogen). The 3-D grid is
+then mapped into a 2-D array by summing in the z-direction for visual
+purposes only; the following analysis of this data could have been
+applied to the full 3-D data as well.</p>
+<p>The below cells just loads the necessary extensions to python for
+plotting (MatPlotLib) and numerical analysis (NumPy). The data is loaded
+from a Georgia Tech server.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span>import pymks
+
+%matplotlib inline
+%load_ext autoreload
+%autoreload 2
+
+import numpy as np
+import matplotlib.pyplot as plt
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks_share</span> <span class="kn">import</span> <span class="n">DataManager</span>
+
+
+<span class="n">manager</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">(</span><span class="s1">&#39;pymks.me.gatech.edu&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s1">&#39;Molecular Dynamics&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As mentioned, there are 2332 snapshots at 15 femtosecond time intervals
+on a 70 x 70 pixel 2-D grid.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">2332</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can draw what the structures look like with draw_microstructures.
+From left to right the structure is changing as the system goes through
+a phase transition. Do you notice a difference?</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_microstructures</span>
+<span class="n">sample_size</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">X_examples</span> <span class="o">=</span> <span class="n">X</span><span class="p">[::</span><span class="n">sample_size</span><span class="p">]</span>
+<span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">X_examples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])[:]</span> <span class="o">*</span> <span class="n">sample_size</span> <span class="o">*</span> <span class="mi">15</span>
+
+<span class="n">draw_microstructures</span><span class="p">((</span><span class="n">X_examples</span><span class="p">[::</span><span class="mi">40</span><span class="p">]))</span>
+</pre></div>
+</div>
+<img alt="../_images/structure_md_2D_12_0.png" src="../_images/structure_md_2D_12_0.png" />
+</div>
+<div class="section" id="setup-the-model">
+<h2>Setup the model<a class="headerlink" href="#setup-the-model" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have microstructures we use <code class="docutils literal"><span class="pre">MKSStructureAnalysis</span></code>. We use
+the <code class="docutils literal"><span class="pre">PrimitiveBasis</span></code> because we will only have two states, voxel with
+Hydrogen or a voxel with no Hydrogen. Our data domain ranges from 0 to
+255 corresponding to the grayscale (0 is black, 255 is white) as seen in
+the microstructures drawn above). Basically, we are reducing this from
+255 (grayscale) states to a probability between 0 and 1. The statistics
+are then run on this basis we pass to <code class="docutils literal"><span class="pre">MKSStructureAnalysis</span></code>. As
+printed in the output, we are doing an autocorrelation from Hydrogen to
+Hydrogen (1,1) and a cross-correlation from Hydrogen to Void-Space
+(1,0). Change the corelations and rerun to see how the PCA plots further
+down change. Especially, note the increase in variance of PC1 with the
+addition of the (0,0) correlation.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">MKSStructureAnalysis</span><span class="p">,</span> <span class="n">PrimitiveBasis</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">RandomizedPCA</span>
+
+
+<span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">])</span>
+<span class="n">analysis</span> <span class="o">=</span> <span class="n">MKSStructureAnalysis</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">prim_basis</span><span class="p">,</span><span class="n">correlations</span><span class="o">=</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+                                <span class="n">store_correlations</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">analysis</span><span class="o">.</span><span class="n">correlations</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="polynomial-order">
+<h2>Polynomial Order<a class="headerlink" href="#polynomial-order" title="Permalink to this headline">¶</a></h2>
+<p>Now that our model is setup we can calculate the statistics and
+regression with <code class="docutils literal"><span class="pre">analysis.fit</span></code>. Here we fit the model built above with
+a subset of our data, <code class="docutils literal"><span class="pre">X_examples</span></code>. We graph the variance versus the
+number of components in our PCA model. By default the <code class="docutils literal"><span class="pre">PrimitiveBasis</span></code>
+uses a polynomial degree of one.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">analysis</span><span class="o">.</span><span class="n">n_components</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">analysis</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_examples</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_component_variance</span>
+
+
+<span class="n">draw_component_variance</span><span class="p">(</span><span class="n">analysis</span><span class="o">.</span><span class="n">dimension_reducer</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/structure_md_2D_17_0.png" src="../_images/structure_md_2D_17_0.png" />
+<p>Thee graph above shows that over 92% of the statistics are captured with
+just 2 components.</p>
+</div>
+<div class="section" id="plotting-components">
+<h2>Plotting components<a class="headerlink" href="#plotting-components" title="Permalink to this headline">¶</a></h2>
+<p>We now can plot the principle components versus time. We see a distinct
+correlation beteen PC1 and PC2 and note that PC1 is correlated with
+time. This likely indicates the time of the phase transition in the
+simulation. We could next try plotting PC1 vs. various geometric order
+parameters to see if PC1 (or any other principal component) relates.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_components_scatter</span>
+<span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_evolution</span>
+
+
+<span class="n">analysis</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_examples</span><span class="p">)</span>
+<span class="n">pcs_5</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">reduced_fit_data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">times_5</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">times_5</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">],</span> <span class="n">pcs_5</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Component 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Component 2&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;Component 3&#39;</span><span class="p">,</span> <span class="s1">&#39;Component 4&#39;</span><span class="p">,</span> <span class="s1">&#39;Component 5&#39;</span><span class="p">]</span>
+<span class="n">draw_evolution</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">labels</span><span class="p">,</span> <span class="n">legend_outside</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/structure_md_2D_20_0.png" src="../_images/structure_md_2D_20_0.png" />
+<p>Here we plot the first 3 principal components and note two general
+clusterings. This view captures roughly 95% of the variance in our data.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">draw_components_scatter</span><span class="p">([</span><span class="n">analysis</span><span class="o">.</span><span class="n">reduced_fit_data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]],</span>
+                        <span class="p">[</span><span class="s1">&#39;X_example&#39;</span><span class="p">],</span> <span class="n">legend_outside</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/structure_md_2D_22_0.png" src="../_images/structure_md_2D_22_0.png" />
+<p>Let&#8217;s take a look at the two point statistics. We look at the images for
+principal components 1-4. Each image is the correlation for (1,1), or
+the Hydrogen probability.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_correlations</span>
+<span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_components</span>
+
+
+<span class="n">pcs</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">components_</span>
+<span class="n">draw_components</span><span class="p">(</span><span class="n">pcs</span><span class="p">[:</span><span class="mi">4</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/structure_md_2D_24_0.png" src="../_images/structure_md_2D_24_0.png" />
+<p>Sweet, the pictures are pretty. Now it&#8217;s time to try and figure out if
+they mean anything...TBD.</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>[1] Zhang, Liling, Zhongqiao Hu, and Jianwen Jiang. &#8220;Sorption-induced
+structural transition of zeolitic imidazolate framework-8: a hybrid
+molecular simulation study.&#8221; Journal of the American Chemical Society
+135.9 (2013):
+3722-3728.<a class="reference external" href="https://dx.doi.org/10.1021/ja401129h">doi:10.1021/ja401129h</a></p>
+<p>[2] Kalidindi, Surya R., et al. &#8220;Application of data science tools to
+quantify and distinguish between structures and models in molecular
+dynamics datasets.&#8221; Nanotechnology 26.34 (2015): 344006.
+<a class="reference external" href="http://dx.doi.org/10.1088/0957-4484/26/34/344006">doi:10.1088/0957-4484/26/34/344006</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,6 +1,19 @@
 Installation
 ============
 
+Conda
+-----
+
+Conda is the easiest way to install PyMKS. To install use
+
+::
+
+    $ conda config --add channels pymks
+    $ conda install pymks
+
+Pip
+---
+
 The following steps outline the necessary requirements for a successful
 installation of PyMKS.
 
@@ -19,9 +32,27 @@ and then run the tests.
 Scipy Stack
 -----------
 
-The packages `Nosetests <https://nose.readthedocs.org/en/latest/>`__,
-`Scipy <http://www.scipy.org/>`__, `Numpy <http://www.scipy.org/>`__,
-and `Scikit-learn <http://scikit-learn.org>`__ are all required.
+Both `Scipy <http://www.scipy.org/>`__ and
+`Numpy <http://www.scipy.org/>`__ as well as
+`Scikit-learn <http://scikit-learn.org>`__ are required.
+
+Testing
+-------
+
+The package `Pytest <https://pytest.org>`__ is required for testing
+only. Use
+
+::
+
+    $ py.test
+
+in the base directory or
+
+::
+
+    $ python -c "import pymks; pymks.test()"
+
+to run all the tests.
 
 Examples
 --------
@@ -57,11 +88,11 @@ details.
 ------------------------------------------------
 
 If installed, PyMKS will use
-`PyFFTW <http://hgomersall.github.io/pyFFTW/>`__ to computed FFTs
-instead of `Numpy <http://www.scipy.org/>`__. As long as
+`PyFFTW <http://hgomersall.github.io/pyFFTW/>`__ to compute FFTs instead
+of `Numpy <http://www.scipy.org/>`__. As long as
 `Numpy <http://www.scipy.org/>`__ is not using `Intel
 MKL <https://software.intel.com/en-us/articles/numpyscipy-with-intel-mkl>`__,
-`PyFFTW <http://hgomersall.github.io/pyFFTW/>`__ should improvement the
+`PyFFTW <http://hgomersall.github.io/pyFFTW/>`__ should improve the
 performance of PyMKS.
 
 To install `PyFFTW <http://hgomersall.github.io/pyFFTW/>`__ use pip
@@ -79,14 +110,14 @@ Installation on Windows
 
 We recommend you download and install the `Anaconda Python
 Distribution <http://continuum.io/downloads>`__ for Python 2.7 (x64) and
-then download and install PyMKS using the `windows
+then download and install PyMKS, using the `windows
 installer <https://github.com/materialsinnovation/pymks/releases/download/version-0_2_1/PyMKS-x64-anaconda27.exe>`__.
 
 Installation on Mac OS X
 ------------------------
 
 We recommend you download and install the `Anaconda Python
-Distibution <http://continuum.io/downloads>`__ for Python 2.7 (x64).
+Distribution <http://continuum.io/downloads>`__ for Python 2.7 (x64).
 Once Anaconda has been installed, follow the above procedures to install
 SfePy. Finally, install PyMKS using ``pip`` as described above.
 

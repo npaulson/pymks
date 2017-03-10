@@ -1,0 +1,260 @@
+
+Checkerboard Microstructure
+===========================
+
+Introduction - What are 2-Point Spatial Correlations (also called 2-Point Statistics)?
+--------------------------------------------------------------------------------------
+
+The purpose of this example is to introduce 2-point spatial correlations
+and how they are computed, using PyMKS.
+
+The example starts with some introductory information about spatial
+correlations. PyMKS is used to compute both the periodic and
+non-periodic 2-point spatial correlations (also referred to as 2-point
+statistics or autocorrelations and crosscorrelations) for a checkerboard
+microstructure. This is a relatively simple example that allows an easy
+discussion of how the spatial correlations capture the main features
+seen in the original microstructure. If you would like more technical
+details about 2-point statistics please see the `theory
+section <THEORY.html>`__.
+
+.. code:: python
+
+    import pymks
+    
+    %matplotlib inline
+    %load_ext autoreload
+    %autoreload 2
+    
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+
+2-Point Statistics for Checkerboard Microstructure
+--------------------------------------------------
+
+Let's first start with making a microstructure that looks like a 8 x 8
+checkerboard. Although this type of microstructure may not resemble a
+physical system, it provides solutions that give some intuitive
+understanding of 2-point statistics.
+
+We can create a checkerboard microstructure using
+``make_checkerboard_microstructure`` function from ``pymks.datasets``.
+
+.. code:: python
+
+    from pymks.datasets import make_checkerboard_microstructure
+    
+    X = make_checkerboard_microstructure(square_size=21, n_squares=8)
+
+
+Now let's take a look at how the microstructure looks.
+
+.. code:: python
+
+    from pymks.tools import draw_microstructures
+    
+    draw_microstructures(X)
+    
+    print X.shape
+
+
+
+
+.. image:: stats_checker_board_files/stats_checker_board_5_0.png
+
+
+.. parsed-literal::
+
+    (1, 168, 168)
+
+
+Compute Periodic 2-Point Statistics
+-----------------------------------
+
+Now that we have created a microstructure to work with, we can start
+computing the 2-point statistics. Let's start by looking at the periodic
+autocorrelations of the microstructure and then compute the periodic
+crosscorrelation. This can be done using the ``autocorrelate`` and
+``crosscorrelate`` functions from ``pymks.states``, and using the
+keyword argument ``periodic_axes`` to specify the axes that are
+periodic.
+
+In order to compute 2-pont statistics, we need to select a basis to
+generate the microstructure function ``X_`` from the microstructure
+``X``. Because we only have values of 0 or 1 in our microstructure we
+will using the ``PrimitiveBasis`` with ``n_states`` equal to 2.
+
+.. code:: python
+
+    from pymks.stats import autocorrelate
+    from pymks import PrimitiveBasis
+    
+    p_basis = PrimitiveBasis(n_states=2)
+    X_auto = autocorrelate(X, p_basis, periodic_axes=(0, 1))
+
+
+We have now computed the autocorrelations.
+
+Let's take a look at them using ``draw_autocorrelations`` from
+``pymks.tools``.
+
+.. code:: python
+
+    from pymks.tools import draw_autocorrelations
+    
+    correlations = [('black', 'black'), ('white', 'white')]
+    draw_autocorrelations(X_auto[0], autocorrelations=correlations)
+
+
+
+
+.. image:: stats_checker_board_files/stats_checker_board_9_0.png
+
+
+Notice that for this checkerboard microstructure, the autocorrelation
+for these 2 local states in the exact same. We have just computed the
+periodic autocorrelations for a perfectly periodic microstructure with
+equal volume fractions. In general this is not the case and the
+autocorrelations will be different, as we will see later in this
+example.
+
+As mentioned in the introduction, because we using an indicator basis
+and the we have eigen microstructure functions (values are either 0 or
+1), the (0, 0) vector equals the volume fraction.
+
+Let's double check that both the phases have a volume fraction of 0.5.
+
+.. code:: python
+
+    center = (X_auto.shape[1] + 1) / 2
+    print 'Volume fraction of black phase', X_auto[0, center, center, 0]
+    print 'Volume fraction of white phase', X_auto[0, center, center, 1]
+
+
+
+.. parsed-literal::
+
+    Volume fraction of black phase 0.5
+    Volume fraction of white phase 0.5
+
+
+We can compute the cross-correlation of the microstructure function,
+using the ``crosscorrelate`` function from ``pymks.stats``
+
+.. code:: python
+
+    from pymks.stats import crosscorrelate
+    
+    X_cross = crosscorrelate(X, p_basis, periodic_axes=(0, 1))
+
+
+Let's take a look at the cross correlation using
+``draw_crosscorrelations`` from ``pymks.tools``.
+
+.. code:: python
+
+    from pymks.tools import draw_crosscorrelations
+    
+    correlations = [('black', 'white')]
+    draw_crosscorrelations(X_cross[0], crosscorrelations=correlations)
+
+
+
+
+.. image:: stats_checker_board_files/stats_checker_board_15_0.png
+
+
+Notice that the crosscorrelation is the exact opposite of the 2
+autocorrelations. The (0, 0) vector has a value of 0. This statistic
+reflects the probablity of 2 phases having the same location. In our
+microstructure, this probability is zero, as we have not allowed the two
+phases (colored black and white) to co-exist in the same spatial voxel.
+
+Let's check that it is zero.
+
+.. code:: python
+
+    print 'Center value', X_cross[0, center, center, 0]
+
+
+
+.. parsed-literal::
+
+    Center value 3.74121770979e-17
+
+
+Compute Non-Periodic 2-Point Statistics
+---------------------------------------
+
+We will now compute the non-periodic 2-point statistics for our
+microstructure. This time, rather than using the ``autocorrelate`` and
+``crosscorrelate`` functions, we will use the ``correlate`` function
+from ``pymks.stats``. The ``correlate`` function computes all of the
+autocorrelations and crosscorrelations at the same time. We will compute
+the non-periodic statistics by omitting the keyword argument
+``periodic_axes``.
+
+.. code:: python
+
+    from pymks.stats import correlate
+    
+    X_corr = correlate(X, p_basis)
+
+
+All or some of the correlations can be viewed, using the
+``draw_correlations`` function from ``pymks.tools``. In this example we
+will look at all of them.
+
+.. code:: python
+
+    from pymks.tools import draw_correlations
+    
+    correlations = [('black', 'black'), ('white', 'white'), ('black', 'white')]
+    draw_correlations(X_corr[0].real, correlations=correlations)
+
+
+
+
+.. image:: stats_checker_board_files/stats_checker_board_21_0.png
+
+
+Notice that the maximum values for the autocorrelations are higher than
+0.5. We can still show that the centers or the (0, 0) vectors are still
+equal to the volume fractions.
+
+.. code:: python
+
+    print 'Volume fraction of black phase', X_corr[0, center, center, 0]
+    print 'Volume fraction of white phase', X_corr[0, center, center, 1]
+
+
+
+.. parsed-literal::
+
+    Volume fraction of black phase 0.5
+    Volume fraction of white phase 0.5
+
+
+The non-periodic statistics are different from the periodic 2-point
+statistics along the diagonal vectors, but in both cases the probability
+of (0, 0) vector is still the volume fraction.
+
+References
+----------
+
+[1] S.R. Niezgoda, D.T. Fullwood, S.R. Kalidindi, Delineation of the
+Space of 2-Point Correlations in a Composite Material System, Acta
+Materialia, 56, 18, 2008, 5285–5292
+`doi:10.1016/j.actamat.2008.07.005 <http://dx.doi.org/10.1016/j.actamat.2008.07.005>`__
+
+[2] S.R. Niezgoda, D.M. Turner, D.T. Fullwood, S.R. Kalidindi, Optimized
+Structure Based Representative Volume Element Sets Reflecting the
+Ensemble-Averaged 2-Point Statistics, 58, 13, 2010, 4432–4445
+`doi:10.1016/j.actamat.2010.04.041 <http://dx.doi.org/10.1016/j.actamat.2010.04.041>`__
+
+[3] D.T. Fullwood, S.R. Kalidindi, and B.L. Adams, Second - Order
+Microstructure Sensitive Design Using 2-Point Spatial Correlations,
+Chapter 12 in Electron Backscatter Diffraction in Materials Science ,
+2nd Edition , Eds. A. Schwartz, M. Kumar, B. Adams, D. Field, Springer,
+NY, 2009.

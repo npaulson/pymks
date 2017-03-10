@@ -1,0 +1,404 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Low Carbon Steel Optical Micrographs &mdash; PyMKS</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.3.6/cosmo/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pymks.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.3.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="../_static/pymks_logo.ico"/>
+    <link rel="top" title="PyMKS" href="../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html"><img src="../_static/pymks_logo.png">
+          PyMKS</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.3.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="INSTALLATION.html">Installation</a></li>
+                <li><a href="../EXAMPLES.html">Examples</a></li>
+                <li><a href="../API.html">API</a></li>
+                <li><a href="https://github.com/materialsinnovation/pymks/">Github</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">More <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../THEORY.html">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="derivation.html">Derivation of MKS Localization Equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tech_overview.html">Technical Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CREDITS.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CITATION.html">Citing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="REQUIREMENTS.html">Requirements</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="low-carbon-steel-optical-micrographs">
+<h1>Low Carbon Steel Optical Micrographs<a class="headerlink" href="#low-carbon-steel-optical-micrographs" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This page is an example of how to obtain 2-point statistics using PyMKS
+tools. The workflow is the following: import image dataset, display the
+images, threshold the images if necessary, and calculate 2-point
+statistics for the images.</p>
+<p>First, we will go through the process of calculating 2-point statistics
+on the full-size images at different magnifications and then perform the
+same procedure on cropped versions of the original images. Since
+sometimes images are very large, and we want to crop them to reduce the
+effort of computing the 2-point statistics.</p>
+<p>The dataset that we are importing is optical micrographs of chemically
+etched low carbon steel. It is etched to display some features of the
+microstructure, which otherwise would not be visible.</p>
+</div>
+<div class="section" id="load-data">
+<h2>Load Data<a class="headerlink" href="#load-data" title="Permalink to this headline">¶</a></h2>
+<p>First we are going to import the image dataset.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span>import pymks
+
+%matplotlib inline
+%load_ext autoreload
+%autoreload 2
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks_share</span> <span class="kn">import</span> <span class="n">DataManager</span>
+
+
+<span class="n">manager</span> <span class="o">=</span> <span class="n">DataManager</span> <span class="p">(</span><span class="s1">&#39;pymks.me.gatech.edu&#39;</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="s1">&#39;Low-Carbon Steel Optical Micrographs&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, we will display the images using the PyMKS <code class="docutils literal"><span class="pre">draw_microstructure</span></code>
+tool.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skimage.io</span> <span class="kn">as</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_microstructures</span>
+
+
+<span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/stats_steel_6_0.png" src="../_images/stats_steel_6_0.png" />
+<p>The images were taken at different magnifications (increasing left to
+right), 50x, 100x, 200x, 500x, and 500x with higher exposure value.
+Although the images were obtained using the same equipment, there are
+some variations in brightness, contrast, exposure, etc., to account for
+variation in image collection process.</p>
+</div>
+<div class="section" id="image-segmentation">
+<h2>Image Segmentation<a class="headerlink" href="#image-segmentation" title="Permalink to this headline">¶</a></h2>
+<p>The imported images are in grayscale. We need to make them black and
+white, since we know that there are only two different particles in the
+microstructure. We do this by thresholding the image using Otsu&#8217;s
+method. By thresholding, each pixel in the image will become either
+black or white, giving us only 2 local states.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="kn">import</span> <span class="n">threshold_otsu</span>
+
+
+<span class="n">X_thresh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">threshold_otsu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X</span><span class="p">])</span>
+<span class="n">X_binary</span> <span class="o">=</span> <span class="n">X</span> <span class="o">&gt;</span> <span class="n">X_thresh</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">,:,:])</span>
+<span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X_binary</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">,:,:])</span>
+</pre></div>
+</div>
+<img alt="../_images/stats_steel_10_0.png" src="../_images/stats_steel_10_0.png" />
+<img alt="../_images/stats_steel_10_1.png" src="../_images/stats_steel_10_1.png" />
+<p>We plotted two original images at 200x (top left) and 500x (top right)
+to compare with their thresholded image (bottom). The original images
+have 256 shades of gray and the thresholded images have only two shades,
+0 or 1, seen in the scale bar.</p>
+<p>In the original images, we can clearly see grain boundaries, whereas in
+the thresholded images, some of the grain boundaries are removed from
+the image, better seen in the 500x image (bottom right).</p>
+</div>
+<div class="section" id="point-statistics">
+<h2>2-Point Statistics<a class="headerlink" href="#point-statistics" title="Permalink to this headline">¶</a></h2>
+<p>Now we are going to compute correlations using PyMKS <code class="docutils literal"><span class="pre">correlate</span></code> tool,
+which computes auto- and cross-correlations for all phases in the
+microstructure. We have 2 phases in our microstructure <code class="docutils literal"><span class="pre">n_states=2</span></code>.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.stats</span> <span class="kn">import</span> <span class="n">correlate</span>
+<span class="kn">from</span> <span class="nn">pymks</span> <span class="kn">import</span> <span class="n">PrimitiveBasis</span>
+
+
+<span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">X_corr</span> <span class="o">=</span> <span class="n">correlate</span><span class="p">(</span><span class="n">X_binary</span><span class="p">,</span> <span class="n">prim_basis</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Shape of X_corr&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">X_corr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Shape of X_corr
+(5, 520, 694, 3)
+</pre></div>
+</div>
+<p>After computing the correlations we have three correlation results for
+each of our 5 microstructures. Note that the array of each correlation
+plot is the same as the original image. For each image we obtain 3
+correlation plots.</p>
+<p>We will plot the 2-point statistics below.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymks.tools</span> <span class="kn">import</span> <span class="n">draw_correlations</span>
+
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X_corr</span><span class="p">:</span>
+    <span class="n">draw_correlations</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">correlations</span><span class="o">=</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>
+    <span class="n">x_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_corr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">y_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_corr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Volume fraction of black phase&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">x_center</span><span class="p">,</span> <span class="n">y_center</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Volume fraction of white phase&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">x_center</span><span class="p">,</span> <span class="n">y_center</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/stats_steel_14_0.png" src="../_images/stats_steel_14_0.png" />
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.394543892707
+Volume fraction of white phase
+0.605456107293
+</pre></div>
+</div>
+<img alt="../_images/stats_steel_14_2.png" src="../_images/stats_steel_14_2.png" />
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.282115938816
+Volume fraction of white phase
+0.717884061184
+</pre></div>
+</div>
+<img alt="../_images/stats_steel_14_4.png" src="../_images/stats_steel_14_4.png" />
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.20237475061
+Volume fraction of white phase
+0.79762524939
+</pre></div>
+</div>
+<img alt="../_images/stats_steel_14_6.png" src="../_images/stats_steel_14_6.png" />
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.19978940368
+Volume fraction of white phase
+0.80021059632
+</pre></div>
+</div>
+<img alt="../_images/stats_steel_14_8.png" src="../_images/stats_steel_14_8.png" />
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.174321103968
+Volume fraction of white phase
+0.825678896032
+</pre></div>
+</div>
+<p>The above plots indicate the states on which the 2-point statistics have
+been calculated (black-black, white-white, black-white). In this case,
+the black phase is labelled as 1 and white phase as 2. The grain pattern
+in the original images seem random and the grain shapes are different.
+From the correlation plots, we cannot tell any microstructure features
+or patterns that clearly stand out.</p>
+<p>We can focus on the volume fractions for each image. For images at
+highest magnification (500x) the volume fraction of the black phase is
+minimum at 17.4%, and at lowest magnification (50x), it is 39.5%.</p>
+<p>The difference in volume fraction is because the lower magnification
+images retained a higher amount of grain boundary information in the
+image after thresholding. Grain boundary information is not desirable
+since it is not part of a particular phase. A grain boundary can
+separate two phases that appear white, and the statistics treat the
+grain boundary as a black phase, which will not be accurate.</p>
+<p>Since we see less grain boundaries in the higher magnification images
+(500x), these images are more reliable for computing 2-point statistics.
+The images with 500x show a volume fraction of black phase of 20.0% and
+17.4%. The image of 200x shows a volume fraction of 20.2%, which is in
+good agreement with the statistics of 500x images compared to 50x and
+100x, 39.5% and 28.2%, respectively.</p>
+<p>The volume fractions vary slightly in 200x and 500x images, which is
+expected since the images were taken at different locations. However,
+the etched images at higher magnification are more reliable for
+2-statistics since they do include as much grain boundary information as
+the lower magnification images.</p>
+</div>
+<div class="section" id="point-statistics-on-cropped-images">
+<h2>2-Point Statistics on Cropped Images<a class="headerlink" href="#point-statistics-on-cropped-images" title="Permalink to this headline">¶</a></h2>
+<p>Now we are going to crop the image to the first 300 pixels in horizontal
+and vertical directions and repeat the process of computing the 2-point
+statistics. Our new images are going to be 300x300 pixels.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">X_crop</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">250</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">250</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Shape of X&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">X_crop</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X_crop</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Shape of X
+(5, 250, 250)
+</pre></div>
+</div>
+<img alt="../_images/stats_steel_17_1.png" src="../_images/stats_steel_17_1.png" />
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">X_thresh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">threshold_otsu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X_crop</span><span class="p">])</span>
+<span class="n">X_binary_crop</span> <span class="o">=</span> <span class="n">X_crop</span> <span class="o">&gt;</span> <span class="n">X_thresh</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
+
+<span class="n">draw_microstructures</span><span class="p">(</span><span class="n">X_binary_crop</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/stats_steel_18_0.png" src="../_images/stats_steel_18_0.png" />
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">prim_basis</span> <span class="o">=</span> <span class="n">PrimitiveBasis</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">X_corr_crop</span> <span class="o">=</span> <span class="n">correlate</span><span class="p">(</span><span class="n">X_binary_crop</span><span class="p">,</span> <span class="n">prim_basis</span><span class="p">,</span> <span class="n">periodic_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X_corr_crop</span><span class="p">:</span>
+    <span class="n">draw_correlations</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">correlations</span><span class="o">=</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>
+    <span class="n">x_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_corr_crop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">y_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_corr_crop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Volume fraction of black phase&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">x_center</span><span class="p">,</span> <span class="n">y_center</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Volume fraction of white phase&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">x_center</span><span class="p">,</span> <span class="n">y_center</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/stats_steel_19_0.png" src="../_images/stats_steel_19_0.png" />
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.396192
+Volume fraction of white phase
+0.603808
+</pre></div>
+</div>
+<img alt="../_images/stats_steel_19_2.png" src="../_images/stats_steel_19_2.png" />
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.287408
+Volume fraction of white phase
+0.712592
+</pre></div>
+</div>
+<img alt="../_images/stats_steel_19_4.png" src="../_images/stats_steel_19_4.png" />
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.20192
+Volume fraction of white phase
+0.79808
+</pre></div>
+</div>
+<img alt="../_images/stats_steel_19_6.png" src="../_images/stats_steel_19_6.png" />
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.207168
+Volume fraction of white phase
+0.792832
+</pre></div>
+</div>
+<img alt="../_images/stats_steel_19_8.png" src="../_images/stats_steel_19_8.png" />
+<div class="highlight-python"><div class="highlight"><pre><span></span>Volume fraction of black phase
+0.1688
+Volume fraction of white phase
+0.8312
+</pre></div>
+</div>
+<p>We have computed the 2-point statistics for the cropped images. The
+volume fractions for cropped images are very close to the volume
+fractions of the original resolution images, within 5% difference.</p>
+<p>At higher resolution images (500x) we can now better observe the
+distribution of the black and white phases. For example, in 2-point
+statistics result for last image, we can see the distribution of the
+black and white phases in a diagonal direction. It is not so evident for
+lower magnification images.</p>
+<p>We now have more meaningful 2-point statistics plots for the cropped
+images at higher magnifications (200x, 500x). However, for lower
+magnification images we do not yet have insightful spatial correlations.
+To improve the spatial statistics for 50x and 100x, we can crop the
+images further, which will approximately match the view field of the
+higher magnification images.</p>
+<p>Spatial correlations are a more rigorous way to analyze microstructure
+images rather than using intuition and expertise. It is important to
+have an image with a view field that is representative of the whole
+microstructure for 2-point statistics computations. Once two point
+statistics have been computed for a dataset, the spatial correlations
+can by further analyzed using principal component analysis (PCA). This
+can easily be done with either the <code class="docutils literal"><span class="pre">MKSStructureAnalysis</span></code> or if you
+have a material property you would like to correlate the microstructure
+with you can use <code class="docutils literal"><span class="pre">MKSHomogenizationModel</span></code>.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,158 @@
+
+Bulk Metallic Glass Metal Matrix Composites
+===========================================
+
+Introduction
+~~~~~~~~~~~~
+
+This example uses a data set from directionally aligned bulk metallic
+glass metal matrix compite. These materials have low ductility and good
+fatigue strength for more information about the dataset see `this
+paper <https://dx.doi.org/10.1073/pnas.0809000106>`__.
+
+The BMG-MMC in this data set is directionally solidified BMG-MMC which
+through the use of electromagnets the crystalline phases are aligned
+within the amorphous matrix. In this example we will be applying commons
+tools used throughout PyMKS in order to classify the micostructures and
+hopefully observe degrees of anisotropy throughout the microstructures.
+
+.. code:: python
+
+    %matplotlib inline
+    %load_ext autoreload
+    %autoreload 2
+    
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+
+.. parsed-literal::
+
+    The autoreload extension is already loaded. To reload it, use:
+      %reload_ext autoreload
+
+
+Load in the Data
+~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    from pymks_share import DataManager
+    manager = DataManager('pymks.me.gatech.edu')
+    X = manager.fetch_data('metallic glass')
+
+
+Lets look at the Microstructure
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Below we can see one of the microstructures. We can easily discern the
+phases of the
+
+.. code:: python
+
+    from pymks.tools import draw_microstructures
+    
+    
+    print(X.shape)
+    draw_microstructures(X[::54 / 3])
+
+
+
+.. parsed-literal::
+
+    (54, 480, 640)
+
+
+
+.. image:: metallic_glass_files/metallic_glass_5_1.png
+
+
+Now let's crop the images to remove the metadata and scale bar at the
+bottom so that they don't affect our 2-point statistics calculations.
+
+.. code:: python
+
+    X_crop = X[:, 150:400, 150:400]
+    draw_microstructures(X_crop[::54 / 3])
+
+
+
+
+.. image:: metallic_glass_files/metallic_glass_7_0.png
+
+
+.. code:: python
+
+    from skimage.filters import threshold_otsu, rank
+    
+    
+    ostu_values = np.array([threshold_otsu(x) for x in X_crop])
+    X_seg = X > ostu_values[:, None, None]
+
+
+.. code:: python
+
+    draw_microstructures(X_seg[:: 54 / 3])
+
+
+
+
+.. image:: metallic_glass_files/metallic_glass_9_0.png
+
+
+Data Reductive Techniques
+-------------------------
+
+We still have a huge data set! We could either compare each and every
+2-pt statistics to each other or we could use data reduction techniques
+in a way to look at the data sets as a whole.
+
+.. code:: python
+
+    from pymks import MKSStructureAnalysis
+    from pymks import PrimitiveBasis
+    from sklearn.decomposition import KernelPCA
+    
+    reducer = KernelPCA(n_components=7, kernel='rbf')
+    prim_basis = PrimitiveBasis(2)
+    analyzer = MKSStructureAnalysis(prim_basis, correlations=[(1, 0)],
+                                    dimension_reducer=reducer)
+    analyzer.fit(X_seg)
+
+
+.. code:: python
+
+    from pymks.tools import draw_components_scatter
+    
+    
+    draw_components_scatter(np.array_split(analyzer.reduced_fit_data[:, :3], 3),
+                            ['group A', 'group B', 'group C'], legend_outside=True)
+
+
+
+
+.. image:: metallic_glass_files/metallic_glass_12_0.png
+
+
+It looks like there is an outliner in our dataset. Let's look
+
+.. code:: python
+
+    draw_microstructures(X[27:28])
+
+
+
+.. image:: metallic_glass_files/metallic_glass_14_0.png
+
+
+This images had a much larger magnification than the others...
+
+References
+----------
+
+[1] Hofmann, Douglas C., et al. "Development of tough, low-density
+titanium-based bulk metallic glass matrix composites with tensile
+ductility." Proceedings of the National Academy of Sciences 105.51
+(2008): 20136-20140.
+`doi:10.1073/pnas.0809000106 <https://dx.doi.org/10.1073/pnas.0809000106>`__
+
